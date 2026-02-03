@@ -1,0 +1,361 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useUser, UserButton } from '@clerk/nextjs'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X } from 'lucide-react'
+
+interface BotData {
+  _id: string
+  businessId: string
+  businessName: string
+  category: string
+  botName: string
+  useCaseType: string
+  planType: string
+  phoneNumber: string
+  verificationStatus: string
+  autoReply: boolean
+  humanHandoff: boolean
+  messageLimit: number
+  messageBalance: number
+  createdAt: string
+}
+
+export default function DashboardPage() {
+  const router = useRouter()
+  const { user, isLoaded } = useUser()
+  const [bots, setBots] = useState<BotData[]>([])
+  const [loading, setLoading] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [stats, setStats] = useState({
+    totalBots: 0,
+    activeBots: 0,
+    totalMessages: 0,
+    totalRevenue: 0
+  })
+
+  useEffect(() => {
+    if (isLoaded && !user) {
+      router.push('/')
+      return
+    }
+
+    if (user) {
+      fetchBots()
+    }
+  }, [isLoaded, user, router])
+
+  const fetchBots = async () => {
+    try {
+      const response = await fetch('/api/bot')
+      if (response.ok) {
+        const data = await response.json()
+        setBots(data.bots)
+        
+        // Calculate stats
+        const totalBots = data.bots.length
+        const activeBots = data.bots.filter((bot: BotData) => bot.verificationStatus === 'verified').length
+        const totalMessages = data.bots.reduce((sum: number, bot: BotData) => sum + (bot.messageBalance || 0), 0)
+        
+        setStats({
+          totalBots,
+          activeBots,
+          totalMessages,
+          totalRevenue: totalBots * 99 // Mock calculation
+        })
+      }
+    } catch (error) {
+      console.error('Error fetching bots:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'verified':
+        return 'bg-green-500/20 text-green-400 border-green-500/30'
+      case 'pending':
+        return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+      case 'failed':
+        return 'bg-red-500/20 text-red-400 border-red-500/30'
+      default:
+        return 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+    }
+  }
+
+  const getPlanColor = (plan: string) => {
+    switch (plan) {
+      case 'enterprise':
+        return 'bg-purple-500/20 text-purple-400 border-purple-500/30'
+      case 'pro':
+        return 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+      case 'starter':
+        return 'bg-green-500/20 text-green-400 border-green-500/30'
+      default:
+        return 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+    }
+  }
+
+  if (!isLoaded || loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-black text-white flex">
+      {/* Sidebar */}
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-black border-r border-white/10 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex flex-col h-full">
+          {/* Logo */}
+          <div className="flex items-center justify-between h-16 px-6 border-b border-white/10">
+            <div className="flex items-center gap-2">
+              <Bot className="w-6 h-6" />
+              <span className="font-light text-lg">BotSetu</span>
+            </div>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden text-white/60 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 px-4 py-6 space-y-2">
+            <Link
+              href="/"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/60 hover:bg-white/5 hover:text-white transition-colors"
+            >
+              <Home className="w-5 h-5" />
+              <span>Home</span>
+            </Link>
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/10 text-white transition-colors"
+            >
+              <Bot className="w-5 h-5" />
+              <span>Dashboard</span>
+            </Link>
+            <Link
+              href="/pricing"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/60 hover:bg-white/5 hover:text-white transition-colors"
+            >
+              <Tag className="w-5 h-5" />
+              <span>Pricing</span>
+            </Link>
+            <Link
+              href="/about"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/60 hover:bg-white/5 hover:text-white transition-colors"
+            >
+              <Info className="w-5 h-5" />
+              <span>About Us</span>
+            </Link>
+            <Link
+              href="/payment"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/60 hover:bg-white/5 hover:text-white transition-colors"
+            >
+              <CreditCard className="w-5 h-5" />
+              <span>Payment</span>
+            </Link>
+          </nav>
+
+          {/* User Profile */}
+          <div className="p-4 border-t border-white/10">
+            <div className="flex items-center gap-3 px-4 py-3">
+              <UserButton />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">{user?.firstName || 'User'}</p>
+                <p className="text-xs text-white/60 truncate">{user?.primaryEmailAddress?.emailAddress}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      {/* Overlay for mobile */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col min-h-screen">
+        {/* Header */}
+        <div className="border-b border-white/10 bg-black/50 backdrop-blur-sm sticky top-0 z-30">
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setSidebarOpen(true)}
+                  className="lg:hidden text-white/60 hover:text-white"
+                >
+                  <Menu className="w-6 h-6" />
+                </button>
+                <h1 className="text-xl font-light">Dashboard</h1>
+              </div>
+              <div className="flex items-center gap-3">
+                <Link href="/create">
+                  <Button className="bg-white text-black hover:bg-white/90">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create New Bot
+                  </Button>
+                </Link>
+                <div className="lg:hidden">
+                  <UserButton />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-white/60 text-sm">Total Bots</div>
+                <Bot className="w-5 h-5 text-blue-400" />
+              </div>
+              <div className="text-3xl font-light">{stats.totalBots}</div>
+              <div className="text-xs text-green-400 mt-2">+{stats.totalBots} this month</div>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-white/60 text-sm">Active Bots</div>
+                <TrendingUp className="w-5 h-5 text-green-400" />
+              </div>
+              <div className="text-3xl font-light">{stats.activeBots}</div>
+              <div className="text-xs text-white/60 mt-2">{((stats.activeBots / stats.totalBots) * 100 || 0).toFixed(0)}% verified</div>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-white/60 text-sm">Total Messages</div>
+                <MessageSquare className="w-5 h-5 text-purple-400" />
+              </div>
+              <div className="text-3xl font-light">{stats.totalMessages.toLocaleString()}</div>
+              <div className="text-xs text-white/60 mt-2">Across all bots</div>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-white/60 text-sm">Revenue</div>
+                <DollarSign className="w-5 h-5 text-yellow-400" />
+              </div>
+              <div className="text-3xl font-light">${stats.totalRevenue}</div>
+              <div className="text-xs text-green-400 mt-2">+12% from last month</div>
+            </div>
+          </div>
+
+          {/* Bots List */}
+          <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden">
+          <div className="px-6 py-4 border-b border-white/10">
+            <h2 className="text-xl font-light">Your Bots</h2>
+          </div>
+
+          {bots.length === 0 ? (
+            <div className="p-12 text-center">
+              <Bot className="w-16 h-16 text-white/20 mx-auto mb-4" />
+              <h3 className="text-xl font-light mb-2">No bots yet</h3>
+              <p className="text-white/60 mb-6">Create your first bot to get started</p>
+              <Link href="/create">
+                <Button className="bg-white text-black hover:bg-white/90">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Your First Bot
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-white/5 border-b border-white/10">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">Bot Name</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">Business</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">Type</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">Plan</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">Messages</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">Features</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">Created</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/10">
+                  {bots.map((bot) => (
+                    <tr key={bot._id} className="hover:bg-white/5 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          <Bot className="w-4 h-4 text-blue-400" />
+                          <span className="font-medium">{bot.botName}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm">{bot.businessName}</div>
+                        <div className="text-xs text-white/60">{bot.category}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-sm capitalize">{bot.useCaseType}</span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 py-1 text-xs rounded-md border capitalize ${getPlanColor(bot.planType)}`}>
+                          {bot.planType}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 py-1 text-xs rounded-md border capitalize ${getStatusColor(bot.verificationStatus)}`}>
+                          {bot.verificationStatus}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm">{bot.messageBalance || 0} / {bot.messageLimit || 0}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex gap-2">
+                          {bot.autoReply && (
+                            <span className="px-2 py-1 text-xs rounded-md bg-green-500/20 text-green-400 border border-green-500/30">
+                              Auto
+                            </span>
+                          )}
+                          {bot.humanHandoff && (
+                            <span className="px-2 py-1 text-xs rounded-md bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                              Human
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white/60">
+                        {new Date(bot.createdAt).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex gap-2">
+                          <Button variant="ghost" size="sm" className="text-white/60 hover:text-white">
+                            <Settings className="w-4 h-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" className="text-white/60 hover:text-white">
+                            <BarChart3 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+        </div>
+      </div>
+    </div>
+  )
+}

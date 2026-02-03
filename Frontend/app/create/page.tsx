@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useUser } from '@clerk/nextjs'
+import { useUser, UserButton } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import Link from 'next/link'
@@ -127,7 +127,7 @@ export default function CreateBotPage() {
       if (response.ok) {
         const data = await response.json()
         alert('Bot created successfully!')
-        router.push('/')
+        router.push('/dashboard')
       } else {
         const error = await response.json()
         alert(`Error: ${error.message}`)
@@ -145,10 +145,13 @@ export default function CreateBotPage() {
       <div className="max-w-4xl mx-auto border border-white/20 rounded-2xl p-8 shadow-[0_0_50px_rgba(255,255,255,0.15)] bg-black/50 backdrop-blur-sm">
         {/* Header */}
         <div className="mb-8">
-          <Link href="/" className="inline-flex items-center text-white/60 hover:text-white mb-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
-          </Link>
+          <div className="flex justify-between items-center mb-4">
+            <Link href="/" className="inline-flex items-center text-white/60 hover:text-white">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Home
+            </Link>
+            <UserButton />
+          </div>
           <h1 className="text-4xl font-light mb-2">Create Your Bot</h1>
           <p className="text-white/60">Complete the steps to set up your WhatsApp bot</p>
         </div>

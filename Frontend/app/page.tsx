@@ -1,11 +1,31 @@
 'use client'
 
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useUser } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { MessageCircle, ArrowRight } from 'lucide-react'
 import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 
 export default function LandingPage() {
+  const router = useRouter()
+  const { isSignedIn, isLoaded } = useUser()
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      router.push('/dashboard')
+    }
+  }, [isLoaded, isSignedIn, router])
+
+  if (!isLoaded || isSignedIn) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
@@ -53,6 +73,11 @@ export default function LandingPage() {
                 </SignUpButton>
               </SignedOut>
               <SignedIn>
+                <Link href="/dashboard">
+                  <Button variant="ghost" className="text-white hover:bg-white/10 text-sm">
+                    Dashboard
+                  </Button>
+                </Link>
                 <UserButton />
               </SignedIn>
             </div>
