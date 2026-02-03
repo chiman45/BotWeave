@@ -1,15 +1,25 @@
 """
 Twilio Subaccount Creation and Management Bot
 This module handles creating and managing Twilio subaccounts via API
+and stores credentials in MongoDB linked to user accounts
 """
 
 from twilio.rest import Client
 from typing import Optional, Dict
 import os
 from dotenv import load_dotenv
+from pymongo import MongoClient
+from datetime import datetime
 
 # Load environment variables
 load_dotenv()
+
+# MongoDB Connection
+MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
+mongo_client = MongoClient(MONGODB_URI)
+db = mongo_client['BotSetu']
+twilio_credentials_collection = db['twilio-credentials']
+user_data_collection = db['User-data']
 
 
 class TwilioSubaccountManager:
@@ -37,12 +47,15 @@ class TwilioSubaccountManager:
         
         self.client = Client(self.account_sid, self.auth_token)
     
-    def create_subaccount(self, friendly_name: str) -> Dict:
+    def create_subaccount(self, friendly_name: str, user_id: Optional[str] = None, 
+                         business_id: Optional[str] = None) -> Dict:
         """
-        Create a new Twilio subaccount
+        Create a new Twilio subaccount and store credentials in MongoDB
         
         Args:
             friendly_name: A human-readable name for the subaccount
+            user_id: Clerk user ID to associate with this subaccount
+            business_id: Business ID from the bot creation form
             
         Returns:
             Dictionary containing subaccount details:
@@ -53,11 +66,12 @@ class TwilioSubaccountManager:
             - date_created: Creation timestamp
         """
         try:
+            # Create Twilio subaccount
             subaccount = self.client.api.accounts.create(
                 friendly_name=friendly_name
             )
             
-            return {
+            subaccount_data = {
                 'sid': subaccount.sid,
                 'friendly_name': subaccount.friendly_name,
                 'status': subaccount.status,
@@ -66,23 +80,47 @@ class TwilioSubaccountManager:
                 'type': subaccount.type,
                 'owner_account_sid': subaccount.owner_account_sid
             }
+            
+            # Store credentials in MongoDB if user_id is provided
+            if user_id:
+                credential_document = {
+                    'userId': user_id,
+                    'businessId': business_id,
+                    'twilioAccountSid': subaccount.sid,
+                    'twilioAuthToken': subaccount.auth_token,
+                    'twilioAccountName': friendly_name,
+                    'twilioAccountStatus': subaccount.status,
+                    'twilioAccountType': subaccount.type,
+                    'ownerAccountSid': subaccount.owner_account_sid,
+                    'createdAt': datetime.utcnow(),
+                    'updatedAt': datetime.utcnow()
+                }
+                
+                # Insert into twilio-credentials collection
+                twilio_credentials_collection.insert_one(credential_document)
+                
+                # Update User-data collection with Twilio credentials if businessId matches
+                if business_id:
+                    user_data_collection.update_one(
+                        {
+                            'ownerUserId': user_id,
+                            'businessId': business_id
+                        },
+                        {
+                            '$set': {
+                                'twilioAccountSid': subaccount.sid,
+                                'twilioAuthToken': subaccount.auth_token,
+                                'twilioAccountStatus': subaccount.status,
+                                'updatedAt': datetime.utcnow()
+                            }
+                        }
+                    )
+                
+                print(f"✅ Credentials stored in MongoDB for user: {user_id}")
+            
+            return subaccount_data
         except Exception as e:
-            error_msg = str(e)
-            if "Test Account Credentials" in error_msg or "20008" in error_msg:
-                raise Exception(
-                    "⚠️  TRIAL ACCOUNT LIMITATION\n\n"
-                    "Subaccounts cannot be created with a Twilio Trial Account.\n\n"
-                    "To create subaccounts, you need to:\n"
-                    "1. Upgrade to a paid Twilio account\n"
-                    "2. Go to: https://console.twilio.com/billing/upgrade\n"
-                    "3. Add payment information and upgrade your account\n\n"
-                    "Twilio Trial accounts have limitations:\n"
-                    "• Cannot create subaccounts\n"
-                    "• Cannot send SMS to non-verified numbers\n"
-                    "• Cannot make calls to non-verified numbers\n\n"
-                    "More info: https://www.twilio.com/docs/errors/20008"
-                )
-            raise Exception(f"Failed to create subaccount: {error_msg}")
+            raise Exception(f"Failed to create subaccount: {str(e)}")
     
     def list_subaccounts(self, limit: int = 20) -> list:
         """
@@ -138,7 +176,7 @@ class TwilioSubaccountManager:
                          friendly_name: Optional[str] = None,
                          status: Optional[str] = None) -> Dict:
         """
-        Update a subaccount's properties
+        Update a subaccount's properties and sync with MongoDB
         
         Args:
             subaccount_sid: The SID of the subaccount to update
@@ -156,6 +194,27 @@ class TwilioSubaccountManager:
                 update_params['status'] = status
             
             subaccount = self.client.api.accounts(subaccount_sid).update(**update_params)
+            
+            # Update MongoDB records
+            mongo_update = {'updatedAt': datetime.utcnow()}
+            if friendly_name:
+                mongo_update['twilioAccountName'] = friendly_name
+            if status:
+                mongo_update['twilioAccountStatus'] = status
+            
+            # Update twilio-credentials collection
+            twilio_credentials_collection.update_one(
+                {'twilioAccountSid': subaccount_sid},
+                {'$set': mongo_update}
+            )
+            
+            # Update User-data collection
+            user_data_collection.update_many(
+                {'twilioAccountSid': subaccount_sid},
+                {'$set': {'twilioAccountStatus': status, 'updatedAt': datetime.utcnow()}}
+            )
+            
+            print(f"✅ MongoDB records updated for SID: {subaccount_sid}")
             
             return {
                 'sid': subaccount.sid,
@@ -209,16 +268,28 @@ def print_menu():
     print("     TWILIO SUBACCOUNT MANAGEMENT SYSTEM")
     print("="*60)
     print("\n📋 MENU OPTIONS:\n")
-    print("  1. Create New Subaccount")
-    print("  2. List All Subaccounts")
-    print("  3. Get Subaccount Details")
-    print("  4. Update Subaccount Name")
-    print("  5. Suspend Subaccount")
-    print("  6. Activate Subaccount")
-    print("  7. Close Subaccount (Irreversible)")
-    print("  8. Exit")
-    print("\n" + "-"*60)
-
+    # Optional: Link to user account
+    link_to_user = input("\nLink to user account? (yes/no): ").strip().lower()
+    user_id = None
+    business_id = None
+    
+    if link_to_user == 'yes':
+        user_id = input("Enter Clerk User ID: ").strip()
+        business_id = input("Enter Business ID (optional): ").strip() or None
+    
+    try:
+        print("\n⏳ Creating subaccount...")
+        subaccount = manager.create_subaccount(friendly_name, user_id, business_id)
+        print("\n✅ Subaccount created successfully!\n")
+        print(f"  📌 SID: {subaccount['sid']}")
+        print(f"  📝 Name: {subaccount['friendly_name']}")
+        print(f"  🔑 Auth Token: {subaccount['auth_token']}")
+        print(f"  📊 Status: {subaccount['status']}")
+        print(f"  📅 Created: {subaccount['date_created']}")
+        print(f"  🏷️  Type: {subaccount['type']}")
+        if user_id:
+            print(f"  👤 User ID: {user_id}")
+            print(f"  🏢 Business ID: {business_id or 'N/A'
 
 def create_subaccount_menu(manager):
     """Handle subaccount creation"""
