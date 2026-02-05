@@ -1,7 +1,6 @@
 """
 WhatsApp Number Attachment Service
-This module handles attaching WhatsApp numbers to Twilio subaccounts
-and updating MongoDB with the phone number details
+Handles attaching WhatsApp numbers to Twilio subaccounts and updating MongoDB.
 """
 
 from twilio.rest import Client
@@ -78,7 +77,7 @@ class WhatsAppAttachmentManager:
                 'country_code': purchased.iso_country
             }
         except Exception as e:
-            raise Exception(f"Failed to purchase phone number: {str(e)}")
+            raise Exception(f"Phone number purchase failed: {str(e)}")
     
     def enable_whatsapp_on_number(self, phone_number_sid: str) -> Dict:
         """
@@ -104,7 +103,7 @@ class WhatsAppAttachmentManager:
                 'status': 'active'
             }
         except Exception as e:
-            raise Exception(f"Failed to enable WhatsApp: {str(e)}")
+            raise Exception(f"WhatsApp enablement failed: {str(e)}")
     
     def attach_number_to_messaging_service(self, phone_number_sid: str,
                                           messaging_service_sid: str) -> Dict:
@@ -128,7 +127,7 @@ class WhatsAppAttachmentManager:
                 'status': 'attached'
             }
         except Exception as e:
-            raise Exception(f"Failed to attach to messaging service: {str(e)}")
+            raise Exception(f"Messaging service attachment failed: {str(e)}")
 
 
 def attach_whatsapp_to_user_account(user_id: str, business_id: str,

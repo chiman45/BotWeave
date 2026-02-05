@@ -1,7 +1,6 @@
 """
-Twilio Subaccount Creation and Management Bot
-This module handles creating and managing Twilio subaccounts via API
-and stores credentials in MongoDB linked to user accounts
+Twilio Subaccount Creation and Management
+Handles creating and managing Twilio subaccounts via API with MongoDB integration.
 """
 
 from twilio.rest import Client
@@ -23,13 +22,7 @@ user_data_collection = db['User-data']
 
 
 class TwilioSubaccountManager:
-    """
-    Manages Twilio subaccount creation and operations
-    
-    Required credentials:
-    - TWILIO_ACCOUNT_SID: Your main Twilio Account SID
-    - TWILIO_AUTH_TOKEN: Your main Twilio Auth Token
-    """
+    """Manages Twilio subaccount creation and operations."""
     
     def __init__(self, account_sid: Optional[str] = None, auth_token: Optional[str] = None):
         """
@@ -268,6 +261,27 @@ def print_menu():
     print("     TWILIO SUBACCOUNT MANAGEMENT SYSTEM")
     print("="*60)
     print("\n📋 MENU OPTIONS:\n")
+    print("  1. Create New Subaccount")
+    print("  2. List All Subaccounts")
+    print("  3. Get Subaccount Details")
+    print("  4. Update Subaccount Name")
+    print("  5. Suspend Subaccount")
+    print("  6. Activate Subaccount")
+    print("  7. Close Subaccount")
+    print("  8. Exit")
+    print("\n" + "-"*60)
+
+
+def create_subaccount_menu(manager):
+    """Handle subaccount creation"""
+    print("\n📝 CREATE NEW SUBACCOUNT")
+    print("-"*60)
+    friendly_name = input("Enter a friendly name for the subaccount: ").strip()
+    
+    if not friendly_name:
+        print("❌ Error: Friendly name cannot be empty!")
+        return
+    
     # Optional: Link to user account
     link_to_user = input("\nLink to user account? (yes/no): ").strip().lower()
     user_id = None
@@ -289,28 +303,7 @@ def print_menu():
         print(f"  🏷️  Type: {subaccount['type']}")
         if user_id:
             print(f"  👤 User ID: {user_id}")
-            print(f"  🏢 Business ID: {business_id or 'N/A'
-
-def create_subaccount_menu(manager):
-    """Handle subaccount creation"""
-    print("\n📝 CREATE NEW SUBACCOUNT")
-    print("-"*60)
-    friendly_name = input("Enter a friendly name for the subaccount: ").strip()
-    
-    if not friendly_name:
-        print("❌ Error: Friendly name cannot be empty!")
-        return
-    
-    try:
-        print("\n⏳ Creating subaccount...")
-        subaccount = manager.create_subaccount(friendly_name)
-        print("\n✅ Subaccount created successfully!\n")
-        print(f"  📌 SID: {subaccount['sid']}")
-        print(f"  📝 Name: {subaccount['friendly_name']}")
-        print(f"  🔑 Auth Token: {subaccount['auth_token']}")
-        print(f"  📊 Status: {subaccount['status']}")
-        print(f"  📅 Created: {subaccount['date_created']}")
-        print(f"  🏷️  Type: {subaccount['type']}")
+            print(f"  🏢 Business ID: {business_id or 'N/A'}")
     except Exception as e:
         print(f"\n❌ Error: {str(e)}")
 
