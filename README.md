@@ -94,26 +94,51 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ```
 BotSetu/
 ├── Backend/
-│   └── server.js
+│   ├── attach.py                    # WhatsApp number attachment service
+│   ├── creation.py                  # Twilio subaccount management
+│   ├── requirements.txt             # Python dependencies
+│   ├── INTEGRATION_GUIDE.md         # Backend integration guide
+│   ├── README.md                    # Backend documentation
+│   └── .env                         # Backend environment variables
 ├── Frontend/
 │   ├── app/
+│   │   ├── about/
+│   │   │   └── page.tsx             # About page
 │   │   ├── api/
 │   │   │   └── bot/
 │   │   │       └── route.ts         # Bot API endpoints
 │   │   ├── create/
 │   │   │   └── page.tsx             # Multi-step bot creation form
-│   │   ├── globals.css
+│   │   ├── dashboard/
+│   │   │   └── page.tsx             # User dashboard
+│   │   ├── payment/
+│   │   │   └── page.tsx             # Payment page
+│   │   ├── pricing/
+│   │   │   └── page.tsx             # Pricing plans page
+│   │   ├── globals.css              # Global styles
 │   │   ├── layout.tsx               # Root layout with Clerk
-│   │   └── page.tsx                 # Landing page
+│   │   ├── page.tsx                 # Landing page
+│   │   └── favicon.ico              # Site favicon
 │   ├── components/
 │   │   └── ui/
-│   │       └── button.tsx
+│   │       └── button.tsx           # Reusable button component
+│   ├── images/
+│   │   └── bg.avif                  # Background image
 │   ├── lib/
 │   │   ├── mongodb.ts               # MongoDB connection
-│   │   └── utils.ts
+│   │   └── utils.ts                 # Utility functions
+│   ├── public/                      # Static assets
 │   ├── middleware.ts                # Clerk middleware
-│   └── .env.local                   # Environment variables
-└── README.md
+│   ├── components.json              # shadcn/ui config
+│   ├── next.config.ts               # Next.js configuration
+│   ├── tsconfig.json                # TypeScript config
+│   ├── package.json                 # Dependencies
+│   └── .env.local                   # Frontend environment variables
+├── DOCKER_GUIDE.md                  # Docker setup guide
+├── docker-compose.yml               # Docker compose configuration
+├── Dockerfile.backend               # Backend Docker image
+├── Dockerfile.frontend              # Frontend Docker image
+└── README.md                        # Project documentation
 ```
 
 ## 🎯 Usage
