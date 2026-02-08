@@ -194,6 +194,12 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for fixed navbar */
+}
+
 /* Fix dropdown options visibility */
 select option {
   background-color: #000;
