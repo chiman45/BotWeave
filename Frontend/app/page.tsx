@@ -90,12 +90,12 @@ export default function LandingPage() {
                   variant="ghost"
                   size="icon"
                   onClick={toggleTheme}
-                  className={`transition-colors ${
+                  className={`transition-all duration-300 hover:scale-110 hover:rotate-12 ${
                     isDarkMode ? 'text-white hover:bg-white/10' : 'text-black hover:bg-black/10'
                   }`}
                   aria-label="Toggle theme"
                 >
-                  {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                  {isDarkMode ? <Sun className="w-5 h-5 transition-transform duration-300" /> : <Moon className="w-5 h-5 transition-transform duration-300" />}
                 </Button>
                 <SignInButton mode="modal">
                   <Button 
@@ -122,12 +122,12 @@ export default function LandingPage() {
                   variant="ghost"
                   size="icon"
                   onClick={toggleTheme}
-                  className={`transition-colors ${
+                  className={`transition-all duration-300 hover:scale-110 hover:rotate-12 ${
                     isDarkMode ? 'text-white hover:bg-white/10' : 'text-black hover:bg-black/10'
                   }`}
                   aria-label="Toggle theme"
                 >
-                  {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                  {isDarkMode ? <Sun className="w-5 h-5 transition-transform duration-300" /> : <Moon className="w-5 h-5 transition-transform duration-300" />}
                 </Button>
                 <Link href="/dashboard">
                   <Button variant="ghost" className={`text-sm ${
