@@ -160,7 +160,7 @@ def attach_whatsapp_to_user_account(user_id: str, business_id: str,
                     'messagingServiceSid': messaging_service_sid,
                     'whatsappStatus': 'active',
                     'whatsappEnabled': True,
-                    'updatedAt': datetime.utcnow()
+                    'updatedAt': datetime.now(datetime.UTC)
                 }
             }
         )
@@ -177,7 +177,7 @@ def attach_whatsapp_to_user_account(user_id: str, business_id: str,
                     'whatsappPhoneNumberSid': phone_number_sid,
                     'messagingServiceSid': messaging_service_sid,
                     'whatsappStatus': 'active',
-                    'updatedAt': datetime.utcnow()
+                    'updatedAt': datetime.now(datetime.UTC)
                 }
             }
         )
