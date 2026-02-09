@@ -1,10 +1,12 @@
 import { MongoClient } from 'mongodb';
 
-if (!process.env.MONGODB_URI) {
-  throw new Error('Please add your Mongo URI to .env.local');
+// Allow build to proceed without MongoDB URI (for static pages)
+// But runtime API calls will still fail if not provided
+if (!process.env.MONGODB_URI && process.env.NODE_ENV !== 'production') {
+  console.warn('⚠️  Warning: MONGODB_URI not set. API routes will not work.');
 }
 
-const uri = process.env.MONGODB_URI;
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/BotSetu';
 const options = {};
 
 let client: MongoClient;
