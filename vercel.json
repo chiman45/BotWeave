@@ -1,7 +1,0 @@
-{
-  "version": 2,
-  "buildCommand": "cd Frontend && npm run build",
-  "devCommand": "cd Frontend && npm run dev",
-  "installCommand": "cd Frontend && npm install --legacy-peer-deps",
-  "outputDirectory": "Frontend/.next"
-}
