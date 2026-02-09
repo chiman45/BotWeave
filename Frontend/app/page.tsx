@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { MessageCircle, ArrowRight, Sun, Moon } from 'lucide-react'
+import { MessageCircle, ArrowRight } from 'lucide-react'
 import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+import { ThemeToggleButton } from '@/components/theme-toggle'
 
 export default function LandingPage() {
   const router = useRouter()
@@ -86,17 +87,11 @@ export default function LandingPage() {
             {/* Auth Buttons & Theme Toggle */}
             <div className="flex items-center gap-2">
               <SignedOut>
-                <Button
-                  variant="ghost"
-                  size="icon"
+                <ThemeToggleButton
+                  className="size-10 p-2"
+                  isDark={isDarkMode}
                   onClick={toggleTheme}
-                  className={`transition-all duration-300 hover:scale-110 hover:rotate-12 ${
-                    isDarkMode ? 'text-white hover:bg-white/10' : 'text-black hover:bg-black/10'
-                  }`}
-                  aria-label="Toggle theme"
-                >
-                  {isDarkMode ? <Sun className="w-5 h-5 transition-transform duration-300" /> : <Moon className="w-5 h-5 transition-transform duration-300" />}
-                </Button>
+                />
                 <SignInButton mode="modal">
                   <Button 
                     variant="ghost" 
@@ -118,17 +113,11 @@ export default function LandingPage() {
                 </SignUpButton>
               </SignedOut>
               <SignedIn>
-                <Button
-                  variant="ghost"
-                  size="icon"
+                <ThemeToggleButton
+                  className="size-10 p-2"
+                  isDark={isDarkMode}
                   onClick={toggleTheme}
-                  className={`transition-all duration-300 hover:scale-110 hover:rotate-12 ${
-                    isDarkMode ? 'text-white hover:bg-white/10' : 'text-black hover:bg-black/10'
-                  }`}
-                  aria-label="Toggle theme"
-                >
-                  {isDarkMode ? <Sun className="w-5 h-5 transition-transform duration-300" /> : <Moon className="w-5 h-5 transition-transform duration-300" />}
-                </Button>
+                />
                 <Link href="/dashboard">
                   <Button variant="ghost" className={`text-sm ${
                     isDarkMode ? 'text-white hover:bg-white/10' : 'text-black hover:bg-black/10'
