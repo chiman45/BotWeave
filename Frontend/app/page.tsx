@@ -132,8 +132,24 @@ export default function LandingPage() {
         </div>
       </nav>
 
+      {/* Under Construction Disclaimer */}
+      <div className={`fixed top-16 w-full z-40 border-b backdrop-blur-sm transition-colors duration-300 ${
+        isDarkMode ? 'bg-yellow-900/20 border-yellow-500/30' : 'bg-yellow-100/90 border-yellow-400/50'
+      }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <div className="flex items-center justify-center gap-2 text-sm">
+            <span className={`font-medium ${isDarkMode ? 'text-yellow-200' : 'text-yellow-900'}`}>
+              ⚠️ Notice:
+            </span>
+            <span className={isDarkMode ? 'text-yellow-100/90' : 'text-yellow-800'}>
+              This website is currently under construction. Please do not perform any real transactions or activities. Features are in development phase.
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <section className="pt-40 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center space-y-12">
           {/* Main Headline */}
           <div className="space-y-6">
