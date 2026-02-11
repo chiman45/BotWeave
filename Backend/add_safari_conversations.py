@@ -26,6 +26,10 @@ USER_ID = "user_397tEZICayhXBEAOjUh22IIgbUY"
 BUSINESS_ID = "business_1770061587558_4gpp08w1d"
 BUSINESS_NAME = "Jungle Safari"
 BOT_NAME = "Safari"
+PHONE_NUMBER = "8770441755"
+CITY = "Bhilai"
+COUNTRY = "India"
+BUSINESS_HOURS = "9 - 12"
 
 # Sample conversation templates for safari booking
 SAFARI_CONVERSATIONS = [

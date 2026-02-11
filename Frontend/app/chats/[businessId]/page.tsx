@@ -13,6 +13,7 @@ import {
   User, 
   Bot as BotIcon, 
   CheckCheck, 
+  Check,
   Circle,
   Trash2,
   RefreshCw,
@@ -21,7 +22,9 @@ import {
   Home,
   Tag,
   Info,
-  CreditCard
+  CreditCard,
+  MoreVertical,
+  Video
 } from 'lucide-react'
 
 interface Message {
@@ -159,20 +162,25 @@ export default function ChatLogsPage() {
 
   if (!isLoaded || loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-xl">Loading chat logs...</div>
+      <div className="min-h-screen bg-[#111b21] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 rounded-full bg-[#25d366] flex items-center justify-center mx-auto mb-4">
+            <MessageSquare className="w-8 h-8 text-white animate-pulse" />
+          </div>
+          <div className="text-white text-xl">Loading chats...</div>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-black text-white flex">
+    <div className="min-h-screen bg-[#111b21] text-white flex">
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-black border-r border-white/10 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#111b21] border-r border-white/10 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between h-16 px-6 border-b border-white/10">
+          <div className="flex items-center justify-between h-16 px-6 border-b border-white/10 bg-[#202c33]">
             <div className="flex items-center gap-2">
-              <BotIcon className="w-6 h-6" />
+              <BotIcon className="w-6 h-6 text-[#25d366]" />
               <span className="font-light text-lg">BotSetu</span>
             </div>
             <button
@@ -225,7 +233,7 @@ export default function ChatLogsPage() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen">
         {/* Header */}
-        <div className="border-b border-white/10 bg-black/50 backdrop-blur-sm sticky top-0 z-30">
+        <div className="border-b border-[#2a3942] bg-[#202c33] backdrop-blur-sm sticky top-0 z-30">
           <div className="px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center gap-3">
@@ -233,14 +241,14 @@ export default function ChatLogsPage() {
                   <Menu className="w-6 h-6" />
                 </button>
                 <Link href="/dashboard">
-                  <Button variant="ghost" size="sm" className="text-white/60 hover:text-white">
+                  <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/10">
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     Back to Dashboard
                   </Button>
                 </Link>
               </div>
               <div className="flex items-center gap-3">
-                <Button variant="ghost" size="sm" onClick={fetchConversations} className="text-white/60 hover:text-white">
+                <Button variant="ghost" size="sm" onClick={fetchConversations} className="text-white/60 hover:text-white hover:bg-white/10">
                   <RefreshCw className="w-4 h-4" />
                 </Button>
                 <div className="lg:hidden">
@@ -253,21 +261,18 @@ export default function ChatLogsPage() {
 
         <div className="flex-1 flex overflow-hidden">
           {/* Conversations List */}
-          <div className="w-full md:w-80 lg:w-96 border-r border-white/10 flex flex-col bg-black">
-            <div className="p-4 border-b border-white/10">
-              <h2 className="text-xl font-light mb-4">Chat Logs</h2>
+          <div className="w-full md:w-80 lg:w-96 border-r border-[#2a3942] flex flex-col bg-[#111b21]">
+            <div className="p-4 border-b border-[#2a3942] bg-[#202c33]">
+              <h2 className="text-xl font-light mb-4">Chats</h2>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/40" />
                 <input
                   type="text"
-                  placeholder="Search conversations..."
+                  placeholder="Search or start new chat"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-white/20"
+                  className="w-full bg-[#202c33] border border-[#2a3942] rounded-lg pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#25d366]"
                 />
-              </div>
-              <div className="mt-4 text-sm text-white/60">
-                {conversations.length} conversation{conversations.length !== 1 ? 's' : ''}
               </div>
             </div>
 
@@ -278,41 +283,40 @@ export default function ChatLogsPage() {
                   <p className="text-white/60">No conversations yet</p>
                 </div>
               ) : (
-                <div className="divide-y divide-white/10">
+                <div>
                   {filteredConversations.map((conv) => (
                     <div
                       key={conv.phoneNumber}
                       onClick={() => handleConversationClick(conv.phoneNumber)}
-                      className={`p-4 cursor-pointer hover:bg-white/5 transition-colors ${
-                        selectedPhone === conv.phoneNumber ? 'bg-white/10' : ''
+                      className={`p-3 cursor-pointer hover:bg-[#202c33] transition-colors border-b border-[#2a3942]/50 ${
+                        selectedPhone === conv.phoneNumber ? 'bg-[#2a3942]' : ''
                       }`}
                     >
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
-                            <Phone className="w-5 h-5 text-blue-400" />
-                          </div>
-                          <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-[#6b7c85] flex items-center justify-center shrink-0">
+                          <User className="w-6 h-6 text-[#202c33]" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
                             <div className="font-medium truncate">{conv.phoneNumber}</div>
-                            <div className="text-xs text-white/60">{conv.messageCount} messages</div>
+                            <div className="text-xs text-[#8696a0]">{formatTime(conv.lastMessageTime)}</div>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1 flex-1 min-w-0">
+                              {conv.lastSender === 'bot' ? (
+                                <BotIcon className="w-3.5 h-3.5 text-[#25d366] shrink-0" />
+                              ) : (
+                                <CheckCheck className="w-3.5 h-3.5 text-[#53bdeb] shrink-0" />
+                              )}
+                              <p className="text-sm text-[#8696a0] truncate">{conv.lastMessage}</p>
+                            </div>
+                            {conv.unreadCount > 0 && (
+                              <div className="ml-2 bg-[#25d366] text-[#111b21] text-xs font-medium rounded-full min-w-[20px] h-5 flex items-center justify-center px-1.5 shrink-0">
+                                {conv.unreadCount}
+                              </div>
+                            )}
                           </div>
                         </div>
-                        <div className="text-xs text-white/60">{formatTime(conv.lastMessageTime)}</div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          {conv.lastSender === 'bot' ? (
-                            <BotIcon className="w-3 h-3 text-white/40 shrink-0" />
-                          ) : (
-                            <User className="w-3 h-3 text-white/40 shrink-0" />
-                          )}
-                          <p className="text-sm text-white/60 truncate">{conv.lastMessage}</p>
-                        </div>
-                        {conv.unreadCount > 0 && (
-                          <div className="ml-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shrink-0">
-                            {conv.unreadCount}
-                          </div>
-                        )}
                       </div>
                     </div>
                   ))}
@@ -322,76 +326,110 @@ export default function ChatLogsPage() {
           </div>
 
           {/* Messages View */}
-          <div className="flex-1 flex flex-col bg-black">
+          <div className="flex-1 flex flex-col bg-[#0b141a]">
             {selectedPhone ? (
               <>
                 {/* Chat Header */}
-                <div className="p-4 border-b border-white/10 flex items-center justify-between">
+                <div className="px-4 py-2 border-b border-[#2a3942] flex items-center justify-between bg-[#202c33]">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
-                      <Phone className="w-5 h-5 text-blue-400" />
+                    <div className="w-10 h-10 rounded-full bg-[#6b7c85] flex items-center justify-center">
+                      <User className="w-5 h-5 text-[#202c33]" />
                     </div>
                     <div>
                       <div className="font-medium">{selectedPhone}</div>
-                      <div className="text-xs text-white/60">
+                      <div className="text-xs text-[#8696a0]">
                         {messages.length} message{messages.length !== 1 ? 's' : ''}
                       </div>
                     </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleDeleteConversation(selectedPhone)}
-                    className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-[#8696a0] hover:text-white hover:bg-white/10 h-10 w-10 p-0"
+                    >
+                      <Video className="w-5 h-5" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-[#8696a0] hover:text-white hover:bg-white/10 h-10 w-10 p-0"
+                    >
+                      <Phone className="w-5 h-5" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDeleteConversation(selectedPhone)}
+                      className="text-red-400 hover:text-red-300 hover:bg-red-500/10 h-10 w-10 p-0"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-[#8696a0] hover:text-white hover:bg-white/10 h-10 w-10 p-0"
+                    >
+                      <MoreVertical className="w-5 h-5" />
+                    </Button>
+                  </div>
                 </div>
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                <div 
+                  className="flex-1 overflow-y-auto p-4 space-y-2" 
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                    backgroundColor: '#0b141a'
+                  }}
+                >
                   {messagesLoading ? (
                     <div className="flex items-center justify-center h-full">
-                      <div className="text-white/60">Loading messages...</div>
+                      <div className="text-[#8696a0]">Loading messages...</div>
                     </div>
                   ) : messages.length === 0 ? (
                     <div className="flex items-center justify-center h-full">
                       <div className="text-center">
                         <MessageSquare className="w-12 h-12 text-white/20 mx-auto mb-3" />
-                        <p className="text-white/60">No messages</p>
+                        <p className="text-[#8696a0]">No messages</p>
                       </div>
                     </div>
                   ) : (
                     messages.slice().reverse().map((msg, idx) => (
-                      <div key={idx} className={`flex ${msg.sender === 'bot' ? 'justify-start' : 'justify-end'}`}>
-                        <div className={`max-w-[70%] ${msg.sender === 'bot' ? 'bg-white/10' : 'bg-blue-500/20'} rounded-lg p-3`}>
-                          <div className="flex items-center gap-2 mb-1">
-                            {msg.sender === 'bot' ? (
-                              <BotIcon className="w-3 h-3 text-blue-400" />
-                            ) : (
-                              <User className="w-3 h-3 text-white/60" />
-                            )}
-                            <span className="text-xs text-white/60 capitalize">{msg.sender}</span>
-                          </div>
+                      <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                        <div 
+                          className={`relative max-w-[65%] rounded-lg px-3 py-2 shadow-md ${
+                            msg.sender === 'user' 
+                              ? 'bg-[#005c4b] text-white' 
+                              : 'bg-[#202c33] text-white'
+                          }`}
+                        >
                           {msg.messageType === 'text' ? (
-                            <p className="text-sm">{msg.messageContent}</p>
+                            <p className="text-[14.2px] leading-[19px] break-words whitespace-pre-wrap">{msg.messageContent}</p>
                           ) : (
                             <div>
-                              <p className="text-xs text-white/60 mb-2 capitalize">{msg.messageType}</p>
+                              <p className="text-xs text-[#8696a0] mb-2 capitalize">{msg.messageType}</p>
                               <a
                                 href={msg.messageContent}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-xs text-blue-400 hover:underline"
+                                className="text-xs text-[#53bdeb] hover:underline"
                               >
                                 View {msg.messageType}
                               </a>
                             </div>
                           )}
-                          <div className="flex items-center justify-end gap-1 mt-2">
-                            <span className="text-xs text-white/40">{formatTime(msg.timestamp)}</span>
-                            {msg.read && <CheckCheck className="w-3 h-3 text-blue-400" />}
-                            {!msg.read && <Circle className="w-3 h-3 text-white/20" />}
+                          <div className="flex items-center justify-end gap-1 mt-1 ml-4">
+                            <span className={`text-[11px] ${msg.sender === 'user' ? 'text-[#99d6c5]' : 'text-[#8696a0]'}`}>
+                              {formatTime(msg.timestamp)}
+                            </span>
+                            {msg.sender === 'user' && (
+                              msg.read ? (
+                                <CheckCheck className="w-4 h-4 text-[#53bdeb]" />
+                              ) : (
+                                <Check className="w-4 h-4 text-[#8696a0]" />
+                              )
+                            )}
                           </div>
                         </div>
                       </div>
@@ -400,11 +438,18 @@ export default function ChatLogsPage() {
                 </div>
               </>
             ) : (
-              <div className="flex-1 flex items-center justify-center">
+              <div className="flex-1 flex items-center justify-center" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                backgroundColor: '#0b141a'
+              }}>
                 <div className="text-center">
-                  <MessageSquare className="w-16 h-16 text-white/20 mx-auto mb-4" />
-                  <h3 className="text-xl font-light mb-2">Select a conversation</h3>
-                  <p className="text-white/60">Choose a conversation to view chat history</p>
+                  <div className="w-20 h-20 rounded-full bg-[#202c33] flex items-center justify-center mx-auto mb-4">
+                    <MessageSquare className="w-10 h-10 text-[#8696a0]" />
+                  </div>
+                  <h3 className="text-2xl font-light mb-2 text-[#e9edef]">BotSetu Chat</h3>
+                  <p className="text-[#8696a0] text-sm max-w-md">
+                    Select a conversation from the list to view chat history and messages
+                  </p>
                 </div>
               </div>
             )}
