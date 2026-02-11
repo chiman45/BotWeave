@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useUser, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X } from 'lucide-react'
+import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X, MessageCircle } from 'lucide-react'
 
 interface BotData {
   _id: string
@@ -34,7 +34,8 @@ export default function DashboardPage() {
     totalBots: 0,
     activeBots: 0,
     totalMessages: 0,
-    totalRevenue: 0
+    totalRevenue: 0,
+    totalConversations: 0
   })
 
   useEffect(() => {
@@ -60,11 +61,26 @@ export default function DashboardPage() {
         const activeBots = data.bots.filter((bot: BotData) => bot.verificationStatus === 'verified').length
         const totalMessages = data.bots.reduce((sum: number, bot: BotData) => sum + (bot.messageBalance || 0), 0)
         
+        // Fetch total conversations across all bots
+        let totalConversations = 0
+        for (const bot of data.bots) {
+          try {
+            const convResponse = await fetch(`/api/conversations?businessId=${bot.businessId}`)
+            if (convResponse.ok) {
+              const convData = await convResponse.json()
+              totalConversations += convData.count || 0
+            }
+          } catch (err) {
+            // Skip if conversations not available
+          }
+        }
+        
         setStats({
           totalBots,
           activeBots,
           totalMessages,
-          totalRevenue: totalBots * 99 // Mock calculation
+          totalRevenue: totalBots * 99, // Mock calculation
+          totalConversations
         })
       }
     } catch (error) {
@@ -240,20 +256,20 @@ export default function DashboardPage() {
 
             <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
               <div className="flex items-center justify-between mb-2">
-                <div className="text-white/60 text-sm">Total Messages</div>
-                <MessageSquare className="w-5 h-5 text-purple-400" />
+                <div className="text-white/60 text-sm">Conversations</div>
+                <MessageCircle className="w-5 h-5 text-purple-400" />
               </div>
-              <div className="text-3xl font-light">{stats.totalMessages.toLocaleString()}</div>
+              <div className="text-3xl font-light">{stats.totalConversations}</div>
               <div className="text-xs text-white/60 mt-2">Across all bots</div>
             </div>
 
             <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
               <div className="flex items-center justify-between mb-2">
-                <div className="text-white/60 text-sm">Revenue</div>
-                <DollarSign className="w-5 h-5 text-yellow-400" />
+                <div className="text-white/60 text-sm">Total Messages</div>
+                <MessageSquare className="w-5 h-5 text-cyan-400" />
               </div>
-              <div className="text-3xl font-light">${stats.totalRevenue}</div>
-              <div className="text-xs text-green-400 mt-2">+12% from last month</div>
+              <div className="text-3xl font-light">{stats.totalMessages.toLocaleString()}</div>
+              <div className="text-xs text-white/60 mt-2">Message balance</div>
             </div>
           </div>
 
@@ -339,10 +355,15 @@ export default function DashboardPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex gap-2">
-                          <Button variant="ghost" size="sm" className="text-white/60 hover:text-white">
+                          <Link href={`/chats/${bot.businessId}`}>
+                            <Button variant="ghost" size="sm" className="text-white/60 hover:text-white" title="View Chats">
+                              <MessageCircle className="w-4 h-4" />
+                            </Button>
+                          </Link>
+                          <Button variant="ghost" size="sm" className="text-white/60 hover:text-white" title="Settings">
                             <Settings className="w-4 h-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-white/60 hover:text-white">
+                          <Button variant="ghost" size="sm" className="text-white/60 hover:text-white" title="Analytics">
                             <BarChart3 className="w-4 h-4" />
                           </Button>
                         </div>

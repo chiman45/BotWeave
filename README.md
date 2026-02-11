@@ -114,6 +114,9 @@ BotSetu/
 │   │   │       └── route.ts         # Bot API endpoints
 │   │   │   └── conversations/
 │   │   │       └── route.ts         # Conversation API endpoints
+│   │   ├── chats/
+│   │   │   └── [businessId]/
+│   │   │       └── page.tsx         # Chat logs viewer
 │   │   ├── create/
 │   │   │   └── page.tsx             # Multi-step bot creation form
 │   │   ├── dashboard/
@@ -167,10 +170,34 @@ BotSetu/
 
 All bot configurations are stored in MongoDB:
 - **Database:** `BotSetu`
-- **Collection:** `User-data`
+- **Collections:** 
+  - `User-data` - Bot configurations and user data
+  - `conversations` - All chat messages and conversation history
+  - `twilio-credentials` - Twilio subaccount credentials
 - **Fields:** Business info, bot config, WhatsApp setup, templates, conversations, billing, and ownership
 
+### Viewing Chat Logs
+
+1. **Access Dashboard** - Navigate to your dashboard
+2. **View Chats** - Click the chat icon (💬) in the Actions column for any bot
+3. **Select Conversation** - Click on a phone number to view the full chat history
+4. **Features Available:**
+   - 📜 View full conversation history
+   - 🔍 Search conversations by phone number
+   - ✓ Mark conversations as read
+   - 🗑️ Delete conversations
+   - 📊 See message counts and timestamps
+   - 👤 Distinguish between user and bot messages
+
 ## 🔑 Key Features Explained
+
+### Chat Logs Interface
+- **Conversations List** - All customer conversations in one place
+- **Real-time Updates** - Refresh to see new messages
+- **Search & Filter** - Quickly find specific conversations
+- **Message Types** - Support for text, images, videos, audio, documents
+- **Read Receipts** - Track which messages have been viewed
+- **Statistics** - Total conversations count on dashboard
 
 ### Multi-step Form with Progress Tracking
 - Visual timeline showing current step
