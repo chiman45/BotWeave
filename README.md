@@ -11,7 +11,8 @@ Create intelligent WhatsApp bots without coding. Automate customer support, sale
 - **📞 WhatsApp Integration** - Connect with Twilio, Infobip, or other BSP providers
 - **📝 Template Management** - Create and manage message templates
 - **💬 Conversation Flows** - Design custom conversation flows for different use cases
-- **💰 Flexible Billing** - Choose from Free, Starter, Pro, or Enterprise plans
+- **� Conversation Logging** - Complete message logging system with history, search, and analytics
+- **�💰 Flexible Billing** - Choose from Free, Starter, Pro, or Enterprise plans
 - **🔐 Secure Authentication** - Powered by Clerk for user management
 - **📊 Multi-step Form** - Intuitive step-by-step bot creation process with progress tracking
 
@@ -26,8 +27,10 @@ Create intelligent WhatsApp bots without coding. Automate customer support, sale
 - **Lucide Icons** - Beautiful icon library
 
 ### Backend
-- **MongoDB** - NoSQL database for bot data storage
+- **Python** - Twilio subaccount management and WhatsApp integration
+- **MongoDB** - NoSQL database for bot data and conversation storage
 - **Next.js API Routes** - Serverless API endpoints
+- **Twilio API** - WhatsApp Business Platform integration
 
 ## 📋 Prerequisites
 
@@ -96,7 +99,9 @@ BotSetu/
 ├── Backend/
 │   ├── attach.py                    # WhatsApp number attachment service
 │   ├── creation.py                  # Twilio subaccount management
+│   ├── conversation_logger.py       # Conversation logging system
 │   ├── requirements.txt             # Python dependencies
+│   ├── CONVERSATION_LOGGING.md      # Conversation logging documentation
 │   ├── INTEGRATION_GUIDE.md         # Backend integration guide
 │   ├── README.md                    # Backend documentation
 │   └── .env                         # Backend environment variables
@@ -107,6 +112,8 @@ BotSetu/
 │   │   ├── api/
 │   │   │   └── bot/
 │   │   │       └── route.ts         # Bot API endpoints
+│   │   │   └── conversations/
+│   │   │       └── route.ts         # Conversation API endpoints
 │   │   ├── create/
 │   │   │   └── page.tsx             # Multi-step bot creation form
 │   │   ├── dashboard/

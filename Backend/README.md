@@ -153,8 +153,88 @@ attach_whatsapp_to_user_account(
 )
 ```
 
-### 3. `server.js` 🚀
-**Purpose:** Node.js server (if needed for API endpoints)
+### 3. `conversation_logger.py` 💬
+**Purpose:** Log and manage all user-bot conversations
+
+**Features:**
+- Log all incoming and outgoing messages
+- Retrieve conversation history
+- Search conversations by content
+- Track read/unread messages
+- Get conversation statistics
+- Support for text, images, videos, audio, documents
+
+**Interactive Usage:**
+```bash
+python conversation_logger.py
+# Interactive menu with options:
+# 1. Log New Message
+# 2. View Conversation History
+# 3. View All Conversations
+# 4. Search Conversations
+# 5. Mark Conversation as Read
+# 6. Get Conversation Statistics
+# 7. Delete Conversation
+# 8. Exit
+```
+
+**Programmatic Usage:**
+```python
+from conversation_logger import ConversationLogger
+
+# Initialize logger
+logger = ConversationLogger(
+    user_id="user_2abc123xyz",
+    business_id="BIZ001"
+)
+
+# Log incoming user message
+logger.log_message(
+    phone_number="+1234567890",
+    message_type="text",
+    message_content="Hello bot!",
+    sender="user"
+)
+
+# Log outgoing bot response
+logger.log_message(
+    phone_number="+1234567890",
+    message_type="text",
+    message_content="Hi! How can I help?",
+    sender="bot"
+)
+
+# Get conversation history
+messages = logger.get_conversation_history(
+    phone_number="+1234567890",
+    limit=50
+)
+
+# Get all conversations
+conversations = logger.get_all_conversations(limit=20)
+
+# Search messages
+results = logger.search_conversations("order status")
+
+# Get statistics
+stats = logger.get_conversation_stats()
+print(f"Total Messages: {stats['totalMessages']}")
+print(f"Unread: {stats['unreadMessages']}")
+```
+
+**Webhook Integration:**
+```python
+from conversation_logger import log_webhook_conversation
+
+# Log from WhatsApp webhook
+result = log_webhook_conversation(
+    user_id="user_2abc123xyz",
+    business_id="BIZ001",
+    webhook_data=request.form.to_dict()  # Twilio webhook data
+)
+```
+
+**📖 See CONVERSATION_LOGGING.md for complete documentation**
 
 ### 4. `requirements.txt` 📦
 **Dependencies:**
@@ -203,7 +283,29 @@ python attach.py
 - WhatsApp enabled on the number
 - Phone number details added to both MongoDB collections
 
-### Step 4: User Views Dashboard (Frontend)
+### Step 4: Conversations Start Logging Automatically
+```python
+# In your webhook handler or bot logic
+from conversation_logger import ConversationLogger
+
+logger = ConversationLogger(user_id, business_id)
+
+# Every message is logged automatically
+logger.log_message(
+    phone_number=customer_number,
+    message_type="text",
+    message_content=message,
+    sender="user"  # or "bot"
+)
+```
+
+**What happens:**
+- All messages stored in `conversations` collection
+- Last conversation time tracked in `User-data`
+- Total message count incremented
+- Can retrieve full history anytime
+
+### Step 5: User Views Dashboard (Frontend)
 Dashboard automatically shows:
 - WhatsApp number
 - Connection status
@@ -211,6 +313,26 @@ Dashboard automatically shows:
 - Bot configuration
 
 ## MongoDB Collections
+
+### `conversations` Collection
+Stores all user-bot conversation messages:
+```javascript
+{
+  userId: "user_2abc123xyz",
+  businessId: "BIZ001",
+  phoneNumber: "+1234567890",
+  messageType: "text",              // text, image, video, audio, document
+  messageContent: "Hello bot!",
+  sender: "user",                   // user or bot
+  metadata: {
+    messageId: "SM...",
+    accountSid: "AC...",
+    mediaContentType: "image/jpeg"
+  },
+  timestamp: ISODate("2026-02-11T..."),
+  read: false
+}
+```
 
 ### `twilio-credentials` Collection
 Dedicated collection for Twilio data:
@@ -253,6 +375,11 @@ Bot data with integrated Twilio fields:
   messagingServiceSid: "MG...",
   whatsappStatus: "active",
   whatsappEnabled: true,
+  
+  // Conversation tracking (added automatically)
+  lastConversationAt: ISODate("2026-02-11T..."),
+  totalMessages: 150,
+  
   updatedAt: ISODate("2026-02-04T...")
 }
 ```
