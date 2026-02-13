@@ -35,7 +35,9 @@ export default function DashboardPage() {
     activeBots: 0,
     totalMessages: 0,
     totalRevenue: 0,
-    totalConversations: 0
+    totalConversations: 0,
+    paymentDue: 0,
+    paymentCompleted: 0
   })
 
   useEffect(() => {
@@ -75,12 +77,28 @@ export default function DashboardPage() {
           }
         }
         
+        // Fetch payment stats
+        let paymentDue = 0
+        let paymentCompleted = 0
+        try {
+          const paymentResponse = await fetch('/api/payments')
+          if (paymentResponse.ok) {
+            const paymentData = await paymentResponse.json()
+            paymentDue = paymentData.totalDue || 0
+            paymentCompleted = paymentData.totalCompleted || 0
+          }
+        } catch (err) {
+          // Use default values if payment API not available
+        }
+        
         setStats({
           totalBots,
           activeBots,
           totalMessages,
           totalRevenue: totalBots * 99, // Mock calculation
-          totalConversations
+          totalConversations,
+          paymentDue,
+          paymentCompleted
         })
       }
     } catch (error) {
@@ -235,7 +253,7 @@ export default function DashboardPage() {
 
         <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-white/60 text-sm">Total Bots</div>
@@ -270,6 +288,27 @@ export default function DashboardPage() {
               </div>
               <div className="text-3xl font-light">{stats.totalMessages.toLocaleString()}</div>
               <div className="text-xs text-white/60 mt-2">Message balance</div>
+            </div>
+          </div>
+
+          {/* Payment Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-white/60 text-sm">Payment Due</div>
+                <DollarSign className="w-5 h-5 text-red-400" />
+              </div>
+              <div className="text-3xl font-light">₹{stats.paymentDue.toLocaleString()}</div>
+              <div className="text-xs text-red-400 mt-2">Pending payments</div>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-white/60 text-sm">Payment Completed</div>
+                <DollarSign className="w-5 h-5 text-green-400" />
+              </div>
+              <div className="text-3xl font-light">₹{stats.paymentCompleted.toLocaleString()}</div>
+              <div className="text-xs text-green-400 mt-2">Total received</div>
             </div>
           </div>
 
