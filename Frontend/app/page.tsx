@@ -77,6 +77,11 @@ export default function LandingPage() {
               }`}>
                 Pricing
               </Link>
+              <Link href="/blog" className={`transition-colors ${
+                isDarkMode ? 'text-white/60 hover:text-white' : 'text-black/60 hover:text-black'
+              }`}>
+                How to Use
+              </Link>
               <Link href="#faq" className={`transition-colors ${
                 isDarkMode ? 'text-white/60 hover:text-white' : 'text-black/60 hover:text-black'
               }`}>

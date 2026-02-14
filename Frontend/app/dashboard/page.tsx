@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useUser, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X, MessageCircle } from 'lucide-react'
+import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X, MessageCircle, BookOpen } from 'lucide-react'
 
 interface BotData {
   _id: string
@@ -176,6 +176,13 @@ export default function DashboardPage() {
             >
               <Bot className="w-5 h-5" />
               <span>Dashboard</span>
+            </Link>
+            <Link
+              href="/blog"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/60 hover:bg-white/5 hover:text-white transition-colors"
+            >
+              <BookOpen className="w-5 h-5" />
+              <span>How to Use</span>
             </Link>
             <Link
               href="/pricing"
