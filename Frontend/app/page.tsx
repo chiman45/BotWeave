@@ -170,17 +170,31 @@ export default function LandingPage() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/create">
-              <Button 
-                size="lg"
-                className={`font-medium text-base px-8 h-12 ${
-                  isDarkMode ? 'bg-white text-black hover:bg-white/90' : 'bg-black text-white hover:bg-black/90'
-                }`}
-              >
-                Create Your Bot Now
-              </Button>
-            </Link>
-            <Link href="/demo">
+            <SignedIn>
+              <Link href="/dashboard">
+                <Button 
+                  size="lg"
+                  className={`font-medium text-base px-8 h-12 ${
+                    isDarkMode ? 'bg-white text-black hover:bg-white/90' : 'bg-black text-white hover:bg-black/90'
+                  }`}
+                >
+                  Go to Dashboard
+                </Button>
+              </Link>
+            </SignedIn>
+            <SignedOut>
+              <SignUpButton mode="modal">
+                <Button 
+                  size="lg"
+                  className={`font-medium text-base px-8 h-12 ${
+                    isDarkMode ? 'bg-white text-black hover:bg-white/90' : 'bg-black text-white hover:bg-black/90'
+                  }`}
+                >
+                  Get Started Free
+                </Button>
+              </SignUpButton>
+            </SignedOut>
+            <Link href="/blog">
               <Button 
                 variant="ghost"
                 size="lg"
@@ -190,7 +204,7 @@ export default function LandingPage() {
                     : 'text-black border-black/20 hover:border-black/40 hover:bg-black/5'
                 }`}
               >
-                Watch Demo <ArrowRight className="w-4 h-4 ml-2" />
+                Learn More <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
           </div>
@@ -337,11 +351,24 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <Button className={`w-full border ${
-                isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/20' : 'bg-black/10 hover:bg-black/20 text-black border-black/20'
-              }`}>
-                Get Started
-              </Button>
+              <SignedIn>
+                <Link href="/dashboard" className="block">
+                  <Button className={`w-full border ${
+                    isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/20' : 'bg-black/10 hover:bg-black/20 text-black border-black/20'
+                  }`}>
+                    Go to Dashboard
+                  </Button>
+                </Link>
+              </SignedIn>
+              <SignedOut>
+                <SignUpButton mode="modal">
+                  <Button className={`w-full border ${
+                    isDarkMode ? 'bg-white/10 hover:bg-white/20 text-white border-white/20' : 'bg-black/10 hover:bg-black/20 text-black border-black/20'
+                  }`}>
+                    Get Started
+                  </Button>
+                </SignUpButton>
+              </SignedOut>
             </div>
 
             {/* Professional Plan */}
@@ -369,11 +396,24 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <Button className={`w-full ${
-                isDarkMode ? 'bg-white text-black hover:bg-white/90' : 'bg-black text-white hover:bg-black/90'
-              }`}>
-                Get Started
-              </Button>
+              <SignedIn>
+                <Link href="/dashboard" className="block">
+                  <Button className={`w-full ${
+                    isDarkMode ? 'bg-white text-black hover:bg-white/90' : 'bg-black text-white hover:bg-black/90'
+                  }`}>
+                    Go to Dashboard
+                  </Button>
+                </Link>
+              </SignedIn>
+              <SignedOut>
+                <SignUpButton mode="modal">
+                  <Button className={`w-full ${
+                    isDarkMode ? 'bg-white text-black hover:bg-white/90' : 'bg-black text-white hover:bg-black/90'
+                  }`}>
+                    Get Started
+                  </Button>
+                </SignUpButton>
+              </SignedOut>
             </div>
 
             {/* Enterprise Plan */}
@@ -469,16 +509,30 @@ export default function LandingPage() {
           <p className={`text-lg font-light ${textMutedClass}`}>
             Join hundreds of small businesses that are already saving time and increasing revenue with BotFlow.
           </p>
-          <Link href="/signup">
-            <Button 
-              size="lg"
-              className={`font-medium text-base px-8 h-12 ${
-                isDarkMode ? 'bg-white text-black hover:bg-white/90' : 'bg-black text-white hover:bg-black/90'
-              }`}
-            >
-              Get Started Free
-            </Button>
-          </Link>
+          <SignedIn>
+            <Link href="/dashboard">
+              <Button 
+                size="lg"
+                className={`font-medium text-base px-8 h-12 ${
+                  isDarkMode ? 'bg-white text-black hover:bg-white/90' : 'bg-black text-white hover:bg-black/90'
+                }`}
+              >
+                Go to Dashboard
+              </Button>
+            </Link>
+          </SignedIn>
+          <SignedOut>
+            <SignUpButton mode="modal">
+              <Button 
+                size="lg"
+                className={`font-medium text-base px-8 h-12 ${
+                  isDarkMode ? 'bg-white text-black hover:bg-white/90' : 'bg-black text-white hover:bg-black/90'
+                }`}
+              >
+                Get Started Free
+              </Button>
+            </SignUpButton>
+          </SignedOut>
         </div>
       </section>
 
