@@ -21,7 +21,7 @@ export default function PricingPage() {
         'Basic analytics',
         '7-day message history'
       ],
-      cta: 'Start Free Trial',
+      cta: 'Pay Now',
       popular: false
     },
     {
@@ -41,7 +41,7 @@ export default function PricingPage() {
         'Custom integrations',
         'Team collaboration'
       ],
-      cta: 'Start Free Trial',
+      cta: 'Pay Now',
       popular: true
     },
     {
@@ -97,10 +97,10 @@ export default function PricingPage() {
             Simple, <span className="font-normal">transparent pricing</span>
           </h1>
           <p className="text-xl text-white/60 max-w-3xl mx-auto mb-4">
-            Choose the plan that's right for your business. All plans include a 14-day free trial.
+            Choose the plan that's right for your business. Secure payment powered by Razorpay.
           </p>
           <p className="text-sm text-white/40">
-            No credit card required • Cancel anytime
+            Instant activation • Cancel anytime
           </p>
         </div>
       </section>
@@ -145,7 +145,7 @@ export default function PricingPage() {
                     <p className="text-xs text-white/40">Billed monthly</p>
                   </div>
 
-                  <Link href="/create" className="block mb-6">
+                  <Link href="/payment" className="block mb-6">
                     <Button 
                       className={`w-full ${
                         plan.popular 
@@ -288,9 +288,9 @@ export default function PricingPage() {
             Our team is here to help you find the perfect plan for your business.
           </p>
           <div className="flex gap-4 justify-center">
-            <Link href="/create">
+            <Link href="/payment">
               <Button className="bg-white text-black hover:bg-white/90">
-                Start Free Trial
+                View Plans
               </Button>
             </Link>
             <Button variant="outline" className="border-white/20 text-white hover:bg-white/5">

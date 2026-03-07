@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useUser, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X, MessageCircle, BookOpen } from 'lucide-react'
+import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X, MessageCircle, BookOpen, Zap } from 'lucide-react'
 
 interface BotData {
   _id: string
@@ -22,6 +22,7 @@ interface BotData {
   messageLimit: number
   messageBalance: number
   createdAt: string
+  allocatedNumber?: string
 }
 
 export default function DashboardPage() {
@@ -30,6 +31,7 @@ export default function DashboardPage() {
   const [bots, setBots] = useState<BotData[]>([])
   const [loading, setLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [activatingBotId, setActivatingBotId] = useState<string | null>(null)
   const [stats, setStats] = useState({
     totalBots: 0,
     activeBots: 0,
@@ -105,6 +107,33 @@ export default function DashboardPage() {
       console.error('Error fetching bots:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const activateBot = async (bot: BotData) => {
+    setActivatingBotId(bot.businessId)
+    try {
+      const res = await fetch('/api/bot', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ businessId: bot.businessId })
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setBots(prev => prev.map(b =>
+          b.businessId === bot.businessId
+            ? { ...b, verificationStatus: 'verified', allocatedNumber: data.allocatedNumber }
+            : b
+        ))
+        setStats(prev => ({ ...prev, activeBots: prev.activeBots + 1 }))
+        alert(`Bot activated! Allocated number: ${data.allocatedNumber}`)
+      } else {
+        alert(data.message || 'Failed to activate bot')
+      }
+    } catch {
+      alert('Failed to activate bot. Please try again.')
+    } finally {
+      setActivatingBotId(null)
     }
   }
 
@@ -401,6 +430,15 @@ export default function DashboardPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => activateBot(bot)}
+                            disabled={activatingBotId === bot.businessId}
+                            className="bg-green-600 hover:bg-green-500 text-white text-xs px-3 h-7"
+                          >
+                            <Zap className="w-3 h-3 mr-1" />
+                            {activatingBotId === bot.businessId ? 'Activating…' : 'Activate'}
+                          </Button>
                           <Link href={`/chats/${bot.businessId}`}>
                             <Button variant="ghost" size="sm" className="text-white/60 hover:text-white" title="View Chats">
                               <MessageCircle className="w-4 h-4" />
