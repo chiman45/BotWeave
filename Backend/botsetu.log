@@ -1,0 +1,29 @@
+2026-03-08 22:50:13,423 [INFO] 🚀  BotSetu backend starting on port 5000
+2026-03-08 22:50:13,423 [INFO] 📱  Twilio WhatsApp number : whatsapp:+14155238886
+2026-03-08 22:50:13,423 [INFO] 🗄️   MongoDB               : mongodb://localhost:27017/
+2026-03-08 22:50:13,438 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.26:5000
+2026-03-08 22:50:13,439 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-08 22:50:33,843 [INFO] 127.0.0.1 - - [08/Mar/2026 22:50:33] "GET / HTTP/1.1" 200 -
+2026-03-08 22:50:34,146 [INFO] 127.0.0.1 - - [08/Mar/2026 22:50:34] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-03-08 23:24:44,445 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.26:5000
+2026-03-08 23:24:44,445 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-08 23:25:22,271 [INFO] 🚀  BotSetu backend starting on port 5000
+2026-03-08 23:25:22,271 [INFO] 📱  Twilio WhatsApp number : whatsapp:+14155238886
+2026-03-08 23:25:22,271 [INFO] 🗄️   MongoDB               : mongodb://localhost:27017/
+2026-03-08 23:25:22,283 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.26:5000
+2026-03-08 23:25:22,283 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-08 23:31:52,609 [INFO] t=2026-03-08T23:31:52+0530 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
+2026-03-08 23:31:52,609 [INFO] t=2026-03-08T23:31:52+0530 lvl=info msg="session closing" obj=tunnels.session err=nil
+2026-03-08 23:31:52,609 [INFO] t=2026-03-08T23:31:52+0530 lvl=info msg="accept failed" obj=tunnels.session obj=csess id=787db7ac5ae5 err="reconnecting session closed"
+2026-03-08 23:31:52,610 [INFO] t=2026-03-08T23:31:52+0530 lvl=info msg="no more state changes" obj=tunnels.session
+2026-03-08 23:31:52,610 [INFO] t=2026-03-08T23:31:52+0530 lvl=info msg="failed to accept connection: Listener closed" obj=tunnels.session clientid=181c0bc576be75c397ef9d87e806f6f2
+2026-03-08 23:31:52,610 [WARNING] t=2026-03-08T23:31:52+0530 lvl=warn msg="Stopping forwarder" name=http-5000-80451532-7bcd-44b3-ab20-beae2e27f94f acceptErr="failed to accept connection: Listener closed"
