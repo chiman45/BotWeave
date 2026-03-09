@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Bot exports (from create_bot.py wizard)
+bot_*.json
+
+# ngrok
+.ngrok/
+
+# OS
+.DS_Store
+Thumbs.db

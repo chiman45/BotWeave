@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUser, UserButton } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 
 const steps = [
@@ -21,6 +21,7 @@ export default function CreateBotPage() {
   const { user } = useUser()
   const [loading, setLoading] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const [formData, setFormData] = useState({
     // Business Info
@@ -59,6 +60,10 @@ export default function CreateBotPage() {
     planType: '',
     messageBalance: 0,
     messageLimit: 0,
+    // Auto-reply
+    welcomeMessage: '',
+    fallbackMessage: '',
+    humanHandoffMessage: '',
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -69,6 +74,15 @@ export default function CreateBotPage() {
     }))
   }
 
+  const [keywordPairs, setKeywordPairs] = useState<{ keyword: string; response: string }[]>([
+    { keyword: '', response: '' }
+  ])
+  const addKeywordPair = () => setKeywordPairs(prev => [...prev, { keyword: '', response: '' }])
+  const removeKeywordPair = (index: number) => setKeywordPairs(prev => prev.filter((_, i) => i !== index))
+  const updateKeywordPair = (index: number, field: 'keyword' | 'response', value: string) => {
+    setKeywordPairs(prev => prev.map((pair, i) => i === index ? { ...pair, [field]: value } : pair))
+  }
+
   const validateStep = (step: number): boolean => {
     switch (step) {
       case 1:
@@ -77,7 +91,7 @@ export default function CreateBotPage() {
       case 2:
         return !!(formData.botName && formData.useCaseType)
       case 3:
-        return !!(formData.phoneNumber && formData.bspName && formData.wabaId && formData.phoneNumberId)
+        return true // WhatsApp number is assigned automatically on activation
       case 4:
         return true // Optional step
       case 5:
@@ -119,6 +133,10 @@ export default function CreateBotPage() {
         },
         body: JSON.stringify({
           ...formData,
+          keywordResponses: keywordPairs.reduce((acc: Record<string, string>, { keyword, response }) => {
+            if (keyword.trim()) acc[keyword.trim().toLowerCase()] = response.trim()
+            return acc
+          }, {}),
           ownerUserId: user?.id,
           createdAt: new Date().toISOString(),
         }),
@@ -126,8 +144,7 @@ export default function CreateBotPage() {
 
       if (response.ok) {
         const data = await response.json()
-        alert('Bot created successfully!')
-        router.push('/dashboard')
+        setShowSuccess(true)
       } else {
         const error = await response.json()
         alert(`Error: ${error.message}`)
@@ -141,6 +158,7 @@ export default function CreateBotPage() {
   }
 
   return (
+    <>
     <div className="min-h-screen bg-black text-white py-12 px-4 sm:px-6 lg:px-8" style={{ fontFamily: 'var(--font-bitcount)' }}>
       <div className="max-w-4xl mx-auto border border-white/20 rounded-2xl p-8 shadow-[0_0_50px_rgba(255,255,255,0.15)] bg-black/50 backdrop-blur-sm">
         {/* Header */}
@@ -343,6 +361,92 @@ export default function CreateBotPage() {
                   <label className="text-sm text-white/80">Enable Human Handoff</label>
                 </div>
               </div>
+
+              {formData.autoReply && (
+                <div className="space-y-4 p-4 bg-green-500/5 border border-green-500/20 rounded-lg">
+                  <h3 className="text-sm font-medium text-green-400">🤖 Auto-Reply Messages</h3>
+                  <div>
+                    <label className="block text-sm text-white/60 mb-2">Welcome Message</label>
+                    <textarea
+                      name="welcomeMessage"
+                      value={formData.welcomeMessage}
+                      onChange={handleChange}
+                      rows={3}
+                      placeholder="Hi! 👋 Welcome to [Your Business]. How can I help you today?"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors resize-none"
+                    />
+                    <p className="text-xs text-white/40 mt-1">Sent when user says "hi", "hello", "hey"</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm text-white/60 mb-2">Fallback Message</label>
+                    <textarea
+                      name="fallbackMessage"
+                      value={formData.fallbackMessage}
+                      onChange={handleChange}
+                      rows={3}
+                      placeholder="Sorry, I didn't understand that. Type 'help' for assistance."
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors resize-none"
+                    />
+                    <p className="text-xs text-white/40 mt-1">Sent when no keyword matches</p>
+                  </div>
+                </div>
+              )}
+
+              {formData.humanHandoff && (
+                <div className="p-4 bg-blue-500/5 border border-blue-500/20 rounded-lg">
+                  <h3 className="text-sm font-medium text-blue-400 mb-3">👤 Human Handoff Message</h3>
+                  <textarea
+                    name="humanHandoffMessage"
+                    value={formData.humanHandoffMessage}
+                    onChange={handleChange}
+                    rows={2}
+                    placeholder="Connecting you to a human agent. Please hold on..."
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors resize-none"
+                  />
+                  <p className="text-xs text-white/40 mt-1">Sent when user says "human", "agent", "help me"</p>
+                </div>
+              )}
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-medium text-white/80">🔑 Keyword Responses</h3>
+                  <button
+                    type="button"
+                    onClick={addKeywordPair}
+                    className="text-xs text-white/60 hover:text-white border border-white/20 hover:border-white/40 px-3 py-1 rounded-md transition-colors"
+                  >
+                    + Add Keyword
+                  </button>
+                </div>
+                <p className="text-xs text-white/40">Define automatic replies for specific keywords (optional)</p>
+                {keywordPairs.map((pair, index) => (
+                  <div key={index} className="flex gap-2 items-center">
+                    <input
+                      type="text"
+                      value={pair.keyword}
+                      onChange={e => updateKeywordPair(index, 'keyword', e.target.value)}
+                      placeholder="Keyword (e.g. price)"
+                      className="w-1/3 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30"
+                    />
+                    <input
+                      type="text"
+                      value={pair.response}
+                      onChange={e => updateKeywordPair(index, 'response', e.target.value)}
+                      placeholder="Reply for this keyword"
+                      className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30"
+                    />
+                    {keywordPairs.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeKeywordPair(index)}
+                        className="text-red-400/60 hover:text-red-400 px-2 transition-colors text-lg leading-none"
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
@@ -350,67 +454,37 @@ export default function CreateBotPage() {
           {currentStep === 3 && (
             <div className="space-y-6 animate-fadeIn">
               <h2 className="text-2xl font-light border-b border-white/10 pb-2">📞 WhatsApp Setup</h2>
+              <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                <p className="text-sm text-blue-300">
+                  <strong>💡 How it works:</strong> BotSetu uses a shared Twilio WhatsApp number.
+                  You don&apos;t need a WABA ID or Phone Number ID. Simply complete the wizard,
+                  then click <strong>Activate</strong> in the Dashboard — your WhatsApp bot number is assigned instantly.
+                </p>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-white/60 mb-2">Phone Number *</label>
+                  <label className="block text-sm text-white/60 mb-2">Business Contact Number</label>
                   <input
                     type="tel"
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleChange}
-                    required
-                    placeholder="+1234567890"
+                    placeholder="+1234567890 (optional)"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
                   />
+                  <p className="text-xs text-white/40 mt-1">Your business contact number for reference only</p>
                 </div>
                 <div>
-                  <label className="block text-sm text-white/60 mb-2">BSP Name *</label>
+                  <label className="block text-sm text-white/60 mb-2">BSP Provider</label>
                   <select
                     name="bspName"
                     value={formData.bspName}
                     onChange={handleChange}
-                    required
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
                   >
-                    <option value="">Select BSP</option>
-                    <option value="twilio">Twilio</option>
+                    <option value="twilio">Twilio (Default)</option>
                     <option value="infobip">Infobip</option>
                     <option value="other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">WABA ID *</label>
-                  <input
-                    type="text"
-                    name="wabaId"
-                    value={formData.wabaId}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Phone Number ID *</label>
-                  <input
-                    type="text"
-                    name="phoneNumberId"
-                    value={formData.phoneNumberId}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Verification Status</label>
-                  <select
-                    name="verificationStatus"
-                    value={formData.verificationStatus}
-                    onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="verified">Verified</option>
-                    <option value="failed">Failed</option>
                   </select>
                 </div>
               </div>
@@ -569,5 +643,43 @@ export default function CreateBotPage() {
         </form>
       </div>
     </div>
+
+    {/* ── Success Modal ── */}
+    {showSuccess && (
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-100 flex items-center justify-center p-4">
+        <div className="bg-zinc-900 border border-white/20 rounded-2xl p-8 max-w-md w-full shadow-[0_0_60px_rgba(34,197,94,0.15)] text-center">
+          <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <CheckCircle className="w-8 h-8 text-green-400" />
+          </div>
+          <h2 className="text-2xl font-light text-white mb-2">Bot Created!</h2>
+          <p className="text-white/50 text-sm mb-6">Your bot is saved. Follow the steps below to go live.</p>
+
+          <div className="text-left space-y-3 mb-7">
+            {[
+              { step: '1', label: 'Go to Dashboard', desc: 'Your new bot will appear in the list' },
+              { step: '2', label: 'Click Activate', desc: 'Get your shared WhatsApp number instantly' },
+              { step: '3', label: 'Set Webhook in Twilio', desc: 'Paste the webhook URL shown in the activation popup' },
+              { step: '4', label: 'Test Your Bot', desc: 'Send a WhatsApp message and watch it auto-reply!' },
+            ].map(({ step, label, desc }) => (
+              <div key={step} className="flex gap-3 items-start">
+                <div className="w-6 h-6 bg-green-500/20 border border-green-500/30 rounded-full flex items-center justify-center text-xs font-semibold text-green-400 shrink-0 mt-0.5">{step}</div>
+                <div>
+                  <p className="text-sm text-white font-medium">{label}</p>
+                  <p className="text-xs text-white/40">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={() => router.push('/dashboard')}
+            className="w-full bg-white text-black hover:bg-white/90 py-3 rounded-xl font-medium transition-colors"
+          >
+            Go to Dashboard →
+          </button>
+        </div>
+      </div>
+    )}
+    </>
   )
 }

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useUser, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X, MessageCircle, BookOpen, Zap } from 'lucide-react'
+import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X, MessageCircle, BookOpen, Zap, Copy, CheckCircle, ExternalLink } from 'lucide-react'
 
 interface BotData {
   _id: string
@@ -32,6 +32,12 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activatingBotId, setActivatingBotId] = useState<string | null>(null)
+  const [activationModal, setActivationModal] = useState<{
+    botName: string
+    allocatedNumber: string
+    webhookUrl: string
+  } | null>(null)
+  const [copiedField, setCopiedField] = useState<string | null>(null)
   const [stats, setStats] = useState({
     totalBots: 0,
     activeBots: 0,
@@ -52,6 +58,12 @@ export default function DashboardPage() {
       fetchBots()
     }
   }, [isLoaded, user, router])
+
+  const copyToClipboard = (text: string, field: string) => {
+    navigator.clipboard.writeText(text)
+    setCopiedField(field)
+    setTimeout(() => setCopiedField(null), 2000)
+  }
 
   const fetchBots = async () => {
     try {
@@ -113,10 +125,10 @@ export default function DashboardPage() {
   const activateBot = async (bot: BotData) => {
     setActivatingBotId(bot.businessId)
     try {
-      const res = await fetch('/api/bot', {
-        method: 'PATCH',
+      const res = await fetch('/api/bot/activate', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ businessId: bot.businessId })
+        body: JSON.stringify({ businessId: bot.businessId, userId: user?.id })
       })
       const data = await res.json()
       if (res.ok) {
@@ -126,12 +138,16 @@ export default function DashboardPage() {
             : b
         ))
         setStats(prev => ({ ...prev, activeBots: prev.activeBots + 1 }))
-        alert(`Bot activated! Allocated number: ${data.allocatedNumber}`)
+        setActivationModal({
+          botName: bot.botName,
+          allocatedNumber: data.allocatedNumber,
+          webhookUrl: data.webhookUrl || ''
+        })
       } else {
-        alert(data.message || 'Failed to activate bot')
+        alert(data.error || 'Failed to activate bot')
       }
     } catch {
-      alert('Failed to activate bot. Please try again.')
+      alert('Failed to connect to backend. Is the Python server running?')
     } finally {
       setActivatingBotId(null)
     }
@@ -172,6 +188,7 @@ export default function DashboardPage() {
   }
 
   return (
+    <>
     <div className="min-h-screen bg-black text-white flex">
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-black border-r border-white/10 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
@@ -403,10 +420,22 @@ export default function DashboardPage() {
                           {bot.planType}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4">
                         <span className={`px-2 py-1 text-xs rounded-md border capitalize ${getStatusColor(bot.verificationStatus)}`}>
                           {bot.verificationStatus}
                         </span>
+                        {bot.allocatedNumber && (
+                          <div className="flex items-center gap-1.5 mt-1.5">
+                            <span className="text-xs font-mono text-green-400">{bot.allocatedNumber}</span>
+                            <button
+                              onClick={() => copyToClipboard(bot.allocatedNumber!, `num-${bot._id}`)}
+                              className="text-white/30 hover:text-white/70 transition-colors"
+                              title="Copy number"
+                            >
+                              {copiedField === `num-${bot._id}` ? <CheckCircle className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3" />}
+                            </button>
+                          </div>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm">{bot.messageBalance || 0} / {bot.messageLimit || 0}</div>
@@ -462,5 +491,96 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
+
+    {/* ── Activation Success Modal ── */}
+    {activationModal && (
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-100 flex items-center justify-center p-4">
+        <div className="bg-zinc-900 border border-white/20 rounded-2xl p-8 max-w-lg w-full shadow-[0_0_60px_rgba(34,197,94,0.15)]">
+          {/* Header */}
+          <div className="text-center mb-6">
+            <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-green-400" />
+            </div>
+            <h2 className="text-2xl font-light text-white mb-1">Bot Activated!</h2>
+            <p className="text-white/50 text-sm">{activationModal.botName} is now live on WhatsApp</p>
+          </div>
+
+          {/* WhatsApp Number */}
+          <div className="mb-4 p-4 bg-green-500/5 border border-green-500/20 rounded-xl">
+            <p className="text-xs text-white/40 mb-2 uppercase tracking-wider">Your WhatsApp Bot Number</p>
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-xl font-mono text-green-400 font-semibold">{activationModal.allocatedNumber}</p>
+              <button
+                onClick={() => copyToClipboard(activationModal.allocatedNumber, 'modal-number')}
+                className="flex items-center gap-1.5 text-xs text-white/60 hover:text-white border border-white/10 hover:border-white/30 px-3 py-1.5 rounded-lg transition-colors"
+              >
+                {copiedField === 'modal-number'
+                  ? <><CheckCircle className="w-3.5 h-3.5 text-green-400" /> Copied!</>
+                  : <><Copy className="w-3.5 h-3.5" /> Copy</>}
+              </button>
+            </div>
+            <p className="text-xs text-white/40 mt-2">Users send a WhatsApp message to this number to talk to your bot</p>
+          </div>
+
+          {/* Webhook URL */}
+          {activationModal.webhookUrl ? (
+            <div className="mb-4 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-xl">
+              <p className="text-xs text-yellow-400/80 mb-2 uppercase tracking-wider">⚡ Twilio Webhook URL</p>
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <p className="text-xs font-mono text-white/80 break-all leading-relaxed">{activationModal.webhookUrl}</p>
+                <button
+                  onClick={() => copyToClipboard(activationModal.webhookUrl, 'modal-webhook')}
+                  className="shrink-0 flex items-center gap-1.5 text-xs text-white/60 hover:text-white border border-white/10 hover:border-white/30 px-3 py-1.5 rounded-lg transition-colors"
+                >
+                  {copiedField === 'modal-webhook'
+                    ? <><CheckCircle className="w-3.5 h-3.5 text-green-400" /> Copied!</>
+                    : <><Copy className="w-3.5 h-3.5" /> Copy</>}
+                </button>
+              </div>
+              <p className="text-xs text-white/40 mb-2">Paste this in Twilio Console → Messaging → Sandbox Settings → &quot;When a message comes in&quot;</p>
+              <a
+                href="https://console.twilio.com/us1/develop/sms/try-it-out/whatsapp-learn"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                Open Twilio Console <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          ) : (
+            <div className="mb-4 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-xl">
+              <p className="text-xs text-yellow-400/80 mb-1 uppercase tracking-wider">⚡ Set Twilio Webhook</p>
+              <p className="text-xs text-white/50 mb-2">Run <code className="bg-white/10 px-1 rounded">python setup_webhook.py</code> in your Backend folder to auto-set the webhook, or manually set your ngrok URL in Twilio Console.</p>
+              <a
+                href="https://console.twilio.com/us1/develop/sms/try-it-out/whatsapp-learn"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                Open Twilio Console <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          )}
+
+          {/* Test steps */}
+          <div className="mb-6 p-4 bg-white/5 border border-white/10 rounded-xl">
+            <p className="text-xs text-white/60 font-medium mb-2">📱 How to test:</p>
+            <ol className="text-xs text-white/40 space-y-1 list-decimal list-inside">
+              <li>Save the bot number in your phone contacts</li>
+              <li>Open WhatsApp and send <span className="text-white/60 font-mono">join &lt;sandbox-code&gt;</span> (first time only)</li>
+              <li>Send any message and your bot auto-replies instantly!</li>
+            </ol>
+          </div>
+
+          <button
+            onClick={() => setActivationModal(null)}
+            className="w-full bg-white text-black hover:bg-white/90 py-3 rounded-xl font-medium transition-colors"
+          >
+            Got it!
+          </button>
+        </div>
+      </div>
+    )}
+    </>
   )
 }

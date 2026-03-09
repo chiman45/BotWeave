@@ -23,7 +23,7 @@ from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
 from pymongo import MongoClient, ASCENDING, DESCENDING
 from bson import ObjectId
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, Dict, List
 import os
 import logging
@@ -103,11 +103,15 @@ def _find_bot_for_customer(customer_phone: str) -> Optional[Dict]:
     return bots_col.find_one({'verificationStatus': 'verified'})
 
 
+def _now():
+    return datetime.now(timezone.utc)
+
+
 def _upsert_session(customer_phone: str, business_id: str) -> None:
     """Stick a customer to a bot for the lifetime of the conversation."""
     sessions_col.update_one(
         {'customerPhone': customer_phone},
-        {'$set': {'businessId': business_id, 'updatedAt': datetime.utcnow()}},
+        {'$set': {'businessId': business_id, 'updatedAt': _now()}},
         upsert=True
     )
 
@@ -123,12 +127,12 @@ def _log_message(business_id: str, user_id: str, customer_phone: str,
         'messageType':   'text',
         'sender':        sender,   # 'user' or 'bot'
         'read':          False,
-        'timestamp':     datetime.utcnow()
+        'timestamp':     _now()
     })
     bots_col.update_one(
         {'businessId': business_id},
         {
-            '$set': {'lastConversationAt': datetime.utcnow()},
+            '$set': {'lastConversationAt': _now()},
             '$inc': {'totalMessages': 1}
         }
     )
@@ -199,13 +203,11 @@ def whatsapp_webhook():
 
     log.info(f"[WEBHOOK] Incoming from {customer_phone}: {incoming_msg!r}")
 
-    resp = MessagingResponse()
-    msg  = resp.message()
-
     bot = _find_bot_for_customer(customer_phone)
     if not bot:
         log.warning("[WEBHOOK] No active bot found to handle message")
-        msg.body("Sorry, no active bot is configured right now. Please try again later.")
+        resp = MessagingResponse()
+        resp.message("Sorry, no active bot is configured right now. Please try again later.")
         return str(resp), 200, {'Content-Type': 'text/xml'}
 
     business_id = bot.get('businessId', '')
@@ -224,8 +226,9 @@ def whatsapp_webhook():
 
     # Build and send reply
     reply = _build_reply(bot, incoming_msg)
+    resp = MessagingResponse()
     if reply:
-        msg.body(reply)
+        resp.message(reply)
         _log_message(business_id, user_id, customer_phone, reply, 'bot')
         log.info(f"[WEBHOOK] Auto-reply sent to {customer_phone}: {reply!r}")
     else:
@@ -271,7 +274,7 @@ def activate_bot():
 
     # The "allocated" number is always the single shared Twilio number
     display_number = TWILIO_WHATSAPP_NUMBER.replace('whatsapp:', '')
-    now = datetime.utcnow()
+    now = _now()
 
     bots_col.update_one(
         {'businessId': business_id, 'ownerUserId': user_id},
@@ -287,11 +290,13 @@ def activate_bot():
 
     log.info(f"[ACTIVATE] Bot {business_id} activated → {display_number}")
 
+    webhook_url = os.getenv('WEBHOOK_URL', '')
     return jsonify({
         'message':         'Bot activated successfully',
         'allocatedNumber': display_number,
         'businessId':      business_id,
-        'activatedAt':     now.isoformat()
+        'activatedAt':     now.isoformat(),
+        'webhookUrl':      webhook_url
     })
 
 
@@ -468,9 +473,9 @@ def create_payment():
         'planType':    plan_type,
         'description': data.get('description', f"{plan_type.capitalize()} plan subscription"),
         'status':      data.get('status', 'due'),
-        'dueDate':     datetime.utcnow(),
-        'createdAt':   datetime.utcnow(),
-        'updatedAt':   datetime.utcnow()
+        'dueDate':     _now(),
+        'createdAt':   _now(),
+        'updatedAt':   _now()
     }
 
     result = payments_col.insert_one(payment)
@@ -486,9 +491,9 @@ def update_payment(payment_id):
     if not status:
         return jsonify({'error': 'status is required'}), 400
 
-    update: Dict = {'status': status, 'updatedAt': datetime.utcnow()}
+    update: Dict = {'status': status, 'updatedAt': _now()}
     if status in ('completed', 'paid'):
-        update['paidAt'] = datetime.utcnow()
+        update['paidAt'] = _now()
     if data.get('transactionId'):
         update['transactionId'] = data['transactionId']
     if data.get('paymentMethod'):
@@ -524,11 +529,12 @@ def delete_payment(payment_id):
 
 @app.route('/health', methods=['GET'])
 def health():
-    """Simple health check — also shows the configured Twilio number."""
+    """Simple health check — also shows the configured Twilio number and webhook URL."""
     return jsonify({
         'status':         'ok',
         'twilioNumber':   TWILIO_WHATSAPP_NUMBER.replace('whatsapp:', ''),
-        'timestamp':      datetime.utcnow().isoformat()
+        'webhookUrl':     os.getenv('WEBHOOK_URL', ''),
+        'timestamp':      _now().isoformat()
     })
 
 

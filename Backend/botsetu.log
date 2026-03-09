@@ -27,3 +27,74 @@
 2026-03-08 23:31:52,610 [INFO] t=2026-03-08T23:31:52+0530 lvl=info msg="no more state changes" obj=tunnels.session
 2026-03-08 23:31:52,610 [INFO] t=2026-03-08T23:31:52+0530 lvl=info msg="failed to accept connection: Listener closed" obj=tunnels.session clientid=181c0bc576be75c397ef9d87e806f6f2
 2026-03-08 23:31:52,610 [WARNING] t=2026-03-08T23:31:52+0530 lvl=warn msg="Stopping forwarder" name=http-5000-80451532-7bcd-44b3-ab20-beae2e27f94f acceptErr="failed to accept connection: Listener closed"
+2026-03-08 23:36:09,602 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.26:5000
+2026-03-08 23:36:09,603 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-08 23:43:21,294 [INFO] t=2026-03-08T23:43:21+0530 lvl=info msg="join connections" obj=join id=a1cd12db23fe l=127.0.0.1:5000 r=52.90.81.228:23856
+2026-03-08 23:43:21,295 [INFO] [WEBHOOK] Incoming from +918770441755: 'Help'
+2026-03-08 23:43:21,301 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Hi! Thanks for reaching out to Jungle Safari. We received your message and will get back to you shortly.'
+2026-03-08 23:43:21,302 [INFO] 127.0.0.1 - - [08/Mar/2026 23:43:21] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-09 00:03:18,752 [INFO] t=2026-03-09T00:03:18+0530 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
+2026-03-09 00:04:04,056 [INFO] 🚀  BotSetu backend starting on port 5000
+2026-03-09 00:04:04,056 [INFO] 📱  Twilio WhatsApp number : whatsapp:+14155238886
+2026-03-09 00:04:04,057 [INFO] 🗄️   MongoDB               : mongodb://localhost:27017/
+2026-03-09 00:04:04,067 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.26:5000
+2026-03-09 00:04:04,067 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-09 00:05:05,133 [INFO] 127.0.0.1 - - [09/Mar/2026 00:05:05] "GET / HTTP/1.1" 200 -
+2026-03-09 00:11:12,373 [INFO] [ACTIVATE] Bot business_1772995263782_lsie1niu1 activated → +14155238886
+2026-03-09 00:11:12,374 [INFO] 127.0.0.1 - - [09/Mar/2026 00:11:12] "POST /api/bot/activate HTTP/1.1" 200 -
+2026-03-09 00:18:14,481 [INFO] 🚀  BotSetu backend starting on port 5000
+2026-03-09 00:18:14,482 [INFO] 📱  Twilio WhatsApp number : whatsapp:+14155238886
+2026-03-09 00:18:14,482 [INFO] 🗄️   MongoDB               : mongodb://localhost:27017/
+2026-03-09 00:18:14,492 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.26:5000
+2026-03-09 00:18:14,492 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-09 00:23:00,698 [INFO] 127.0.0.1 - - [09/Mar/2026 00:23:00] "POST /api/bot/activate HTTP/1.1" 200 -
+2026-03-09 00:25:10,628 [INFO] [WEBHOOK] Incoming from +918770441755: 'one-having'
+2026-03-09 00:25:10,632 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Hi! Thanks for reaching out to Jungle Safari. We received your message and will get back to you shortly.'
+2026-03-09 00:25:10,633 [INFO] 127.0.0.1 - - [09/Mar/2026 00:25:10] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-09 00:26:05,136 [INFO] [WEBHOOK] Incoming from +918770441755: 'help'
+2026-03-09 00:26:05,139 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Hi! Thanks for reaching out to Jungle Safari. We received your message and will get back to you shortly.'
+2026-03-09 00:26:05,140 [INFO] 127.0.0.1 - - [09/Mar/2026 00:26:05] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-09 00:29:44,190 [INFO] 🚀  BotSetu backend starting on port 5000
+2026-03-09 00:29:44,190 [INFO] 📱  Twilio WhatsApp number : whatsapp:+14155238886
+2026-03-09 00:29:44,190 [INFO] 🗄️   MongoDB               : mongodb://localhost:27017/
+2026-03-09 00:29:44,200 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.26:5000
+2026-03-09 00:29:44,200 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-09 00:30:26,445 [INFO] [WEBHOOK] Incoming from +918770441755: 'hi'
+2026-03-09 00:30:26,449 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Hi! Thanks for reaching out to Jungle Safari. We received your message and will get back to you shortly.'
+2026-03-09 00:30:26,450 [INFO] 127.0.0.1 - - [09/Mar/2026 00:30:26] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-09 00:35:02,479 [INFO] 🚀  BotSetu backend starting on port 5000
+2026-03-09 00:35:02,480 [INFO] 📱  Twilio WhatsApp number : whatsapp:+16183522793
+2026-03-09 00:35:02,480 [INFO] 🗄️   MongoDB               : mongodb://localhost:27017/
+2026-03-09 00:35:02,489 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.26:5000
+2026-03-09 00:35:02,490 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-09 00:38:46,993 [INFO] 🚀  BotSetu backend starting on port 5000
+2026-03-09 00:38:46,994 [INFO] 📱  Twilio WhatsApp number : whatsapp:+16183522793
+2026-03-09 00:38:46,994 [INFO] 🗄️   MongoDB               : mongodb://localhost:27017/
+2026-03-09 00:38:47,003 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.26:5000
+2026-03-09 00:38:47,003 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-09 00:42:38,110 [INFO] [ACTIVATE] Bot business_1772997151682_npakpo9y7 activated → +16183522793
+2026-03-09 00:42:38,111 [INFO] 127.0.0.1 - - [09/Mar/2026 00:42:38] "POST /api/bot/activate HTTP/1.1" 200 -
+2026-03-09 00:47:17,446 [INFO] [WEBHOOK] Incoming from +918770441755: 'Hi'
+2026-03-09 00:47:17,450 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Hi! Thanks for reaching out to Jungle Safari. We received your message and will get back to you shortly.'
+2026-03-09 00:47:17,451 [INFO] 127.0.0.1 - - [09/Mar/2026 00:47:17] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-09 00:47:29,303 [INFO] [WEBHOOK] Incoming from +918770441755: 'Help'
+2026-03-09 00:47:29,306 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Hi! Thanks for reaching out to Jungle Safari. We received your message and will get back to you shortly.'
+2026-03-09 00:47:29,307 [INFO] 127.0.0.1 - - [09/Mar/2026 00:47:29] "POST /webhook/whatsapp HTTP/1.1" 200 -
