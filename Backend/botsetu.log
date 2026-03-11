@@ -98,3 +98,231 @@
 2026-03-09 00:47:29,303 [INFO] [WEBHOOK] Incoming from +918770441755: 'Help'
 2026-03-09 00:47:29,306 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Hi! Thanks for reaching out to Jungle Safari. We received your message and will get back to you shortly.'
 2026-03-09 00:47:29,307 [INFO] 127.0.0.1 - - [09/Mar/2026 00:47:29] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 08:55:50,405 [INFO] 🚀  BotSetu backend starting on port 5000
+2026-03-11 08:55:50,405 [INFO] 📱  Twilio WhatsApp number : whatsapp:+16183522793
+2026-03-11 08:55:50,406 [INFO] 🗄️   MongoDB               : mongodb://localhost:27017/
+2026-03-11 08:55:50,437 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.88:5000
+2026-03-11 08:55:50,437 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-11 08:55:53,914 [INFO] [ACTIVATE] Bot business_1773199506982_gqss0d1r2 activated → +16183522793
+2026-03-11 08:55:53,915 [INFO] 127.0.0.1 - - [11/Mar/2026 08:55:53] "POST /api/bot/activate HTTP/1.1" 200 -
+2026-03-11 08:59:21,158 [INFO] 127.0.0.1 - - [11/Mar/2026 08:59:21] "POST /api/bot/activate HTTP/1.1" 200 -
+2026-03-11 09:01:25,711 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.88:5000
+2026-03-11 09:01:25,711 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-11 09:01:52,365 [INFO] t=2026-03-11T09:01:52+0530 lvl=info msg="join connections" obj=join id=61cdb331b7fb l=127.0.0.1:5000 r=34.229.212.2:55286
+2026-03-11 09:01:52,366 [INFO] 127.0.0.1 - - [11/Mar/2026 09:01:52] "[31m[1mPOST / HTTP/1.1[0m" 405 -
+2026-03-11 09:02:40,871 [INFO] t=2026-03-11T09:02:40+0530 lvl=info msg="join connections" obj=join id=aaa47161bec6 l=127.0.0.1:5000 r=54.173.26.175:24162
+2026-03-11 09:02:40,874 [INFO] [WEBHOOK] Incoming from +918770441755: 'Help'
+2026-03-11 09:02:40,881 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Hi! Thanks for reaching out to Jungle Safari. We received your message and will get back to you shortly.'
+2026-03-11 09:02:40,882 [INFO] 127.0.0.1 - - [11/Mar/2026 09:02:40] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 09:05:05,575 [INFO] t=2026-03-11T09:05:05+0530 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
+2026-03-11 09:05:05,575 [INFO] t=2026-03-11T09:05:05+0530 lvl=info msg="session closing" obj=tunnels.session err=nil
+2026-03-11 09:05:05,576 [INFO] t=2026-03-11T09:05:05+0530 lvl=info msg="accept failed" obj=tunnels.session obj=csess id=97aeeb275e73 err="reconnecting session closed"
+2026-03-11 09:05:12,896 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.88:5000
+2026-03-11 09:05:12,896 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-11 09:05:25,204 [INFO] t=2026-03-11T09:05:25+0530 lvl=info msg="join connections" obj=join id=c695a69f4101 l=127.0.0.1:5000 r=54.226.128.3:23020
+2026-03-11 09:05:25,205 [INFO] [WEBHOOK] Incoming from +918770441755: 'Help'
+2026-03-11 09:05:25,212 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: "🌾 *Welcome to 🌾 Mandi Booking (Farmer Flow)!*\n\nI'll help you book a mandi slot in a few quick steps.\n\nPlease enter your *Full Name*:"
+2026-03-11 09:05:25,213 [INFO] 127.0.0.1 - - [11/Mar/2026 09:05:25] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 09:05:38,378 [INFO] t=2026-03-11T09:05:38+0530 lvl=info msg="join connections" obj=join id=0d6abf637e30 l=127.0.0.1:5000 r=52.72.46.119:61502
+2026-03-11 09:05:38,379 [INFO] [WEBHOOK] Incoming from +918770441755: 'Chiman esda'
+2026-03-11 09:05:38,383 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Hello *Chiman esda*! 👋\n\nPlease enter your *Village Name*:'
+2026-03-11 09:05:38,384 [INFO] 127.0.0.1 - - [11/Mar/2026 09:05:38] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 09:05:46,890 [INFO] t=2026-03-11T09:05:46+0530 lvl=info msg="join connections" obj=join id=1b7b862377a9 l=127.0.0.1:5000 r=34.201.39.134:39954
+2026-03-11 09:05:46,891 [INFO] [WEBHOOK] Incoming from +918770441755: 'Baload'
+2026-03-11 09:05:46,895 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Select your *Crop Type*:\n\n1️⃣ Paddy\n2️⃣ Wheat\n3️⃣ Maize\n4️⃣ Soybean\n5️⃣ Cotton\n6️⃣ Other\n\nReply with the *number* or crop name:'
+2026-03-11 09:05:46,896 [INFO] 127.0.0.1 - - [11/Mar/2026 09:05:46] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 09:06:02,914 [INFO] t=2026-03-11T09:06:02+0530 lvl=info msg="join connections" obj=join id=bb01e8b73899 l=127.0.0.1:5000 r=3.92.73.111:32396
+2026-03-11 09:06:02,915 [INFO] [WEBHOOK] Incoming from +918770441755: '2'
+2026-03-11 09:06:02,919 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Crop: *Wheat* ✅\n\nEnter *Quantity* in quintals (or send *0* to skip):'
+2026-03-11 09:06:02,920 [INFO] 127.0.0.1 - - [11/Mar/2026 09:06:02] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 09:06:14,510 [INFO] t=2026-03-11T09:06:14+0530 lvl=info msg="join connections" obj=join id=e9f28f15c132 l=127.0.0.1:5000 r=18.215.178.145:52208
+2026-03-11 09:06:14,510 [INFO] [WEBHOOK] Incoming from +918770441755: '5'
+2026-03-11 09:06:14,515 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Select your *nearest Mandi*:\n\n1️⃣ balod – shankar nagar\n2️⃣ durg – Station Road\n3️⃣ raipur  – pandri mandir\n4️⃣ bhilai – supela market\n\nReply with the number:'
+2026-03-11 09:06:14,515 [INFO] 127.0.0.1 - - [11/Mar/2026 09:06:14] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 09:06:25,539 [INFO] t=2026-03-11T09:06:25+0530 lvl=info msg="join connections" obj=join id=9c9849dce4b6 l=127.0.0.1:5000 r=18.234.127.22:54590
+2026-03-11 09:06:25,540 [INFO] [WEBHOOK] Incoming from +918770441755: '1'
+2026-03-11 09:06:25,547 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Available slots at *balod*:\n\n1️⃣ 9:00 AM – 10:00 AM\n2️⃣ 10:00 AM – 11:00 AM\n3️⃣ 11:00 AM – 12:00 PM\n4️⃣ 2:00 PM – 3:00 PM\n\nReply with the *slot number*:'
+2026-03-11 09:06:25,547 [INFO] 127.0.0.1 - - [11/Mar/2026 09:06:25] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 09:06:39,860 [INFO] t=2026-03-11T09:06:39+0530 lvl=info msg="join connections" obj=join id=c8fb5605dc16 l=127.0.0.1:5000 r=75.101.182.115:24806
+2026-03-11 09:06:39,861 [INFO] [WEBHOOK] Incoming from +918770441755: '2'
+2026-03-11 09:06:39,896 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: '✅ *Booking Confirmed!*\n\n🎫 Token: *TK-20260311-001*\n👤 Name: Chiman esda\n🌿 Crop: Wheat (5 qtl)\n🏪 Mandi: balod\n📍 Location: shankar nagar,near hanuman mandir\n⏰ Slot: 10:00 AM – 11:00 AM\n📅 Date: 2026-03-11\n\nPlease arrive *on time* with your produce. Thank you! 🙏\n\n_Send any message to make a new booking._'
+2026-03-11 09:06:39,897 [INFO] 127.0.0.1 - - [11/Mar/2026 09:06:39] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 09:13:02,050 [ERROR] t=2026-03-11T09:13:02+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=33574a88ed63 clientid=a1d0d84b402bd5f8819b76764281830e
+2026-03-11 09:13:02,059 [ERROR] t=2026-03-11T09:13:02+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=7553e2edad6e err="read EOF from remote peer"
+2026-03-11 09:13:05,026 [INFO] t=2026-03-11T09:13:05+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-03-11 09:13:05,026 [INFO] t=2026-03-11T09:13:05+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-03-11 09:16:56,034 [ERROR] t=2026-03-11T09:16:55+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=7553e2edad6e err="read tcp 172.16.163.88:43256->3.108.166.207:443: wsarecv: An established connection was aborted by the software in your host machine."
+2026-03-11 09:16:56,655 [ERROR] t=2026-03-11T09:16:56+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 09:16:57,170 [ERROR] t=2026-03-11T09:16:57+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 09:16:58,179 [ERROR] t=2026-03-11T09:16:58+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 09:17:00,181 [ERROR] t=2026-03-11T09:17:00+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 09:58:47,778 [ERROR] t=2026-03-11T09:58:47+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=117f2c073574 clientid=a1d0d84b402bd5f8819b76764281830e
+2026-03-11 09:58:47,890 [ERROR] t=2026-03-11T09:58:47+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 09:58:55,898 [ERROR] t=2026-03-11T09:58:55+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 09:59:11,904 [ERROR] t=2026-03-11T09:59:11+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 09:59:41,912 [ERROR] t=2026-03-11T09:59:41+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 10:00:11,919 [ERROR] t=2026-03-11T10:00:11+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 10:00:43,261 [INFO] t=2026-03-11T10:00:43+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-03-11 10:00:43,262 [INFO] t=2026-03-11T10:00:43+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-03-11 10:02:17,896 [INFO] t=2026-03-11T10:02:17+0530 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
+2026-03-11 10:02:17,897 [INFO] t=2026-03-11T10:02:17+0530 lvl=info msg="session closing" obj=tunnels.session err=nil
+2026-03-11 10:02:17,898 [INFO] t=2026-03-11T10:02:17+0530 lvl=info msg="accept failed" obj=tunnels.session obj=csess id=7553e2edad6e err="reconnecting session closed"
+2026-03-11 10:02:17,898 [INFO] t=2026-03-11T10:02:17+0530 lvl=info msg="failed to accept connection: Listener closed" obj=tunnels.session clientid=e31ee518c5f60733eb2feb44939d0318
+2026-03-11 10:02:17,898 [WARNING] t=2026-03-11T10:02:17+0530 lvl=warn msg="Stopping forwarder" name=http-5000-b00d0fb7-4c97-49dc-8e43-f14c060eff14 acceptErr="failed to accept connection: Listener closed"
+2026-03-11 10:02:17,899 [WARNING] t=2026-03-11T10:02:17+0530 lvl=warn msg="Error restarting forwarder" name=http-5000-b00d0fb7-4c97-49dc-8e43-f14c060eff14 err="failed to start tunnel: session closed"
+2026-03-11 10:02:17,901 [INFO] t=2026-03-11T10:02:17+0530 lvl=info msg="no more state changes" obj=tunnels.session
+2026-03-11 10:02:30,638 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.116.120.193:5000
+2026-03-11 10:02:30,639 [INFO] [33mPress CTRL+C to quit[0m
+2026-03-11 10:03:00,470 [INFO] t=2026-03-11T10:03:00+0530 lvl=info msg="join connections" obj=join id=3d18703e9e78 l=127.0.0.1:5000 r=3.82.174.158:53914
+2026-03-11 10:03:00,472 [INFO] [WEBHOOK] Incoming from +918770441755: 'Help'
+2026-03-11 10:03:00,479 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: "🌾 *Welcome to 🌾 Mandi Booking (Farmer Flow)!*\n\nI'll help you book a mandi slot in a few quick steps.\n\nPlease enter your *Full Name*:"
+2026-03-11 10:03:00,481 [INFO] 127.0.0.1 - - [11/Mar/2026 10:03:00] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 10:06:53,474 [INFO] t=2026-03-11T10:06:53+0530 lvl=info msg="join connections" obj=join id=cb091538b3e5 l=127.0.0.1:5000 r=100.31.209.12:57232
+2026-03-11 10:06:53,475 [INFO] [WEBHOOK] Incoming from +916263699186: 'Hi'
+2026-03-11 10:06:53,483 [INFO] [WEBHOOK] Auto-reply sent to +916263699186: "🌾 *Welcome to 🌾 Mandi Booking (Farmer Flow)!*\n\nI'll help you book a mandi slot in a few quick steps.\n\nPlease enter your *Full Name*:"
+2026-03-11 10:06:53,484 [INFO] 127.0.0.1 - - [11/Mar/2026 10:06:53] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 10:07:19,637 [INFO] t=2026-03-11T10:07:19+0530 lvl=info msg="join connections" obj=join id=3625df0fe6a0 l=127.0.0.1:5000 r=54.196.140.88:50674
+2026-03-11 10:07:19,642 [INFO] [WEBHOOK] Incoming from +916263699186: 'Himanshu deshmukh'
+2026-03-11 10:07:19,650 [INFO] [WEBHOOK] Auto-reply sent to +916263699186: 'Hello *Himanshu deshmukh*! 👋\n\nPlease enter your *Village Name*:'
+2026-03-11 10:07:19,651 [INFO] 127.0.0.1 - - [11/Mar/2026 10:07:19] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 10:07:27,035 [INFO] t=2026-03-11T10:07:27+0530 lvl=info msg="join connections" obj=join id=16cb8ae4626a l=127.0.0.1:5000 r=3.89.220.100:55320
+2026-03-11 10:07:27,037 [INFO] [WEBHOOK] Incoming from +916263699186: 'Raipur'
+2026-03-11 10:07:27,045 [INFO] [WEBHOOK] Auto-reply sent to +916263699186: 'Select your *Crop Type*:\n\n1️⃣ Paddy\n2️⃣ Wheat\n3️⃣ Maize\n4️⃣ Soybean\n5️⃣ Cotton\n6️⃣ Other\n\nReply with the *number* or crop name:'
+2026-03-11 10:07:27,045 [INFO] 127.0.0.1 - - [11/Mar/2026 10:07:27] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 10:07:33,790 [INFO] t=2026-03-11T10:07:33+0530 lvl=info msg="join connections" obj=join id=ab668a4a8c39 l=127.0.0.1:5000 r=35.174.173.40:50890
+2026-03-11 10:07:33,791 [INFO] [WEBHOOK] Incoming from +916263699186: '1'
+2026-03-11 10:07:33,798 [INFO] [WEBHOOK] Auto-reply sent to +916263699186: 'Crop: *Paddy* ✅\n\nEnter *Quantity* in quintals (or send *0* to skip):'
+2026-03-11 10:07:33,799 [INFO] 127.0.0.1 - - [11/Mar/2026 10:07:33] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 10:07:39,409 [INFO] t=2026-03-11T10:07:39+0530 lvl=info msg="join connections" obj=join id=bda00b520801 l=127.0.0.1:5000 r=98.93.38.245:35796
+2026-03-11 10:07:39,411 [INFO] [WEBHOOK] Incoming from +916263699186: '10'
+2026-03-11 10:07:39,418 [INFO] [WEBHOOK] Auto-reply sent to +916263699186: 'Select your *nearest Mandi*:\n\n1️⃣ balod – shankar nagar\n2️⃣ durg – Station Road\n3️⃣ raipur  – pandri mandir\n4️⃣ bhilai – supela market\n\nReply with the number:'
+2026-03-11 10:07:39,419 [INFO] 127.0.0.1 - - [11/Mar/2026 10:07:39] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 10:07:46,284 [INFO] t=2026-03-11T10:07:46+0530 lvl=info msg="join connections" obj=join id=90628e56fb2e l=127.0.0.1:5000 r=100.31.209.12:58516
+2026-03-11 10:07:46,285 [INFO] [WEBHOOK] Incoming from +916263699186: '3'
+2026-03-11 10:07:46,298 [INFO] [WEBHOOK] Auto-reply sent to +916263699186: 'Available slots at *raipur *:\n\n1️⃣ 9:00 AM – 10:00 AM\n2️⃣ 10:00 AM – 11:00 AM\n3️⃣ 11:00 AM – 12:00 PM\n4️⃣ 2:00 PM – 3:00 PM\n\nReply with the *slot number*:'
+2026-03-11 10:07:46,299 [INFO] 127.0.0.1 - - [11/Mar/2026 10:07:46] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 10:07:52,563 [INFO] t=2026-03-11T10:07:52+0530 lvl=info msg="join connections" obj=join id=813662423262 l=127.0.0.1:5000 r=3.92.73.111:41974
+2026-03-11 10:07:52,564 [INFO] [WEBHOOK] Incoming from +916263699186: '1'
+2026-03-11 10:07:52,583 [INFO] [WEBHOOK] Auto-reply sent to +916263699186: '✅ *Booking Confirmed!*\n\n🎫 Token: *TK-20260311-002*\n👤 Name: Himanshu deshmukh\n🌿 Crop: Paddy (10 qtl)\n🏪 Mandi: raipur \n📍 Location: Pandri Mandi, Beside Vegetable Market\n⏰ Slot: 9:00 AM – 10:00 AM\n📅 Date: 2026-03-11\n\nPlease arrive *on time* with your produce. Thank you! 🙏\n\n_Send any message to make a new booking._'
+2026-03-11 10:07:52,584 [INFO] 127.0.0.1 - - [11/Mar/2026 10:07:52] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 10:16:16,504 [ERROR] t=2026-03-11T10:16:16+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=fb91ca1fa464 clientid=4ff8ac570f5eea5dfb1eac3c1572e2ad
+2026-03-11 10:16:16,505 [ERROR] t=2026-03-11T10:16:16+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=107b60bea5af err="session closed"
+2026-03-11 10:16:37,489 [INFO] t=2026-03-11T10:16:37+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-03-11 10:16:37,489 [INFO] t=2026-03-11T10:16:37+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-03-11 10:16:45,790 [ERROR] t=2026-03-11T10:16:45+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=0b6eb42ad665 clientid=4ff8ac570f5eea5dfb1eac3c1572e2ad
+2026-03-11 10:16:45,792 [ERROR] t=2026-03-11T10:16:45+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=107b60bea5af err="session closed"
+2026-03-11 10:17:00,965 [ERROR] t=2026-03-11T10:17:00+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: failed to fetch CRL. errors encountered: timed out fetching CRL"
+2026-03-11 10:17:26,991 [ERROR] t=2026-03-11T10:17:26+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=87f7b698cccd clientid=4ff8ac570f5eea5dfb1eac3c1572e2ad
+2026-03-11 10:17:26,992 [ERROR] t=2026-03-11T10:17:26+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="session closed"
+2026-03-11 11:08:14,982 [ERROR] t=2026-03-11T11:08:14+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp [2406:da1a:e91:9302:5f2c:118e:bcf2:c8bb]:443: i/o timeout"
+2026-03-11 11:08:16,819 [ERROR] t=2026-03-11T11:08:16+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 11:08:28,292 [ERROR] t=2026-03-11T11:08:28+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 11:08:37,843 [ERROR] t=2026-03-11T11:08:37+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 11:08:55,021 [ERROR] t=2026-03-11T11:08:55+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 11:09:25,829 [ERROR] t=2026-03-11T11:09:25+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 11:09:57,942 [ERROR] t=2026-03-11T11:09:57+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 11:10:28,059 [ERROR] t=2026-03-11T11:10:28+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 11:10:58,212 [ERROR] t=2026-03-11T11:10:58+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 11:11:28,936 [INFO] t=2026-03-11T11:11:28+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-03-11 11:11:28,936 [INFO] t=2026-03-11T11:11:28+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-03-11 11:49:57,472 [ERROR] t=2026-03-11T11:49:57+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=107b60bea5af err="read tcp 172.16.208.42:5733->3.108.208.206:443: wsarecv: An existing connection was forcibly closed by the remote host."
+2026-03-11 11:49:57,503 [ERROR] t=2026-03-11T11:49:57+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=24e0b50a6425 clientid=4ff8ac570f5eea5dfb1eac3c1572e2ad
+2026-03-11 11:49:57,732 [ERROR] t=2026-03-11T11:49:57+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 11:49:58,237 [ERROR] t=2026-03-11T11:49:58+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 11:49:59,238 [ERROR] t=2026-03-11T11:49:59+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 11:50:01,239 [ERROR] t=2026-03-11T11:50:01+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 13:06:32,732 [ERROR] t=2026-03-11T13:06:32+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 13:06:40,749 [ERROR] t=2026-03-11T13:06:40+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 13:06:56,756 [ERROR] t=2026-03-11T13:06:56+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 13:07:26,764 [ERROR] t=2026-03-11T13:07:26+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 13:07:56,771 [ERROR] t=2026-03-11T13:07:56+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 13:08:31,325 [INFO] t=2026-03-11T13:08:31+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-03-11 13:08:31,326 [INFO] t=2026-03-11T13:08:31+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-03-11 13:48:22,994 [ERROR] t=2026-03-11T13:48:22+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=4b5ed2458946 clientid=4ff8ac570f5eea5dfb1eac3c1572e2ad
+2026-03-11 13:48:23,026 [ERROR] t=2026-03-11T13:48:22+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=107b60bea5af err="session closed"
+2026-03-11 13:48:23,403 [ERROR] t=2026-03-11T13:48:23+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 13:48:23,905 [ERROR] t=2026-03-11T13:48:23+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 13:48:24,905 [ERROR] t=2026-03-11T13:48:24+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 13:48:26,906 [ERROR] t=2026-03-11T13:48:26+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 13:51:43,876 [ERROR] t=2026-03-11T13:51:43+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 13:51:52,027 [ERROR] t=2026-03-11T13:51:52+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 13:52:08,068 [ERROR] t=2026-03-11T13:52:08+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 13:52:38,130 [ERROR] t=2026-03-11T13:52:38+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 13:53:08,191 [ERROR] t=2026-03-11T13:53:08+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 13:53:38,223 [ERROR] t=2026-03-11T13:53:38+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 13:54:08,296 [ERROR] t=2026-03-11T13:54:08+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 13:54:39,634 [INFO] t=2026-03-11T13:54:39+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-03-11 13:54:39,635 [INFO] t=2026-03-11T13:54:39+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-03-11 13:55:10,404 [INFO] t=2026-03-11T13:55:10+0530 lvl=info msg="join connections" obj=join id=808b1dc0581a l=127.0.0.1:5000 r=3.82.174.158:31316
+2026-03-11 13:55:10,414 [INFO] [WEBHOOK] Incoming from +918770441755: 'Hi'
+2026-03-11 13:55:10,427 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Hello *Hi*! 👋\n\nPlease enter your *Village Name*:'
+2026-03-11 13:55:10,431 [INFO] 127.0.0.1 - - [11/Mar/2026 13:55:10] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 13:55:19,627 [INFO] t=2026-03-11T13:55:19+0530 lvl=info msg="join connections" obj=join id=1e52da61fc4e l=127.0.0.1:5000 r=34.207.177.238:26770
+2026-03-11 13:55:19,628 [INFO] [WEBHOOK] Incoming from +918770441755: 'Raipur'
+2026-03-11 13:55:19,635 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Select your *Crop Type*:\n\n1️⃣ Paddy\n2️⃣ Wheat\n3️⃣ Maize\n4️⃣ Soybean\n5️⃣ Cotton\n6️⃣ Other\n\nReply with the *number* or crop name:'
+2026-03-11 13:55:19,637 [INFO] 127.0.0.1 - - [11/Mar/2026 13:55:19] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 13:55:33,812 [INFO] t=2026-03-11T13:55:33+0530 lvl=info msg="join connections" obj=join id=198f2a910e60 l=127.0.0.1:5000 r=34.229.187.12:59008
+2026-03-11 13:55:33,813 [INFO] [WEBHOOK] Incoming from +918770441755: '5'
+2026-03-11 13:55:33,820 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Crop: *Cotton* ✅\n\nEnter *Quantity* in quintals (or send *0* to skip):'
+2026-03-11 13:55:33,821 [INFO] 127.0.0.1 - - [11/Mar/2026 13:55:33] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 13:55:40,932 [INFO] t=2026-03-11T13:55:40+0530 lvl=info msg="join connections" obj=join id=2c8a5cb41652 l=127.0.0.1:5000 r=13.218.90.253:34134
+2026-03-11 13:55:40,934 [INFO] [WEBHOOK] Incoming from +918770441755: '6'
+2026-03-11 13:55:40,941 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Select your *nearest Mandi*:\n\n1️⃣ balod – shankar nagar\n2️⃣ durg – Station Road\n3️⃣ raipur  – pandri mandir\n4️⃣ bhilai – supela market\n\nReply with the number:'
+2026-03-11 13:55:40,942 [INFO] 127.0.0.1 - - [11/Mar/2026 13:55:40] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 13:55:48,647 [INFO] t=2026-03-11T13:55:48+0530 lvl=info msg="join connections" obj=join id=863f22b43fa4 l=127.0.0.1:5000 r=34.204.9.113:30784
+2026-03-11 13:55:48,648 [INFO] [WEBHOOK] Incoming from +918770441755: '4'
+2026-03-11 13:55:48,661 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Available slots at *bhilai*:\n\n1️⃣ 9:00 AM – 10:00 AM\n2️⃣ 10:00 AM – 11:00 AM\n3️⃣ 11:00 AM – 12:00 PM\n4️⃣ 2:00 PM – 3:00 PM\n\nReply with the *slot number*:'
+2026-03-11 13:55:48,662 [INFO] 127.0.0.1 - - [11/Mar/2026 13:55:48] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 13:55:56,989 [INFO] t=2026-03-11T13:55:56+0530 lvl=info msg="join connections" obj=join id=b4e99d26efc4 l=127.0.0.1:5000 r=44.204.160.51:23964
+2026-03-11 13:55:56,990 [INFO] [WEBHOOK] Incoming from +918770441755: '2'
+2026-03-11 13:55:56,999 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: '✅ *Booking Confirmed!*\n\n🎫 Token: *TK-20260311-003*\n👤 Name: Hi\n🌿 Crop: Cotton (6 qtl)\n🏪 Mandi: bhilai\n📍 Location: Supela Market, Near Power House Chowk\n⏰ Slot: 10:00 AM – 11:00 AM\n📅 Date: 2026-03-11\n\nPlease arrive *on time* with your produce. Thank you! 🙏\n\n_Send any message to make a new booking._'
+2026-03-11 13:55:57,001 [INFO] 127.0.0.1 - - [11/Mar/2026 13:55:57] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-03-11 13:57:10,276 [ERROR] t=2026-03-11T13:57:10+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=62a17171f7ab clientid=4ff8ac570f5eea5dfb1eac3c1572e2ad
+2026-03-11 13:57:10,277 [ERROR] t=2026-03-11T13:57:10+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=107b60bea5af err="session closed"
+2026-03-11 13:57:17,382 [INFO] t=2026-03-11T13:57:17+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-03-11 13:57:17,382 [INFO] t=2026-03-11T13:57:17+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-03-11 14:07:30,077 [ERROR] t=2026-03-11T14:07:30+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=107b60bea5af err="read EOF from remote peer"
+2026-03-11 14:07:30,332 [ERROR] t=2026-03-11T14:07:30+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=b4bba3f0b7a1 clientid=4ff8ac570f5eea5dfb1eac3c1572e2ad
+2026-03-11 14:07:38,490 [INFO] t=2026-03-11T14:07:38+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-03-11 14:07:38,490 [INFO] t=2026-03-11T14:07:38+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-03-11 14:26:37,630 [ERROR] t=2026-03-11T14:26:37+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=8351f77608bc clientid=4ff8ac570f5eea5dfb1eac3c1572e2ad
+2026-03-11 14:26:37,636 [ERROR] t=2026-03-11T14:26:37+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=107b60bea5af err="read tcp [2401:4900:aa8a:a47a:341f:d33:60d1:11d7]:51123->[2406:da1a:e91:9302:5f2c:118e:bcf2:c8bb]:443: wsarecv: An existing connection was forcibly closed by the remote host."
+2026-03-11 14:26:47,628 [ERROR] t=2026-03-11T14:26:47+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: i/o timeout"
+2026-03-11 14:26:49,443 [ERROR] t=2026-03-11T14:26:49+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 14:27:00,445 [ERROR] t=2026-03-11T14:27:00+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: i/o timeout"
+2026-03-11 14:27:02,452 [ERROR] t=2026-03-11T14:27:02+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 14:27:06,680 [ERROR] t=2026-03-11T14:27:06+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 14:27:14,782 [ERROR] t=2026-03-11T14:27:14+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 14:27:31,677 [INFO] t=2026-03-11T14:27:31+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-03-11 14:27:31,677 [INFO] t=2026-03-11T14:27:31+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-03-11 15:04:55,925 [ERROR] t=2026-03-11T15:04:55+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=107b60bea5af err="read tcp 172.16.206.150:19871->13.233.205.122:443: wsarecv: An established connection was aborted by the software in your host machine."
+2026-03-11 15:04:55,968 [ERROR] t=2026-03-11T15:04:55+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 15:04:56,469 [ERROR] t=2026-03-11T15:04:56+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-03-11 15:04:58,307 [ERROR] t=2026-03-11T15:04:58+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 15:05:02,810 [ERROR] t=2026-03-11T15:05:02+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 15:05:10,082 [ERROR] t=2026-03-11T15:05:10+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=e1e108903e80 clientid=4ff8ac570f5eea5dfb1eac3c1572e2ad
+2026-03-11 15:05:10,445 [ERROR] t=2026-03-11T15:05:10+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 15:05:29,475 [ERROR] t=2026-03-11T15:05:29+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: failed to fetch CRL. errors encountered: timed out fetching CRL"
+2026-03-11 15:05:55,475 [ERROR] t=2026-03-11T15:05:55+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: i/o timeout"
+2026-03-11 15:06:35,476 [ERROR] t=2026-03-11T15:06:35+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: i/o timeout"
+2026-03-11 15:07:05,647 [ERROR] t=2026-03-11T15:07:05+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-03-11 15:07:36,963 [INFO] t=2026-03-11T15:07:36+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-03-11 15:07:36,964 [INFO] t=2026-03-11T15:07:36+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-03-11 15:17:09,333 [ERROR] t=2026-03-11T15:17:09+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=107b60bea5af err="read tcp 172.16.201.178:26024->13.233.205.122:443: wsarecv: An existing connection was forcibly closed by the remote host."
+2026-03-11 15:17:11,042 [INFO] t=2026-03-11T15:17:11+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-03-11 15:17:11,043 [INFO] t=2026-03-11T15:17:11+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-03-11 15:17:11,494 [ERROR] t=2026-03-11T15:17:11+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=8be071485a1a clientid=4ff8ac570f5eea5dfb1eac3c1572e2ad
+2026-03-11 15:44:22,968 [INFO] t=2026-03-11T15:44:22+0530 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
+2026-03-11 15:44:22,969 [INFO] t=2026-03-11T15:44:22+0530 lvl=info msg="session closing" obj=tunnels.session err=nil

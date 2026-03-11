@@ -71,6 +71,7 @@ bots_col          = db['User-data']          # created by Next.js /api/bot
 conversations_col = db['conversations']       # message history
 sessions_col      = db['bot-sessions']        # customer phone → businessId mapping
 payments_col      = db['payments']            # payment records
+bookings_col      = db['mandi-bookings']      # mandi slot bookings
 
 # Indexes (idempotent — safe to run every start)
 sessions_col.create_index([('customerPhone', ASCENDING)], unique=True)
@@ -93,14 +94,20 @@ def _serialize(doc: dict) -> dict:
 
 
 def _find_bot_for_customer(customer_phone: str) -> Optional[Dict]:
-    """Return the bot that owns this customer's session, or the first active bot."""
+    """Return the bot that owns this customer's session, or the most recently activated bot."""
     session = sessions_col.find_one({'customerPhone': customer_phone})
     if session:
         bot = bots_col.find_one({'businessId': session['businessId']})
         if bot:
             return bot
-    # Fallback: first verified bot
-    return bots_col.find_one({'verificationStatus': 'verified'})
+        # Session points to a deleted bot — clean it up and fall through
+        sessions_col.delete_one({'customerPhone': customer_phone})
+
+    # Fallback: most recently activated verified bot
+    return bots_col.find_one(
+        {'verificationStatus': 'verified'},
+        sort=[('activatedAt', -1)]
+    )
 
 
 def _now():
@@ -184,6 +191,409 @@ def _build_reply(bot: Dict, incoming_msg: str) -> str:
 
 
 # ═════════════════════════════════════════════════════════════
+# ── MANDI BOOKING FLOW ENGINE
+# ═════════════════════════════════════════════════════════════
+
+CROP_MAP: Dict[str, str] = {
+    '1': 'Paddy', '2': 'Wheat', '3': 'Maize',
+    '4': 'Soybean', '5': 'Cotton', '6': 'Other'
+}
+
+DEFAULT_SLOTS = [
+    '9:00 AM – 10:00 AM',
+    '10:00 AM – 11:00 AM',
+    '11:00 AM – 12:00 PM',
+    '12:00 PM – 1:00 PM',
+    '2:00 PM – 3:00 PM',
+    '3:00 PM – 4:00 PM',
+]
+
+DEFAULT_MANDIS = [
+    {'name': 'Main Mandi', 'location': 'City Center', 'address': 'Central Market'},
+]
+
+
+def _handle_mandi_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str:
+    """
+    Stateful multi-step conversation flow for mandi slot booking.
+    State is persisted per customer in bot-sessions.
+    """
+    session   = sessions_col.find_one({'customerPhone': customer_phone}) or {}
+    step      = session.get('flowStep', 'greet')
+    flow_data = session.get('flowData', {})
+
+    mandis       = bot.get('mandis', DEFAULT_MANDIS)
+    slots        = bot.get('slots', DEFAULT_SLOTS)
+    max_per_slot = int(bot.get('maxBookingsPerSlot', 10))
+
+    # If the conversation was already completed let the user restart
+    if step == 'done':
+        step = 'greet'
+        flow_data = {}
+
+    reply     = ''
+    next_step = step
+
+    # ── STEP: greet ──────────────────────────────────────────
+    if step == 'greet':
+        reply = (
+            f"🌾 *Welcome to {bot.get('businessName', 'Mandi Booking')}!*\n\n"
+            f"I'll help you book a mandi slot in a few quick steps.\n\n"
+            f"Please enter your *Full Name*:"
+        )
+        next_step = 'ask_name'
+
+    # ── STEP: ask_name ───────────────────────────────────────
+    elif step == 'ask_name':
+        flow_data['farmerName'] = incoming_msg.strip()
+        reply = (
+            f"Hello *{flow_data['farmerName']}*! 👋\n\n"
+            f"Please enter your *Village Name*:"
+        )
+        next_step = 'ask_village'
+
+    # ── STEP: ask_village ────────────────────────────────────
+    elif step == 'ask_village':
+        flow_data['village'] = incoming_msg.strip()
+        reply = (
+            "Select your *Crop Type*:\n\n"
+            "1️⃣ Paddy\n2️⃣ Wheat\n3️⃣ Maize\n"
+            "4️⃣ Soybean\n5️⃣ Cotton\n6️⃣ Other\n\n"
+            "Reply with the *number* or crop name:"
+        )
+        next_step = 'ask_crop'
+
+    # ── STEP: ask_crop ───────────────────────────────────────
+    elif step == 'ask_crop':
+        crop_input = incoming_msg.strip()
+        flow_data['cropType'] = CROP_MAP.get(crop_input, crop_input.title())
+        reply = (
+            f"Crop: *{flow_data['cropType']}* ✅\n\n"
+            f"Enter *Quantity* in quintals (or send *0* to skip):"
+        )
+        next_step = 'ask_quantity'
+
+    # ── STEP: ask_quantity ───────────────────────────────────
+    elif step == 'ask_quantity':
+        qty = incoming_msg.strip()
+        flow_data['quantity'] = qty if qty != '0' else 'Not specified'
+        mandi_list = '\n'.join(
+            [f"{i+1}️⃣ {m['name']} – {m.get('location','')}" for i, m in enumerate(mandis)]
+        )
+        reply = (
+            f"Select your *nearest Mandi*:\n\n{mandi_list}\n\n"
+            "Reply with the number:"
+        )
+        next_step = 'ask_mandi'
+
+    # ── STEP: ask_mandi ──────────────────────────────────────
+    elif step == 'ask_mandi':
+        try:
+            idx = int(incoming_msg.strip()) - 1
+            if 0 <= idx < len(mandis):
+                flow_data['mandiIndex']    = idx
+                flow_data['mandiName']     = mandis[idx]['name']
+                flow_data['mandiLocation'] = mandis[idx].get('address', mandis[idx].get('location', ''))
+
+                today = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+                available = [
+                    s for s in slots
+                    if bookings_col.count_documents({
+                        'businessId': bot['businessId'],
+                        'mandiName':  flow_data['mandiName'],
+                        'timeSlot':   s,
+                        'date':       today,
+                    }) < max_per_slot
+                ]
+
+                if not available:
+                    reply     = "❌ Sorry, all slots for *today* are fully booked. Please try again tomorrow!"
+                    next_step = 'done'
+                else:
+                    flow_data['availableSlots'] = available
+                    slot_list = '\n'.join([f"{i+1}️⃣ {s}" for i, s in enumerate(available)])
+                    reply = (
+                        f"Available slots at *{flow_data['mandiName']}*:\n\n"
+                        f"{slot_list}\n\nReply with the *slot number*:"
+                    )
+                    next_step = 'ask_slot'
+            else:
+                reply = f"⚠️ Please enter a number between *1* and *{len(mandis)}*."
+        except ValueError:
+            reply = "⚠️ Please enter a *number* to select the mandi."
+
+    # ── STEP: ask_slot ───────────────────────────────────────
+    elif step == 'ask_slot':
+        available = flow_data.get('availableSlots', slots)
+        try:
+            idx = int(incoming_msg.strip()) - 1
+            if 0 <= idx < len(available):
+                flow_data['timeSlot'] = available[idx]
+
+                today       = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+                token_count = bookings_col.count_documents({'businessId': bot['businessId'], 'date': today})
+                token       = f"TK-{today.replace('-','')}-{str(token_count + 1).zfill(3)}"
+
+                flow_data['tokenNumber'] = token
+                flow_data['date']        = today
+
+                bookings_col.insert_one({
+                    'businessId':    bot['businessId'],
+                    'tokenNumber':   token,
+                    'farmerName':    flow_data.get('farmerName', ''),
+                    'village':       flow_data.get('village', ''),
+                    'cropType':      flow_data.get('cropType', ''),
+                    'quantity':      flow_data.get('quantity', ''),
+                    'mandiName':     flow_data.get('mandiName', ''),
+                    'mandiLocation': flow_data.get('mandiLocation', ''),
+                    'timeSlot':      flow_data['timeSlot'],
+                    'date':          today,
+                    'phoneNumber':   customer_phone,
+                    'status':        'confirmed',
+                    'createdAt':     _now(),
+                })
+
+                reply = (
+                    f"✅ *Booking Confirmed!*\n\n"
+                    f"🎫 Token: *{token}*\n"
+                    f"👤 Name: {flow_data.get('farmerName')}\n"
+                    f"🌿 Crop: {flow_data.get('cropType')} ({flow_data.get('quantity')} qtl)\n"
+                    f"🏪 Mandi: {flow_data.get('mandiName')}\n"
+                    f"📍 Location: {flow_data.get('mandiLocation')}\n"
+                    f"⏰ Slot: {flow_data['timeSlot']}\n"
+                    f"📅 Date: {today}\n\n"
+                    f"Please arrive *on time* with your produce. Thank you! 🙏\n\n"
+                    f"_Send any message to make a new booking._"
+                )
+                next_step = 'done'
+            else:
+                reply = f"⚠️ Please enter a number between *1* and *{len(available)}*."
+        except ValueError:
+            reply = "⚠️ Please enter a *number* to choose a slot."
+
+    # Persist updated state
+    sessions_col.update_one(
+        {'customerPhone': customer_phone},
+        {'$set': {
+            'businessId': bot['businessId'],
+            'flowStep':   next_step,
+            'flowData':   flow_data,
+            'updatedAt':  _now(),
+        }},
+        upsert=True
+    )
+
+    return reply
+
+
+# ═════════════════════════════════════════════════════════════
+# ── AI BOT ENGINE  (Ollama + optional RAG via ChromaDB)
+# ═════════════════════════════════════════════════════════════
+
+# Path where per-bot Chroma vector stores are persisted
+_VECTOR_STORE_ROOT = os.path.join(os.path.dirname(__file__), 'vector_stores')
+
+
+def _rag_query(business_id: str, query: str) -> str:
+    """
+    Return the top-k most relevant chunks from this bot's vector store.
+    Returns '' when no store exists or Ollama / ChromaDB is unavailable.
+    """
+    store_path = os.path.join(_VECTOR_STORE_ROOT, business_id)
+    if not os.path.exists(store_path):
+        return ''
+    try:
+        from langchain_ollama import OllamaEmbeddings
+        from langchain_community.vectorstores import Chroma
+        embeddings = OllamaEmbeddings(model='nomic-embed-text', base_url='http://localhost:11434')
+        vector_db  = Chroma(persist_directory=store_path, embedding_function=embeddings)
+        docs       = vector_db.similarity_search(query, k=4)
+        return '\n\n'.join(d.page_content for d in docs)
+    except Exception as exc:
+        log.warning(f"[RAG] Query failed for {business_id}: {exc}")
+        return ''
+
+
+def _handle_ai_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str:
+    """
+    Handle a message using a local Ollama LLM.
+    Automatically injects RAG context when ragEnabled = True.
+    Falls back to _build_reply() if Ollama / LangChain are not installed.
+    """
+    try:
+        from langchain_ollama import OllamaLLM
+    except ImportError:
+        log.warning("[AI] langchain-ollama not installed — falling back to keyword reply")
+        return _build_reply(bot, incoming_msg)
+
+    model_name    = bot.get('aiModel', 'llama3.2')
+    system_prompt = bot.get('aiSystemPrompt') or (
+        f"You are a helpful assistant for *{bot.get('businessName', 'this business')}*. "
+        "Answer clearly and concisely. Reply in the same language the user writes in."
+    )
+    rag_enabled = bool(bot.get('aiRagEnabled', False))
+    business_id = bot['businessId']
+
+    # ── Conversation history (last 8 turns, oldest first) ──
+    history_docs = list(
+        conversations_col.find(
+            {'businessId': business_id, 'phoneNumber': customer_phone},
+            {'messageContent': 1, 'sender': 1, '_id': 0}
+        ).sort('timestamp', DESCENDING).limit(8)
+    )
+    history_docs.reverse()
+    history_str = ''.join(
+        f"{'User' if m['sender'] == 'user' else 'Assistant'}: {m['messageContent']}\n"
+        for m in history_docs
+    )
+
+    # ── RAG context ────────────────────────────────────────
+    rag_context = ''
+    if rag_enabled:
+        chunk = _rag_query(business_id, incoming_msg)
+        if chunk:
+            rag_context = f"Relevant knowledge base context:\n{chunk}\n\n"
+
+    # ── Full prompt ────────────────────────────────────────
+    prompt = (
+        f"{system_prompt}\n\n"
+        f"{rag_context}"
+        f"Conversation so far:\n{history_str}"
+        f"User: {incoming_msg}\nAssistant:"
+    )
+
+    try:
+        llm      = OllamaLLM(model=model_name, base_url='http://localhost:11434')
+        response = llm.invoke(prompt)
+        return str(response).strip()
+    except Exception as exc:
+        log.error(f"[AI] Ollama error (model={model_name!r}): {exc}")
+        return (
+            "⚠️ I'm having trouble thinking right now — the AI model may be loading. "
+            "Please send your message again in a moment."
+        )
+
+
+# ── ROUTE: AI — List Ollama models ────────────────────────────
+@app.route('/api/ai/models', methods=['GET'])
+def list_ollama_models():
+    """Return available model names from the local Ollama server."""
+    try:
+        import requests as _req
+        resp = _req.get('http://localhost:11434/api/tags', timeout=5)
+        if resp.status_code == 200:
+            models = [m['name'] for m in resp.json().get('models', [])]
+            return jsonify({'models': models, 'ollamaRunning': True})
+    except Exception as exc:
+        log.warning(f"[AI] Ollama not reachable: {exc}")
+    return jsonify({'models': [], 'ollamaRunning': False,
+                    'error': 'Ollama not running at localhost:11434'})
+
+
+# ── ROUTE: AI — Knowledge Base (RAG) ─────────────────────────
+@app.route('/api/ai/kb/<business_id>', methods=['POST'])
+def upload_kb(business_id: str):
+    """
+    Ingest a knowledge base file (TXT, JSON, CSV, MD) into the bot's
+    per-bot Chroma vector store.  Embeddings are generated via Ollama
+    nomic-embed-text (must be pulled: ollama pull nomic-embed-text).
+    """
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file provided (field name: file)'}), 400
+
+    file     = request.files['file']
+    filename = file.filename or 'kb.txt'
+    ext      = filename.rsplit('.', 1)[-1].lower() if '.' in filename else 'txt'
+
+    raw = file.read().decode('utf-8', errors='replace')
+
+    # ── Parse file into text segments ─────────────────────
+    texts: List[str] = []
+    if ext == 'json':
+        try:
+            import json as _json
+            data = _json.loads(raw)
+            if isinstance(data, list):
+                texts = [_json.dumps(item, ensure_ascii=False) for item in data]
+            elif isinstance(data, dict):
+                # Support {question: answer, ...} or [{q:.., a:..}, ...]
+                texts = [f"{k}: {v}" for k, v in data.items()]
+            else:
+                texts = [raw]
+        except Exception:
+            texts = [raw]
+    elif ext == 'csv':
+        import csv as _csv, io as _io
+        reader = _csv.DictReader(_io.StringIO(raw))
+        texts  = [', '.join(f"{k}: {v}" for k, v in row.items()) for row in reader if row]
+    else:
+        # TXT / MD / anything else — split on blank lines to preserve paragraphs
+        texts = [p.strip() for p in raw.split('\n\n') if p.strip()]
+        if not texts:
+            texts = [raw]
+
+    try:
+        from langchain.text_splitter import RecursiveCharacterTextSplitter
+        from langchain_ollama import OllamaEmbeddings
+        from langchain_community.vectorstores import Chroma
+        from langchain.schema import Document
+
+        splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=60)
+        docs = [
+            Document(page_content=chunk, metadata={'source': filename})
+            for text in texts
+            for chunk in splitter.split_text(text)
+            if chunk.strip()
+        ]
+        if not docs:
+            return jsonify({'error': 'No usable content found in file'}), 400
+
+        store_path = os.path.join(_VECTOR_STORE_ROOT, business_id)
+        os.makedirs(store_path, exist_ok=True)
+
+        embeddings = OllamaEmbeddings(model='nomic-embed-text', base_url='http://localhost:11434')
+        Chroma.from_documents(docs, embeddings, persist_directory=store_path)
+
+        log.info(f"[RAG] Ingested {len(docs)} chunks for bot {business_id} from {filename!r}")
+        return jsonify({'message': f'Ingested {len(docs)} chunks from {filename}', 'chunks': len(docs)})
+
+    except ImportError:
+        return jsonify({'error': 'langchain-ollama or chromadb not installed on server. '
+                                 'Run: pip install langchain-ollama chromadb'}), 500
+    except Exception as exc:
+        log.error(f"[RAG] KB upload failed for {business_id}: {exc}")
+        return jsonify({'error': str(exc)}), 500
+
+
+@app.route('/api/ai/kb/<business_id>', methods=['GET'])
+def get_kb_info(business_id: str):
+    """Return metadata about this bot's vector store."""
+    store_path = os.path.join(_VECTOR_STORE_ROOT, business_id)
+    if not os.path.exists(store_path):
+        return jsonify({'exists': False, 'chunks': 0})
+    try:
+        from langchain_ollama import OllamaEmbeddings
+        from langchain_community.vectorstores import Chroma
+        embeddings = OllamaEmbeddings(model='nomic-embed-text', base_url='http://localhost:11434')
+        db    = Chroma(persist_directory=store_path, embedding_function=embeddings)
+        count = db._collection.count()
+        return jsonify({'exists': True, 'chunks': count})
+    except Exception:
+        return jsonify({'exists': True, 'chunks': -1})
+
+
+@app.route('/api/ai/kb/<business_id>', methods=['DELETE'])
+def delete_kb(business_id: str):
+    """Delete the entire vector store for this bot."""
+    import shutil as _shutil
+    store_path = os.path.join(_VECTOR_STORE_ROOT, business_id)
+    if os.path.exists(store_path):
+        _shutil.rmtree(store_path)
+        log.info(f"[RAG] Deleted knowledge base for bot {business_id}")
+    return jsonify({'message': 'Knowledge base deleted'})
+
+
+# ═════════════════════════════════════════════════════════════
 # ── ROUTE: Twilio WhatsApp Webhook
 # ═════════════════════════════════════════════════════════════
 
@@ -224,8 +634,14 @@ def whatsapp_webhook():
         media_url = request.values.get('MediaUrl0', '')
         log.info(f"[WEBHOOK] Media received: {media_url}")
 
-    # Build and send reply
-    reply = _build_reply(bot, incoming_msg)
+    # Build and send reply – route based on botType and useCaseType
+    bot_type = bot.get('botType', 'normal')
+    if bot_type == 'ai':
+        reply = _handle_ai_flow(bot, customer_phone, incoming_msg)
+    elif bot.get('useCaseType') == 'mandi_booking':
+        reply = _handle_mandi_flow(bot, customer_phone, incoming_msg)
+    else:
+        reply = _build_reply(bot, incoming_msg)
     resp = MessagingResponse()
     if reply:
         resp.message(reply)
@@ -521,6 +937,30 @@ def delete_payment(payment_id):
         return jsonify({'success': True})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+
+
+# ═════════════════════════════════════════════════════════════
+# ── ROUTE: Mandi Bookings
+# ═════════════════════════════════════════════════════════════
+
+@app.route('/api/bookings/<business_id>', methods=['GET'])
+def get_bookings(business_id: str):
+    """Return all mandi bookings for a given businessId (Flask backup endpoint)."""
+    date_filter = request.args.get('date')
+    query: Dict = {'businessId': business_id}
+    if date_filter:
+        query['date'] = date_filter
+
+    docs = list(
+        bookings_col.find(query, {'_id': 0})
+                    .sort('createdAt', DESCENDING)
+                    .limit(200)
+    )
+    for d in docs:
+        if isinstance(d.get('createdAt'), datetime):
+            d['createdAt'] = d['createdAt'].isoformat()
+
+    return jsonify({'bookings': docs, 'count': len(docs)})
 
 
 # ═════════════════════════════════════════════════════════════
