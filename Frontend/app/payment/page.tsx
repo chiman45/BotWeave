@@ -20,7 +20,7 @@ export default function PaymentPage() {
     {
       name: 'Starter',
       icon: Zap,
-      price: 49,
+      price: 5,
       description: 'Perfect for small businesses',
       features: [
         '1,000 messages/month',

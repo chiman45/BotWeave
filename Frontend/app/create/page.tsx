@@ -22,6 +22,12 @@ export default function CreateBotPage() {
   const [loading, setLoading] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [createdBusinessId, setCreatedBusinessId] = useState<string | null>(null)
+  const [kbUploading, setKbUploading] = useState(false)
+  const [kbUploadProgress, setKbUploadProgress] = useState<number | null>(null)
+  const [kbUploadedFiles, setKbUploadedFiles] = useState<{ name: string; chunks: number }[]>([])
+
+  const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
 
   const [formData, setFormData] = useState({
     // Business Info
@@ -34,6 +40,7 @@ export default function CreateBotPage() {
     
     // Bot Config
     botName: '',
+    botType: 'normal' as 'normal' | 'ai',
     useCaseType: '',
     autoReply: false,
     humanHandoff: false,
@@ -74,6 +81,46 @@ export default function CreateBotPage() {
     }))
   }
 
+  // ── AI Bot config state ──────────────────────────────────────────
+  const [aiModel, setAiModel] = useState('llama3.2')
+  const [aiSystemPrompt, setAiSystemPrompt] = useState('')
+  const [aiRagEnabled, setAiRagEnabled] = useState(false)
+  const [ollamaModels, setOllamaModels] = useState<string[]>([])
+  const [ollamaOnline, setOllamaOnline] = useState<boolean | null>(null)
+
+  const fetchOllamaModels = async () => {
+    try {
+      const res = await fetch('/api/ai/models')
+      const data = await res.json()
+      setOllamaOnline(data.ollamaRunning)
+      if (data.models?.length) setOllamaModels(data.models)
+    } catch {
+      setOllamaOnline(false)
+    }
+  }
+  // ────────────────────────────────────────────────────────────
+
+  // ── Mandi Booking config state ────────────────────────────
+  const [mandiList, setMandiList] = useState([{ name: '', location: '', address: '' }])
+  const [slotTimes, setSlotTimes] = useState([
+    '9:00 AM – 10:00 AM',
+    '10:00 AM – 11:00 AM',
+    '11:00 AM – 12:00 PM',
+    '2:00 PM – 3:00 PM',
+  ])
+  const [maxPerSlot, setMaxPerSlot] = useState(10)
+
+  const addMandi = () => setMandiList(prev => [...prev, { name: '', location: '', address: '' }])
+  const removeMandi = (i: number) => setMandiList(prev => prev.filter((_, idx) => idx !== i))
+  const updateMandi = (i: number, field: 'name' | 'location' | 'address', value: string) =>
+    setMandiList(prev => prev.map((m, idx) => idx === i ? { ...m, [field]: value } : m))
+
+  const addSlot = () => setSlotTimes(prev => [...prev, ''])
+  const removeSlot = (i: number) => setSlotTimes(prev => prev.filter((_, idx) => idx !== i))
+  const updateSlot = (i: number, value: string) =>
+    setSlotTimes(prev => prev.map((s, idx) => idx === i ? value : s))
+  // ─────────────────────────────────────────────────────────
+
   const [keywordPairs, setKeywordPairs] = useState<{ keyword: string; response: string }[]>([
     { keyword: '', response: '' }
   ])
@@ -89,7 +136,7 @@ export default function CreateBotPage() {
         return !!(formData.businessName && formData.category && formData.city && 
                  formData.country && formData.defaultLanguage && formData.businessHours)
       case 2:
-        return !!(formData.botName && formData.useCaseType)
+        return !!(formData.botName && (formData.botType === 'ai' || formData.useCaseType))
       case 3:
         return true // WhatsApp number is assigned automatically on activation
       case 4:
@@ -137,6 +184,18 @@ export default function CreateBotPage() {
             if (keyword.trim()) acc[keyword.trim().toLowerCase()] = response.trim()
             return acc
           }, {}),
+          ...(formData.useCaseType === 'mandi_booking' && {
+            mandis: mandiList.filter(m => m.name.trim()),
+            slots: slotTimes.filter(s => s.trim()),
+            maxBookingsPerSlot: maxPerSlot,
+            autoReply: true,
+          }),
+          ...(formData.botType === 'ai' && {
+            aiModel,
+            aiSystemPrompt,
+            aiRagEnabled,
+            autoReply: true,
+          }),
           ownerUserId: user?.id,
           createdAt: new Date().toISOString(),
         }),
@@ -144,6 +203,7 @@ export default function CreateBotPage() {
 
       if (response.ok) {
         const data = await response.json()
+        setCreatedBusinessId(data.businessId || null)
         setShowSuccess(true)
       } else {
         const error = await response.json()
@@ -312,6 +372,39 @@ export default function CreateBotPage() {
           {currentStep === 2 && (
             <div className="space-y-6 animate-fadeIn">
               <h2 className="text-2xl font-light border-b border-white/10 pb-2">🤖 Bot Config</h2>
+
+              {/* ── Bot Type Toggle ─────────────────────────────── */}
+              <div>
+                <p className="text-sm text-white/50 mb-3">Bot Type *</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, botType: 'normal' }))}
+                    className={`p-4 rounded-xl border-2 transition-all text-left ${
+                      formData.botType !== 'ai'
+                        ? 'border-white bg-white/10'
+                        : 'border-white/20 bg-white/5 hover:border-white/40'
+                    }`}
+                  >
+                    <div className="text-base font-medium mb-1">⚡ Normal Bot</div>
+                    <div className="text-xs text-white/50">Keyword rules, FAQ, mandi booking flow</div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setFormData(prev => ({ ...prev, botType: 'ai' })); fetchOllamaModels() }}
+                    className={`p-4 rounded-xl border-2 transition-all text-left ${
+                      formData.botType === 'ai'
+                        ? 'border-cyan-400 bg-cyan-500/10'
+                        : 'border-white/20 bg-white/5 hover:border-white/40'
+                    }`}
+                  >
+                    <div className="text-base font-medium mb-1">🧠 AI Bot</div>
+                    <div className="text-xs text-white/50">Local Ollama LLM · RAG knowledge base</div>
+                  </button>
+                </div>
+              </div>
+
+              {/* ── Bot Name (always visible) ───────────────────── */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm text-white/60 mb-2">Bot Name *</label>
@@ -324,13 +417,14 @@ export default function CreateBotPage() {
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
                   />
                 </div>
+                {formData.botType !== 'ai' && (
                 <div>
                   <label className="block text-sm text-white/60 mb-2">Use-case Type *</label>
                   <select
                     name="useCaseType"
                     value={formData.useCaseType}
                     onChange={handleChange}
-                    required
+                    required={formData.botType !== 'ai'}
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
                   >
                     <option value="">Select Type</option>
@@ -338,8 +432,11 @@ export default function CreateBotPage() {
                     <option value="faq">FAQ</option>
                     <option value="orders">Orders</option>
                     <option value="leads">Leads</option>
+                    <option value="mandi_booking">🌾 Mandi Booking (Farmer Flow)</option>
                   </select>
                 </div>
+                )}
+                {formData.botType !== 'ai' && (
                 <div className="flex items-center gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
                   <input
                     type="checkbox"
@@ -350,6 +447,8 @@ export default function CreateBotPage() {
                   />
                   <label className="text-sm text-white/80">Enable Auto-reply</label>
                 </div>
+                )}
+                {formData.botType !== 'ai' && (
                 <div className="flex items-center gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
                   <input
                     type="checkbox"
@@ -360,7 +459,86 @@ export default function CreateBotPage() {
                   />
                   <label className="text-sm text-white/80">Enable Human Handoff</label>
                 </div>
+                )}
               </div>
+
+              {/* ══ AI BOT CONFIG ═══════════════════════════════════ */}
+              {formData.botType === 'ai' && (
+                <div className="space-y-5 p-5 bg-cyan-500/5 border border-cyan-500/20 rounded-xl">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🧠</span>
+                    <h3 className="text-sm font-medium text-cyan-400">AI Bot Configuration (Ollama)</h3>
+                    {ollamaOnline === true && <span className="ml-auto text-xs text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full">● Ollama online</span>}
+                    {ollamaOnline === false && <span className="ml-auto text-xs text-red-400 bg-red-500/10 px-2 py-0.5 rounded-full">✕ Ollama offline</span>}
+                  </div>
+                  <p className="text-xs text-white/40">
+                    Requires <code className="bg-white/10 px-1 rounded">ollama</code> running locally.
+                    Pull a model: <code className="bg-white/10 px-1 rounded">ollama pull llama3.2</code>
+                  </p>
+
+                  {/* Model */}
+                  <div>
+                    <label className="block text-sm text-white/60 mb-2">Ollama Model *</label>
+                    {ollamaModels.length > 0 ? (
+                      <select
+                        value={aiModel}
+                        onChange={e => setAiModel(e.target.value)}
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30"
+                      >
+                        {ollamaModels.map(m => <option key={m} value={m}>{m}</option>)}
+                      </select>
+                    ) : (
+                      <input
+                        type="text"
+                        value={aiModel}
+                        onChange={e => setAiModel(e.target.value)}
+                        placeholder="e.g. llama3.2, mistral, phi3, gemma2"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30"
+                      />
+                    )}
+                    <p className="text-xs text-white/40 mt-1">The model must be pulled via <code className="bg-white/10 px-1 rounded">ollama pull &lt;model&gt;</code></p>
+                  </div>
+
+                  {/* System Prompt */}
+                  <div>
+                    <label className="block text-sm text-white/60 mb-2">System Prompt</label>
+                    <textarea
+                      rows={4}
+                      value={aiSystemPrompt}
+                      onChange={e => setAiSystemPrompt(e.target.value)}
+                      placeholder={`You are a helpful assistant for ${formData.businessName || 'this business'}. Answer clearly and concisely. Reply in the same language the user writes in.`}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-white/30 resize-none"
+                    />
+                    <p className="text-xs text-white/40 mt-1">Defines how the AI behaves. Leave blank for a sensible default.</p>
+                  </div>
+
+                  {/* RAG */}
+                  <div className="p-4 bg-purple-500/5 border border-purple-500/20 rounded-lg space-y-3">
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        id="ragEnabled"
+                        checked={aiRagEnabled}
+                        onChange={e => setAiRagEnabled(e.target.checked)}
+                        className="w-4 h-4 accent-purple-400"
+                      />
+                      <label htmlFor="ragEnabled" className="text-sm text-purple-300 font-medium cursor-pointer">
+                        Enable RAG (Knowledge Base)
+                      </label>
+                    </div>
+                    <p className="text-xs text-white/40">
+                      The bot will search your uploaded documents before answering.
+                      Requires: <code className="bg-white/10 px-1 rounded">ollama pull nomic-embed-text</code>
+                    </p>
+                    {aiRagEnabled && (
+                      <p className="text-xs text-purple-300/60 bg-purple-500/10 px-3 py-2 rounded-lg">
+                        📁 You&apos;ll be able to upload your knowledge base documents immediately after the bot is created.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+              {/* ═══════════════════════════════════════════════════ */}
 
               {formData.autoReply && (
                 <div className="space-y-4 p-4 bg-green-500/5 border border-green-500/20 rounded-lg">
@@ -406,6 +584,81 @@ export default function CreateBotPage() {
                   <p className="text-xs text-white/40 mt-1">Sent when user says "human", "agent", "help me"</p>
                 </div>
               )}
+
+              {/* ── Mandi Booking Configuration ──────────────────────── */}
+              {formData.useCaseType === 'mandi_booking' && (
+                <div className="space-y-6 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🌾</span>
+                    <h3 className="text-sm font-medium text-yellow-400">Mandi Booking Configuration</h3>
+                  </div>
+                  <p className="text-xs text-white/40">The bot will guide farmers step-by-step: name → village → crop → quantity → mandi → slot → confirmation token.</p>
+
+                  {/* Mandis */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="text-sm text-white/70">Mandis / Markets</label>
+                      <button type="button" onClick={addMandi}
+                        className="text-xs text-yellow-400/70 hover:text-yellow-400 border border-yellow-500/20 hover:border-yellow-500/40 px-3 py-1 rounded-md transition-colors">
+                        + Add Mandi
+                      </button>
+                    </div>
+                    {mandiList.map((m, i) => (
+                      <div key={i} className="grid grid-cols-3 gap-2 items-center">
+                        <input type="text" value={m.name} onChange={e => updateMandi(i, 'name', e.target.value)}
+                          placeholder="Mandi Name *"
+                          className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
+                        <input type="text" value={m.location} onChange={e => updateMandi(i, 'location', e.target.value)}
+                          placeholder="Location / Area"
+                          className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
+                        <div className="flex gap-2 items-center">
+                          <input type="text" value={m.address} onChange={e => updateMandi(i, 'address', e.target.value)}
+                            placeholder="Full Address"
+                            className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
+                          {mandiList.length > 1 && (
+                            <button type="button" onClick={() => removeMandi(i)}
+                              className="text-red-400/60 hover:text-red-400 px-2 text-lg leading-none transition-colors">×</button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Slots */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="text-sm text-white/70">Daily Time Slots</label>
+                      <button type="button" onClick={addSlot}
+                        className="text-xs text-yellow-400/70 hover:text-yellow-400 border border-yellow-500/20 hover:border-yellow-500/40 px-3 py-1 rounded-md transition-colors">
+                        + Add Slot
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {slotTimes.map((s, i) => (
+                        <div key={i} className="flex gap-2 items-center">
+                          <input type="text" value={s} onChange={e => updateSlot(i, e.target.value)}
+                            placeholder="e.g. 9:00 AM – 10:00 AM"
+                            className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
+                          {slotTimes.length > 1 && (
+                            <button type="button" onClick={() => removeSlot(i)}
+                              className="text-red-400/60 hover:text-red-400 px-2 text-lg leading-none transition-colors">×</button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Max per slot */}
+                  <div>
+                    <label className="block text-sm text-white/70 mb-2">Max Bookings per Slot</label>
+                    <input type="number" min={1} max={100} value={maxPerSlot}
+                      onChange={e => setMaxPerSlot(Number(e.target.value))}
+                      className="w-32 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
+                    <p className="text-xs text-white/40 mt-1">Once a slot is full, it won't be shown to new farmers</p>
+                  </div>
+                </div>
+              )}
+              {/* ─────────────────────────────────────────────────────── */}
 
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -652,7 +905,106 @@ export default function CreateBotPage() {
             <CheckCircle className="w-8 h-8 text-green-400" />
           </div>
           <h2 className="text-2xl font-light text-white mb-2">Bot Created!</h2>
-          <p className="text-white/50 text-sm mb-6">Your bot is saved. Follow the steps below to go live.</p>
+          <p className="text-white/50 text-sm mb-4">Your bot is saved. Follow the steps below to go live.</p>
+
+          {/* ── RAG Knowledge Base Upload (shown right after creation when RAG enabled) ── */}
+          {aiRagEnabled && createdBusinessId && (
+            <div className="text-left mb-6 p-4 bg-purple-500/5 border border-purple-500/20 rounded-xl space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-purple-300 font-medium">📚 Upload Knowledge Base</span>
+                {kbUploadedFiles.length > 0 && (
+                  <span className="text-xs text-green-400">{kbUploadedFiles.length} file(s) uploaded</span>
+                )}
+              </div>
+              <p className="text-xs text-white/40">
+                Upload your business documents so the bot answers from them. Supports TXT, JSON, CSV, MD.
+                You can also add more files later from the dashboard.
+              </p>
+
+              {kbUploadedFiles.length > 0 && (
+                <div className="space-y-1">
+                  {kbUploadedFiles.map((f, i) => (
+                    <div key={i} className="flex items-center justify-between bg-white/5 rounded-lg px-3 py-1.5">
+                      <span className="text-xs text-white/70 truncate">{f.name}</span>
+                      <span className="text-xs text-purple-300 shrink-0 ml-2">{f.chunks} chunks</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <label className="block cursor-pointer">
+                <div className={`border border-dashed rounded-lg px-4 py-3 text-center text-sm transition-colors ${
+                  kbUploading
+                    ? 'border-purple-500/30 text-purple-400/50 cursor-wait'
+                    : 'border-purple-500/30 text-purple-300 hover:border-purple-400 hover:text-purple-200'
+                }`}>
+                  {kbUploading
+                    ? (kbUploadProgress !== null && kbUploadProgress < 100
+                        ? `⬆ Uploading… ${kbUploadProgress}%`
+                        : '⏳ Embedding chunks…')
+                    : '⬆ Click to upload a file (.txt / .json / .csv / .md)'}
+                </div>
+
+                {/* Progress bar */}
+                {kbUploading && (
+                  <div className="mt-2 space-y-1">
+                    <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                      {kbUploadProgress !== null && kbUploadProgress < 100 ? (
+                        <div className="h-full bg-purple-500 rounded-full transition-all duration-150" style={{ width: `${kbUploadProgress}%` }} />
+                      ) : (
+                        <div className="h-full w-full bg-purple-500/60 rounded-full animate-pulse" />
+                      )}
+                    </div>
+                    <p className="text-xs text-purple-300/60 text-center">
+                      {kbUploadProgress !== null && kbUploadProgress < 100
+                        ? `Uploading file… ${kbUploadProgress}%`
+                        : 'File uploaded — embedding chunks into vector store…'}
+                    </p>
+                  </div>
+                )}
+
+                <input
+                  type="file"
+                  accept=".txt,.json,.csv,.md"
+                  className="hidden"
+                  disabled={kbUploading}
+                  onChange={e => {
+                    const file = e.target.files?.[0]
+                    if (!file || !createdBusinessId) return
+                    e.target.value = ''
+                    setKbUploading(true)
+                    setKbUploadProgress(0)
+                    const fd = new FormData()
+                    fd.append('file', file)
+                    const xhr = new XMLHttpRequest()
+                    xhr.upload.onprogress = (ev) => {
+                      if (ev.lengthComputable) setKbUploadProgress(Math.round((ev.loaded / ev.total) * 100))
+                    }
+                    xhr.upload.onload = () => setKbUploadProgress(100)
+                    xhr.onload = () => {
+                      try {
+                        const data = JSON.parse(xhr.responseText)
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                          setKbUploadedFiles(prev => [...prev, { name: file.name, chunks: data.chunks ?? 0 }])
+                        } else {
+                          alert(`❌ ${data.error || 'Upload failed'}`)
+                        }
+                      } catch { alert('Upload failed — unexpected response') }
+                      setKbUploadProgress(null)
+                      setKbUploading(false)
+                    }
+                    xhr.onerror = () => {
+                      alert('Upload failed — is the Flask server running?')
+                      setKbUploadProgress(null)
+                      setKbUploading(false)
+                    }
+                    xhr.open('POST', `${BACKEND}/api/ai/kb/${createdBusinessId}`)
+                    xhr.send(fd)
+                  }}
+                />
+              </label>
+            </div>
+          )}
 
           <div className="text-left space-y-3 mb-7">
             {[

@@ -176,6 +176,11 @@ def main():
     sep()
     print(f"\n  Starting ngrok tunnel on port {PORT}…")
     try:
+        # Kill any existing tunnels on this account so we don't hit ERR_NGROK_334
+        for existing in ngrok.get_tunnels():
+            info(f"Closing existing tunnel: {existing.public_url}")
+            ngrok.disconnect(existing.public_url)
+
         tunnel = ngrok.connect(PORT, "http")
         public_url  = tunnel.public_url
         webhook_url = public_url.rstrip('/') + '/webhook/whatsapp'

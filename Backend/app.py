@@ -27,6 +27,8 @@ from datetime import datetime, timezone
 from typing import Optional, Dict, List
 import os
 import logging
+import time
+import re
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -194,10 +196,134 @@ def _build_reply(bot: Dict, incoming_msg: str) -> str:
 # ── MANDI BOOKING FLOW ENGINE
 # ═════════════════════════════════════════════════════════════
 
+# ── Language selection prompt (shown before any other step) ──
+LANG_SELECT_MSG = (
+    "🌐 *Welcome / स्वागत / ਸੁਆਗਤ / આવકાર / স্বাগতম / స్వాగతం*\n\n"
+    "Please choose your language / कृपया भाषा चुनें:\n\n"
+    "1️⃣  English\n"
+    "2️⃣  हिंदी (Hindi)\n"
+    "3️⃣  ਪੰਜਾਬੀ (Punjabi)\n"
+    "4️⃣  ગુજરાતી (Gujarati)\n"
+    "5️⃣  मराठी (Marathi)\n\n"
+    "Reply with 1, 2, 3, 4, or 5:"
+)
+
+SUPPORTED_LANGS: Dict[str, str] = {
+    '1': 'en', '2': 'hi', '3': 'pa', '4': 'gu', '5': 'mr',
+    'english': 'en', 'hindi': 'hi',
+    'punjabi': 'pa', 'gujarati': 'gu', 'marathi': 'mr',
+}
+
+# Greetings that should always restart language selection.
+LANG_RESET_GREETINGS = {
+    'hi', 'hii', 'hiii', 'hello', 'hey', 'namaste', 'namaskar'
+}
+
+# ── Per-language crop maps ────────────────────────────────────
 CROP_MAP: Dict[str, str] = {
     '1': 'Paddy', '2': 'Wheat', '3': 'Maize',
     '4': 'Soybean', '5': 'Cotton', '6': 'Other'
 }
+
+CROP_MAP_I18N: Dict[str, Dict[str, str]] = {
+    'en': {'1': 'Paddy',   '2': 'Wheat',  '3': 'Maize',   '4': 'Soybean', '5': 'Cotton', '6': 'Other'},
+    'hi': {'1': 'धान',     '2': 'गेहूँ',  '3': 'मक्का',   '4': 'सोयाबीन', '5': 'कपास',  '6': 'अन्य'},
+    'pa': {'1': 'ਝੋਨਾ',    '2': 'ਕਣਕ',   '3': 'ਮੱਕੀ',    '4': 'ਸੋਇਆਬੀਨ','5': 'ਕਪਾਹ',  '6': 'ਹੋਰ'},
+    'gu': {'1': 'ડાંગર',   '2': 'ઘઉં',   '3': 'મકાઈ',    '4': 'સોયાબીન', '5': 'કપાસ',  '6': 'અન્ય'},
+    'mr': {'1': 'भात',     '2': 'गहू',   '3': 'मका',     '4': 'सोयाबीन', '5': 'कापूस', '6': 'इतर'},
+}
+
+# ── All UI strings translated per language ────────────────────
+LANG: Dict[str, Dict[str, str]] = {
+    'en': {
+        'lang_ok':            "✅ You selected: *English*\n\nLet's begin the booking.",
+        'welcome':            "🌾 *Welcome to {bname}!*\n\nI'll help you book a mandi slot in a few quick steps.\n\nPlease enter your *Full Name*:",
+        'ask_village':        "Hello *{name}*! 👋\n\nPlease enter your *Village Name*:",
+        'ask_crop':           "Select your *Crop Type*:\n\n1️⃣ Paddy\n2️⃣ Wheat\n3️⃣ Maize\n4️⃣ Soybean\n5️⃣ Cotton\n6️⃣ Other\n\nReply with the *number* or crop name:",
+        'crop_ok':            "Crop: *{crop}* ✅\n\nEnter *Quantity* in quintals (or send *0* to skip):",
+        'ask_mandi':          "Select your *nearest Mandi*:\n\n{mandi_list}\n\nReply with the number:",
+        'slots_header':       "Available slots at *{mandi}*:\n\n{slot_list}\n\nReply with the *slot number*:",
+        'no_slots':           "❌ Sorry, all slots for *today* are fully booked. Please try again tomorrow!",
+        'confirmed':          "✅ *Booking Confirmed!*\n\n🎫 Token: *{token}*\n👤 Name: {name}\n🌿 Crop: {crop} ({qty} qtl)\n🏪 Mandi: {mandi}\n📍 Location: {loc}\n⏰ Slot: {slot}\n📅 Date: {date}\n\nPlease arrive *on time* with your produce. Thank you! 🙏\n\n_Send any message to make a new booking._",
+        'bad_mandi':          "⚠️ Please enter a number between *1* and *{n}*.",
+        'bad_mandi_type':     "⚠️ Please enter a *number* to select the mandi.",
+        'bad_slot':           "⚠️ Please enter a number between *1* and *{n}*.",
+        'bad_slot_type':      "⚠️ Please enter a *number* to choose a slot.",
+        'lang_invalid':       "⚠️ Please choose a language by replying with:\n1 = English\n2 = Hindi\n3 = Punjabi\n4 = Gujarati\n5 = Marathi",
+    },
+    'hi': {
+        'lang_ok':            "✅ आपने चुना: *हिंदी*\n\nआइए बुकिंग शुरू करते हैं।",
+        'welcome':            "🌾 *{bname} में आपका स्वागत है!*\n\nमैं आपको कुछ आसान चरणों में मंडी स्लॉट बुक करने में मदद करूंगा।\n\nकृपया अपना *पूरा नाम* दर्ज करें:",
+        'ask_village':        "नमस्ते *{name}*! 👋\n\nकृपया अपने *गाँव का नाम* दर्ज करें:",
+        'ask_crop':           "अपनी *फसल का प्रकार* चुनें:\n\n1️⃣ धान\n2️⃣ गेहूँ\n3️⃣ मक्का\n4️⃣ सोयाबीन\n5️⃣ कपास\n6️⃣ अन्य\n\n*नंबर* या फसल का नाम भेजें:",
+        'crop_ok':            "फसल: *{crop}* ✅\n\n*मात्रा* क्विंटल में दर्ज करें (छोड़ने के लिए *0* भेजें):",
+        'ask_mandi':          "अपनी *नजदीकी मंडी* चुनें:\n\n{mandi_list}\n\nनंबर से जवाब दें:",
+        'slots_header':       "*{mandi}* में उपलब्ध स्लॉट:\n\n{slot_list}\n\n*स्लॉट नंबर* से जवाब दें:",
+        'no_slots':           "❌ खेद है, *आज* के सभी स्लॉट भर गए हैं। कृपया कल पुनः प्रयास करें!",
+        'confirmed':          "✅ *बुकिंग की पुष्टि हो गई!*\n\n🎫 टोकन: *{token}*\n👤 नाम: {name}\n🌿 फसल: {crop} ({qty} क्विंटल)\n🏪 मंडी: {mandi}\n📍 स्थान: {loc}\n⏰ स्लॉट: {slot}\n📅 तारीख: {date}\n\nकृपया अपनी उपज के साथ *समय पर* पहुँचें। धन्यवाद! 🙏\n\n_नई बुकिंग के लिए कोई भी संदेश भेजें।_",
+        'bad_mandi':          "⚠️ कृपया *1* और *{n}* के बीच संख्या दर्ज करें।",
+        'bad_mandi_type':     "⚠️ मंडी चुनने के लिए कृपया एक *नंबर* दर्ज करें।",
+        'bad_slot':           "⚠️ कृपया *1* और *{n}* के बीच संख्या दर्ज करें।",
+        'bad_slot_type':      "⚠️ स्लॉट चुनने के लिए कृपया एक *नंबर* दर्ज करें।",
+        'lang_invalid':       "⚠️ कृपया भाषा चुनने के लिए 1, 2, 3, 4 या 5 से जवाब दें।",
+    },
+    'pa': {
+        'lang_ok':            "✅ ਤੁਸੀਂ ਚੁਣਿਆ: *ਪੰਜਾਬੀ*\n\nਆਓ ਬੁਕਿੰਗ ਸ਼ੁਰੂ ਕਰੀਏ।",
+        'welcome':            "🌾 *{bname} ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ!*\n\nਮੈਂ ਤੁਹਾਨੂੰ ਕੁਝ ਆਸਾਨ ਕਦਮਾਂ ਵਿੱਚ ਮੰਡੀ ਸਲਾਟ ਬੁੱਕ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰਾਂਗਾ।\n\nਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ *ਪੂਰਾ ਨਾਮ* ਦਰਜ ਕਰੋ:",
+        'ask_village':        "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ *{name}*! 👋\n\nਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ *ਪਿੰਡ ਦਾ ਨਾਮ* ਦਰਜ ਕਰੋ:",
+        'ask_crop':           "ਆਪਣੀ *ਫ਼ਸਲ ਦੀ ਕਿਸਮ* ਚੁਣੋ:\n\n1️⃣ ਝੋਨਾ\n2️⃣ ਕਣਕ\n3️⃣ ਮੱਕੀ\n4️⃣ ਸੋਇਆਬੀਨ\n5️⃣ ਕਪਾਹ\n6️⃣ ਹੋਰ\n\n*ਨੰਬਰ* ਜਾਂ ਫ਼ਸਲ ਦਾ ਨਾਮ ਭੇਜੋ:",
+        'crop_ok':            "ਫ਼ਸਲ: *{crop}* ✅\n\n*ਮਾਤਰਾ* ਕੁਇੰਟਲ ਵਿੱਚ ਦਰਜ ਕਰੋ (ਛੱਡਣ ਲਈ *0* ਭੇਜੋ):",
+        'ask_mandi':          "ਆਪਣੀ *ਨੇੜੇ ਦੀ ਮੰਡੀ* ਚੁਣੋ:\n\n{mandi_list}\n\nਨੰਬਰ ਨਾਲ ਜਵਾਬ ਦਿਓ:",
+        'slots_header':       "*{mandi}* ਵਿੱਚ ਉਪਲਬਧ ਸਲਾਟ:\n\n{slot_list}\n\n*ਸਲਾਟ ਨੰਬਰ* ਨਾਲ ਜਵਾਬ ਦਿਓ:",
+        'no_slots':           "❌ ਮਾਫ਼ ਕਰਨਾ, *ਅੱਜ* ਦੇ ਸਾਰੇ ਸਲਾਟ ਭਰੇ ਹੋਏ ਹਨ। ਕੱਲ੍ਹ ਫਿਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ!",
+        'confirmed':          "✅ *ਬੁਕਿੰਗ ਪੱਕੀ ਹੋ ਗਈ!*\n\n🎫 ਟੋਕਨ: *{token}*\n👤 ਨਾਮ: {name}\n🌿 ਫ਼ਸਲ: {crop} ({qty} ਕੁਇੰਟਲ)\n🏪 ਮੰਡੀ: {mandi}\n📍 ਟਿਕਾਣਾ: {loc}\n⏰ ਸਲਾਟ: {slot}\n📅 ਮਿਤੀ: {date}\n\nਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀ ਉਪਜ ਨਾਲ *ਸਮੇਂ ਸਿਰ* ਆਓ। ਧੰਨਵਾਦ! 🙏\n\n_ਨਵੀਂ ਬੁਕਿੰਗ ਲਈ ਕੋਈ ਵੀ ਸੁਨੇਹਾ ਭੇਜੋ।_",
+        'bad_mandi':          "⚠️ ਕਿਰਪਾ ਕਰਕੇ *1* ਅਤੇ *{n}* ਦੇ ਵਿਚਕਾਰ ਨੰਬਰ ਦਰਜ ਕਰੋ।",
+        'bad_mandi_type':     "⚠️ ਮੰਡੀ ਚੁਣਨ ਲਈ ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ *ਨੰਬਰ* ਦਰਜ ਕਰੋ।",
+        'bad_slot':           "⚠️ ਕਿਰਪਾ ਕਰਕੇ *1* ਅਤੇ *{n}* ਦੇ ਵਿਚਕਾਰ ਨੰਬਰ ਦਰਜ ਕਰੋ।",
+        'bad_slot_type':      "⚠️ ਸਲਾਟ ਚੁਣਨ ਲਈ ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ *ਨੰਬਰ* ਦਰਜ ਕਰੋ।",
+        'lang_invalid':       "⚠️ ਕਿਰਪਾ ਕਰਕੇ ਭਾਸ਼ਾ ਚੁਣਨ ਲਈ 1, 2, 3, 4 ਜਾਂ 5 ਨਾਲ ਜਵਾਬ ਦਿਓ।",
+    },
+    'gu': {
+        'lang_ok':            "✅ તમે પસંદ કર્યું: *ગુજરાતી*\n\nચાલો બુકિંગ શરૂ કરીએ.",
+        'welcome':            "🌾 *{bname} માં આપનું સ્વાગત છે!*\n\nહું થોડા સરળ પગલાઓમાં મંડી સ્લોટ બુક કરવામાં મદદ કરીશ.\n\nકૃપા કરી તમારું *પૂરું નામ* દાખલ કરો:",
+        'ask_village':        "નમસ્તે *{name}*! 👋\n\nકૃપા કરી તમારા *ગામનું નામ* દાખલ કરો:",
+        'ask_crop':           "તમારી *પાકનો પ્રકાર* પસંદ કરો:\n\n1️⃣ ડાંગર\n2️⃣ ઘઉં\n3️⃣ મકાઈ\n4️⃣ સોયાબીન\n5️⃣ કપાસ\n6️⃣ અન્ય\n\n*નંબર* અથવા પાકનું નામ મોકલો:",
+        'crop_ok':            "પાક: *{crop}* ✅\n\n*જથ્થો* ક્વિન્ટલમાં દાખલ કરો (છોડવા *0* મોકલો):",
+        'ask_mandi':          "તમારી *નજીકની મંડી* પસંદ કરો:\n\n{mandi_list}\n\nનંબર સાથે જવાબ આપો:",
+        'slots_header':       "*{mandi}* માં ઉપલબ્ધ સ્લોટ:\n\n{slot_list}\n\n*સ્લોટ નંબર* સાથે જવાબ આપો:",
+        'no_slots':           "❌ માફ કરશો, *આજ*ના તમામ સ્લોટ ભરાઇ ગયા છે. કૃપા કરી કાલે ફરી પ્રયાસ કરો!",
+        'confirmed':          "✅ *બુકિંગ પ્રમાણિત!*\n\n🎫 ટોકન: *{token}*\n👤 નામ: {name}\n🌿 પાક: {crop} ({qty} ક્વિ.)\n🏪 મંડી: {mandi}\n📍 સ્થળ: {loc}\n⏰ સ્લોટ: {slot}\n📅 તારીખ: {date}\n\nકૃપા કરી *સમયસર* ઉત્પાદન સાથે આવો. આભાર! 🙏\n\n_નવી બુકિંગ માટે કોઇ પણ સંદેશ મોકલો._",
+        'bad_mandi':          "⚠️ કૃપા કરી *1* અને *{n}* ની વચ્ચે નંબર દાખલ કરો.",
+        'bad_mandi_type':     "⚠️ મંડી પસંદ કરવા *નંબર* દાખલ કરો.",
+        'bad_slot':           "⚠️ કૃપા કરી *1* અને *{n}* ની વચ્ચે નંબર દાખલ કરો.",
+        'bad_slot_type':      "⚠️ સ્લોટ પસંદ કરવા *નંબર* દાખલ કરો.",
+        'lang_invalid':       "⚠️ ભાષા પસંદ કરવા 1, 2, 3, 4 અથવા 5 સાથે જવાબ આપો.",
+    },
+    'mr': {
+        'lang_ok':            "✅ तुम्ही निवडले: *मराठी*\n\nचला बुकिंग सुरू करूया.",
+        'welcome':            "🌾 *{bname} मध्ये आपले स्वागत आहे!*\n\nमी काही सोप्या पायऱ्यांमध्ये मंडी स्लॉट बुक करण्यात मदत करेन.\n\nकृपया आपले *पूर्ण नाव* प्रविष्ट करा:",
+        'ask_village':        "नमस्कार *{name}*! 👋\n\nकृपया आपल्या *गावाचे नाव* प्रविष्ट करा:",
+        'ask_crop':           "आपला *पिकाचा प्रकार* निवडा:\n\n1️⃣ भात\n2️⃣ गहू\n3️⃣ मका\n4️⃣ सोयाबीन\n5️⃣ कापूस\n6️⃣ इतर\n\n*क्रमांक* किंवा पिकाचे नाव पाठवा:",
+        'crop_ok':            "पीक: *{crop}* ✅\n\n*प्रमाण* क्विंटलमध्ये प्रविष्ट करा (वगळण्यासाठी *0* पाठवा):",
+        'ask_mandi':          "आपली *जवळची मंडी* निवडा:\n\n{mandi_list}\n\nक्रमांकाने उत्तर द्या:",
+        'slots_header':       "*{mandi}* मध्ये उपलब्ध स्लॉट:\n\n{slot_list}\n\n*स्लॉट क्रमांक* पाठवा:",
+        'no_slots':           "❌ दिलगिरी, *आज*चे सर्व स्लॉट भरले आहेत. उद्या पुन्हा प्रयत्न करा!",
+        'confirmed':          "✅ *बुकिंग निश्चित झाली!*\n\n🎫 टोकन: *{token}*\n👤 नाव: {name}\n🌿 पीक: {crop} ({qty} क्विं.)\n🏪 मंडी: {mandi}\n📍 पत्ता: {loc}\n⏰ स्लॉट: {slot}\n📅 तारीख: {date}\n\nकृपया आपल्या उत्पादनासह *वेळेवर* या. धन्यवाद! 🙏\n\n_नवीन बुकिंगसाठी कोणताही संदेश पाठवा._",
+        'bad_mandi':          "⚠️ कृपया *1* आणि *{n}* दरम्यान क्रमांक प्रविष्ट करा.",
+        'bad_mandi_type':     "⚠️ मंडी निवडण्यासाठी *क्रमांक* प्रविष्ट करा.",
+        'bad_slot':           "⚠️ कृपया *1* आणि *{n}* दरम्यान क्रमांक प्रविष्ट करा.",
+        'bad_slot_type':      "⚠️ स्लॉट निवडण्यासाठी *क्रमांक* प्रविष्ट करा.",
+        'lang_invalid':       "⚠️ भाषा निवडण्यासाठी 1, 2, 3, 4 किंवा 5 ने उत्तर द्या.",
+    },
+}
+
+
+def _t(lang: str, key: str, **kwargs) -> str:
+    """Return translated string, falling back to English."""
+    strings = LANG.get(lang) or LANG['en']
+    tmpl = strings.get(key) or LANG['en'].get(key, '')
+    return tmpl.format(**kwargs) if kwargs else tmpl
+
 
 DEFAULT_SLOTS = [
     '9:00 AM – 10:00 AM',
@@ -216,61 +342,70 @@ DEFAULT_MANDIS = [
 def _handle_mandi_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str:
     """
     Stateful multi-step conversation flow for mandi slot booking.
+    Starts with a language-selection step so each farmer can interact in
+    their preferred language (English / Hindi / Punjabi / Gujarati / Marathi).
     State is persisted per customer in bot-sessions.
     """
     session   = sessions_col.find_one({'customerPhone': customer_phone}) or {}
-    step      = session.get('flowStep', 'greet')
+    step      = session.get('flowStep', 'lang_select')
     flow_data = session.get('flowData', {})
+
+    # If user greets (e.g., "hi"/"hii"), restart from language selection.
+    if incoming_msg.strip().lower() in LANG_RESET_GREETINGS:
+        step = 'lang_select'
+        flow_data = {}
 
     mandis       = bot.get('mandis', DEFAULT_MANDIS)
     slots        = bot.get('slots', DEFAULT_SLOTS)
     max_per_slot = int(bot.get('maxBookingsPerSlot', 10))
 
-    # If the conversation was already completed let the user restart
+    # If the conversation was already completed, restart from lang_select
     if step == 'done':
-        step = 'greet'
+        step = 'lang_select'
         flow_data = {}
 
+    lang      = flow_data.get('language', 'en')
     reply     = ''
     next_step = step
 
-    # ── STEP: greet ──────────────────────────────────────────
-    if step == 'greet':
-        reply = (
-            f"🌾 *Welcome to {bot.get('businessName', 'Mandi Booking')}!*\n\n"
-            f"I'll help you book a mandi slot in a few quick steps.\n\n"
-            f"Please enter your *Full Name*:"
-        )
-        next_step = 'ask_name'
+    # ── STEP: lang_select ────────────────────────────────────
+    if step == 'lang_select':
+        reply     = LANG_SELECT_MSG
+        next_step = 'lang_confirm'
+
+    # ── STEP: lang_confirm ───────────────────────────────────
+    elif step == 'lang_confirm':
+        choice = incoming_msg.strip().lower()
+        lang   = SUPPORTED_LANGS.get(choice)
+        if not lang:
+            # Try matching by number directly
+            reply = _t('en', 'lang_invalid')
+            # Stay on lang_confirm
+        else:
+            flow_data['language'] = lang
+            lang_ack = _t(lang, 'lang_ok')
+            welcome  = _t(lang, 'welcome', bname=bot.get('businessName', 'Mandi Booking'))
+            reply     = f"{lang_ack}\n\n{welcome}"
+            next_step = 'ask_name'
 
     # ── STEP: ask_name ───────────────────────────────────────
     elif step == 'ask_name':
         flow_data['farmerName'] = incoming_msg.strip()
-        reply = (
-            f"Hello *{flow_data['farmerName']}*! 👋\n\n"
-            f"Please enter your *Village Name*:"
-        )
+        reply     = _t(lang, 'ask_village', name=flow_data['farmerName'])
         next_step = 'ask_village'
 
     # ── STEP: ask_village ────────────────────────────────────
     elif step == 'ask_village':
         flow_data['village'] = incoming_msg.strip()
-        reply = (
-            "Select your *Crop Type*:\n\n"
-            "1️⃣ Paddy\n2️⃣ Wheat\n3️⃣ Maize\n"
-            "4️⃣ Soybean\n5️⃣ Cotton\n6️⃣ Other\n\n"
-            "Reply with the *number* or crop name:"
-        )
+        reply     = _t(lang, 'ask_crop')
         next_step = 'ask_crop'
 
     # ── STEP: ask_crop ───────────────────────────────────────
     elif step == 'ask_crop':
         crop_input = incoming_msg.strip()
-        flow_data['cropType'] = CROP_MAP.get(crop_input, crop_input.title())
-        reply = (
-            f"Crop: *{flow_data['cropType']}* ✅\n\n"
-            f"Enter *Quantity* in quintals (or send *0* to skip):"
-        )
+        lang_crops = CROP_MAP_I18N.get(lang, CROP_MAP_I18N['en'])
+        flow_data['cropType'] = lang_crops.get(crop_input, crop_input.title())
+        reply     = _t(lang, 'crop_ok', crop=flow_data['cropType'])
         next_step = 'ask_quantity'
 
     # ── STEP: ask_quantity ───────────────────────────────────
@@ -280,10 +415,7 @@ def _handle_mandi_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str
         mandi_list = '\n'.join(
             [f"{i+1}️⃣ {m['name']} – {m.get('location','')}" for i, m in enumerate(mandis)]
         )
-        reply = (
-            f"Select your *nearest Mandi*:\n\n{mandi_list}\n\n"
-            "Reply with the number:"
-        )
+        reply     = _t(lang, 'ask_mandi', mandi_list=mandi_list)
         next_step = 'ask_mandi'
 
     # ── STEP: ask_mandi ──────────────────────────────────────
@@ -307,20 +439,18 @@ def _handle_mandi_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str
                 ]
 
                 if not available:
-                    reply     = "❌ Sorry, all slots for *today* are fully booked. Please try again tomorrow!"
+                    reply     = _t(lang, 'no_slots')
                     next_step = 'done'
                 else:
                     flow_data['availableSlots'] = available
                     slot_list = '\n'.join([f"{i+1}️⃣ {s}" for i, s in enumerate(available)])
-                    reply = (
-                        f"Available slots at *{flow_data['mandiName']}*:\n\n"
-                        f"{slot_list}\n\nReply with the *slot number*:"
-                    )
+                    reply     = _t(lang, 'slots_header',
+                                   mandi=flow_data['mandiName'], slot_list=slot_list)
                     next_step = 'ask_slot'
             else:
-                reply = f"⚠️ Please enter a number between *1* and *{len(mandis)}*."
+                reply = _t(lang, 'bad_mandi', n=len(mandis))
         except ValueError:
-            reply = "⚠️ Please enter a *number* to select the mandi."
+            reply = _t(lang, 'bad_mandi_type')
 
     # ── STEP: ask_slot ───────────────────────────────────────
     elif step == 'ask_slot':
@@ -350,26 +480,24 @@ def _handle_mandi_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str
                     'date':          today,
                     'phoneNumber':   customer_phone,
                     'status':        'confirmed',
+                    'language':      lang,
                     'createdAt':     _now(),
                 })
 
-                reply = (
-                    f"✅ *Booking Confirmed!*\n\n"
-                    f"🎫 Token: *{token}*\n"
-                    f"👤 Name: {flow_data.get('farmerName')}\n"
-                    f"🌿 Crop: {flow_data.get('cropType')} ({flow_data.get('quantity')} qtl)\n"
-                    f"🏪 Mandi: {flow_data.get('mandiName')}\n"
-                    f"📍 Location: {flow_data.get('mandiLocation')}\n"
-                    f"⏰ Slot: {flow_data['timeSlot']}\n"
-                    f"📅 Date: {today}\n\n"
-                    f"Please arrive *on time* with your produce. Thank you! 🙏\n\n"
-                    f"_Send any message to make a new booking._"
-                )
+                reply = _t(lang, 'confirmed',
+                           token=token,
+                           name=flow_data.get('farmerName', ''),
+                           crop=flow_data.get('cropType', ''),
+                           qty=flow_data.get('quantity', ''),
+                           mandi=flow_data.get('mandiName', ''),
+                           loc=flow_data.get('mandiLocation', ''),
+                           slot=flow_data['timeSlot'],
+                           date=today)
                 next_step = 'done'
             else:
-                reply = f"⚠️ Please enter a number between *1* and *{len(available)}*."
+                reply = _t(lang, 'bad_slot', n=len(available))
         except ValueError:
-            reply = "⚠️ Please enter a *number* to choose a slot."
+            reply = _t(lang, 'bad_slot_type')
 
     # Persist updated state
     sessions_col.update_one(
@@ -392,47 +520,168 @@ def _handle_mandi_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str
 
 # Path where per-bot Chroma vector stores are persisted
 _VECTOR_STORE_ROOT = os.path.join(os.path.dirname(__file__), 'vector_stores')
+_KB_COLLECTION = 'knowledge_base'
+
+
+def _get_ollama_embedding(text: str, model: str = 'nomic-embed-text') -> list:
+    """Get an embedding vector from the local Ollama server via REST."""
+    import requests as _req
+    resp = _req.post(
+        'http://localhost:11434/api/embeddings',
+        json={'model': model, 'prompt': text},
+        timeout=60,
+    )
+    resp.raise_for_status()
+    return resp.json()['embedding']
+
+
+def _chunk_text(text: str, size: int = 500, overlap: int = 60) -> List[str]:
+    """Simple sliding-window text chunker — no external dependencies."""
+    chunks: List[str] = []
+    start = 0
+    text = text.strip()
+    while start < len(text):
+        end = min(start + size, len(text))
+        chunks.append(text[start:end])
+        if end == len(text):
+            break
+        start += size - overlap
+    return chunks
 
 
 def _rag_query(business_id: str, query: str) -> str:
     """
-    Return the top-k most relevant chunks from this bot's vector store.
-    Returns '' when no store exists or Ollama / ChromaDB is unavailable.
+    Return the top-k most relevant chunks from this bot's Chroma vector store.
+    Uses chromadb directly — no LangChain required.
+    Returns '' when no store exists or services are unavailable.
     """
     store_path = os.path.join(_VECTOR_STORE_ROOT, business_id)
     if not os.path.exists(store_path):
+        log.warning(f"[RAG] No vector store found for bot {business_id} at {store_path}")
         return ''
     try:
-        from langchain_ollama import OllamaEmbeddings
-        from langchain_community.vectorstores import Chroma
-        embeddings = OllamaEmbeddings(model='nomic-embed-text', base_url='http://localhost:11434')
-        vector_db  = Chroma(persist_directory=store_path, embedding_function=embeddings)
-        docs       = vector_db.similarity_search(query, k=4)
-        return '\n\n'.join(d.page_content for d in docs)
+        import chromadb
+        query_embedding = _get_ollama_embedding(query)
+        client     = chromadb.PersistentClient(path=store_path)
+        collection = client.get_collection(_KB_COLLECTION)
+        total      = collection.count()
+        log.info(f"[RAG] Querying {total} chunks for bot {business_id}")
+        max_distance = float(os.getenv('RAG_MAX_DISTANCE', '0.85'))
+        fallback_top_k = max(1, int(os.getenv('RAG_FALLBACK_TOP_K', '3')))
+        results = collection.query(
+            query_embeddings=[query_embedding],
+            n_results=min(12, total),
+            include=['documents', 'distances']
+        )
+
+        docs = results.get('documents', [[]])[0] if results.get('documents') else []
+        distances = results.get('distances', [[]])[0] if results.get('distances') else []
+
+        paired = list(zip(docs, distances)) if distances else [(d, None) for d in docs]
+        filtered_docs = [doc for doc, dist in paired if dist is None or dist <= max_distance]
+
+        # Some Chroma metric setups return distances on a much larger numeric scale.
+        # If strict filtering drops everything, fall back to top-k retrieved chunks.
+        if not filtered_docs and docs:
+            filtered_docs = docs[:fallback_top_k]
+            log.warning(
+                f"[RAG] Distance filter removed all chunks (threshold={max_distance}); "
+                f"falling back to top-{fallback_top_k} retrieved chunk(s)"
+            )
+
+        log.info(
+            f"[RAG] Retrieved {len(docs)} chunk(s), kept {len(filtered_docs)} "
+            f"after distance filter <= {max_distance} for query: {query!r}"
+        )
+        if distances:
+            log.info(f"[RAG] Top distances: {distances[:4]}")
+        if filtered_docs:
+            log.debug(f"[RAG] First kept chunk preview: {filtered_docs[0][:200]!r}")
+
+        # Hybrid recall boost: add keyword-matched chunks for intent-heavy queries
+        # like "list faculty", "fees", "admission", etc.
+        query_terms = [
+            t for t in re.findall(r"[a-zA-Z]{4,}", query.lower())
+            if t not in {
+                'about', 'please', 'would', 'could', 'tell', 'give', 'list',
+                'what', 'when', 'where', 'which', 'from', 'with', 'that',
+                'college', 'institute', 'iiit', 'naya', 'raipur'
+            }
+        ]
+        if query_terms:
+            for term in query_terms[:4]:
+                try:
+                    kw = collection.get(
+                        where_document={'$contains': term},
+                        limit=2,
+                        include=['documents']
+                    )
+                    kw_docs = kw.get('documents', []) if kw else []
+                    for d in kw_docs:
+                        if d and d not in filtered_docs:
+                            filtered_docs.append(d)
+                except Exception:
+                    # Some Chroma versions may not support where_document consistently.
+                    break
+
+        if filtered_docs:
+            # Cap context size to avoid prompt bloat while keeping breadth.
+            filtered_docs = filtered_docs[:8]
+            log.info(f"[RAG] Final context chunks after hybrid boost: {len(filtered_docs)}")
+        return '\n\n'.join(filtered_docs)
     except Exception as exc:
-        log.warning(f"[RAG] Query failed for {business_id}: {exc}")
+        log.error(f"[RAG] Query failed for {business_id}: {exc}")
         return ''
+
+
+def _is_faculty_list_query(text: str) -> bool:
+    """Heuristic intent check for faculty-list style questions."""
+    q = (text or '').lower()
+    return (
+        'faculty' in q and
+        any(k in q for k in ('list', 'members', 'member', 'names', 'name'))
+    )
+
+
+def _extract_source_url(context: str) -> str:
+    """Extract first source URL from RAG context, if present."""
+    m = re.search(r"Source URL:\s*(https?://\S+)", context)
+    if m:
+        return m.group(1).rstrip('.,)')
+    m = re.search(r"https?://\S+", context)
+    return m.group(0).rstrip('.,)') if m else ''
+
+
+def _extract_faculty_names(context: str, max_names: int = 25) -> List[str]:
+    """Extract likely faculty names from RAG context using title-based patterns."""
+    # Keep extraction conservative to avoid returning random entities.
+    patt = re.compile(
+        r"\b(?:Prof(?:essor)?\.?|Dr\.?)\s+[A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){0,3}"
+    )
+    seen = set()
+    names: List[str] = []
+    for match in patt.findall(context or ''):
+        clean = re.sub(r"\s+", ' ', match).strip()
+        if clean.lower() in seen:
+            continue
+        seen.add(clean.lower())
+        names.append(clean)
+        if len(names) >= max_names:
+            break
+    return names
 
 
 def _handle_ai_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str:
     """
-    Handle a message using a local Ollama LLM.
-    Automatically injects RAG context when ragEnabled = True.
-    Falls back to _build_reply() if Ollama / LangChain are not installed.
+    Handle a message using a local Ollama LLM via the REST API.
+    Automatically injects RAG context when aiRagEnabled = True.
+    Only requires 'requests' (already installed) — no LangChain needed.
     """
-    try:
-        from langchain_ollama import OllamaLLM
-    except ImportError:
-        log.warning("[AI] langchain-ollama not installed — falling back to keyword reply")
-        return _build_reply(bot, incoming_msg)
+    import requests as _req
 
-    model_name    = bot.get('aiModel', 'llama3.2')
-    system_prompt = bot.get('aiSystemPrompt') or (
-        f"You are a helpful assistant for *{bot.get('businessName', 'this business')}*. "
-        "Answer clearly and concisely. Reply in the same language the user writes in."
-    )
-    rag_enabled = bool(bot.get('aiRagEnabled', False))
+    model_name  = bot.get('aiModel', 'llama3.2')
     business_id = bot['businessId']
+    rag_enabled = bool(bot.get('aiRagEnabled', False))
 
     # ── Conversation history (last 8 turns, oldest first) ──
     history_docs = list(
@@ -450,22 +699,91 @@ def _handle_ai_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str:
     # ── RAG context ────────────────────────────────────────
     rag_context = ''
     if rag_enabled:
-        chunk = _rag_query(business_id, incoming_msg)
-        if chunk:
-            rag_context = f"Relevant knowledge base context:\n{chunk}\n\n"
+        rag_context = _rag_query(business_id, incoming_msg)
+        log.info(f"[AI] RAG context length: {len(rag_context)} chars")
+
+    # Deterministic answer path for faculty-list queries when context exists.
+    # This avoids LLM fallback responses for a structured, list-style intent.
+    if rag_enabled and rag_context and _is_faculty_list_query(incoming_msg):
+        names = _extract_faculty_names(rag_context)
+        source_url = _extract_source_url(rag_context) or 'https://www.iiitnr.ac.in/faculty'
+        if names:
+            lines = '\n'.join(f"- {n}" for n in names[:20])
+            return (
+                "Here are faculty members available in the knowledge base:\n\n"
+                f"{lines}\n\n"
+                f"Official Link: {source_url}"
+            )
+        return (
+            "I found faculty-related information but could not reliably extract names from the indexed text.\n"
+            f"Please check the official faculty page: {source_url}"
+        )
+
+    # ── Build system prompt ────────────────────────────────
+    business_name = bot.get('businessName', 'this business')
+    if bot.get('aiSystemPrompt'):
+        # User-defined system prompt — append RAG instruction if RAG is on
+        system_prompt = bot['aiSystemPrompt']
+        if rag_enabled:
+            system_prompt += (
+                "\n\nIMPORTANT: You have been provided a knowledge base context below. "
+                "Answer ONLY from that context. Do NOT use your general training knowledge. "
+                "Do NOT invent facts, links, numbers, or names that are not in the context. "
+                "If the answer is not in the context, say exactly: "
+                "'I don't have that information in my knowledge base. Please contact us directly.'"
+            )
+    elif rag_enabled:
+        # RAG bot with no custom prompt — strict retrieval-only mode
+        system_prompt = (
+            f"You are a helpful assistant for {business_name}. "
+            "Answer ONLY using the knowledge base context provided below. "
+            "Do NOT use your general training knowledge. "
+            "Do NOT invent facts, prices, links, phone numbers, or names that are not in the context. "
+            "Reply in the same language the user writes in. "
+            "If the answer is not in the context, say exactly: "
+            "'I don't have that information in my knowledge base. Please contact us directly.'"
+        )
+    else:
+        system_prompt = (
+            f"You are a helpful assistant for *{business_name}*. "
+            "Answer clearly and concisely. Reply in the same language the user writes in."
+        )
 
     # ── Full prompt ────────────────────────────────────────
+    if rag_enabled and rag_context:
+        context_block = f"--- KNOWLEDGE BASE CONTEXT ---\n{rag_context}\n--- END CONTEXT ---\n\n"
+    elif rag_enabled and not rag_context:
+        # RAG enabled but no context found — do NOT let the model hallucinate.
+        # Return a safe fallback immediately without calling Ollama.
+        fallback = (
+            bot.get('fallbackMessage') or
+            "I couldn't find relevant information about that in my knowledge base. "
+            "Please contact us directly for assistance."
+        )
+        log.warning(f"[AI] RAG enabled but no context found for query: {incoming_msg[:80]!r} — returning fallback")
+        return fallback
+    else:
+        context_block = ''
+
     prompt = (
         f"{system_prompt}\n\n"
-        f"{rag_context}"
+        f"{context_block}"
         f"Conversation so far:\n{history_str}"
         f"User: {incoming_msg}\nAssistant:"
     )
 
+    log.info(f"[AI] Sending prompt to Ollama (model={model_name!r}, rag={rag_enabled}, ctx_chars={len(rag_context)})")
+
     try:
-        llm      = OllamaLLM(model=model_name, base_url='http://localhost:11434')
-        response = llm.invoke(prompt)
-        return str(response).strip()
+        resp = _req.post(
+            'http://localhost:11434/api/generate',
+            json={'model': model_name, 'prompt': prompt, 'stream': False},
+            timeout=120,
+        )
+        resp.raise_for_status()
+        reply = resp.json().get('response', '').strip()
+        log.info(f"[AI] Ollama reply: {reply[:200]!r}")
+        return reply
     except Exception as exc:
         log.error(f"[AI] Ollama error (model={model_name!r}): {exc}")
         return (
@@ -513,10 +831,62 @@ def upload_kb(business_id: str):
         try:
             import json as _json
             data = _json.loads(raw)
-            if isinstance(data, list):
-                texts = [_json.dumps(item, ensure_ascii=False) for item in data]
+            if isinstance(data, list) and data and isinstance(data[0], dict):
+                # Detect scraped-website format: [{url, title, section, content, key_links}, ...]
+                if 'content' in data[0]:
+                    for item in data:
+                        content   = item.get('content', '')
+                        title     = item.get('title', '')
+                        url       = item.get('url', '')
+                        section   = item.get('section', '')
+                        key_links = item.get('key_links', [])  # [{text, url}, ...]
+
+                        # Strip nav boilerplate — everything before "Home >" is nav menu
+                        # (only needed for older scraped files; new scraper already strips this)
+                        home_idx = content.find('Home >')
+                        if home_idx != -1:
+                            content = content[home_idx + len('Home >'):]
+
+                        # Strip repeated footer/contact block
+                        for footer_marker in ('Contact IIIT', 'Sitemap Terms', 'Back to Top',
+                                              'Plot No. 7, Sector 24'):
+                            idx = content.find(footer_marker)
+                            if idx != -1:
+                                content = content[:idx]
+                                break
+
+                        content = content.strip()
+                        if not content:
+                            continue
+
+                        # Build rich text block so model sees REAL URLs to cite
+                        parts = []
+                        parts.append(f"Source URL: {url}")
+                        if title:
+                            parts.append(f"Page Title: {title}")
+                        if section:
+                            parts.append(f"Section: {section}")
+                        parts.append('')
+                        parts.append(content)
+
+                        # Append key links so model can cite specific sub-links
+                        if key_links:
+                            parts.append('')
+                            parts.append('Related links on this page:')
+                            for lnk in key_links[:15]:
+                                lnk_text = lnk.get('text', '')
+                                lnk_url  = lnk.get('url', '')
+                                if lnk_text and lnk_url:
+                                    parts.append(f"  - {lnk_text}: {lnk_url}")
+
+                        texts.append('\n'.join(parts))
+                else:
+                    # Generic list of objects — stringify each
+                    texts = [_json.dumps(item, ensure_ascii=False) for item in data]
+            elif isinstance(data, list):
+                texts = [str(item) for item in data]
             elif isinstance(data, dict):
-                # Support {question: answer, ...} or [{q:.., a:..}, ...]
+                # Support {question: answer, ...}
                 texts = [f"{k}: {v}" for k, v in data.items()]
             else:
                 texts = [raw]
@@ -533,33 +903,68 @@ def upload_kb(business_id: str):
             texts = [raw]
 
     try:
-        from langchain.text_splitter import RecursiveCharacterTextSplitter
-        from langchain_ollama import OllamaEmbeddings
-        from langchain_community.vectorstores import Chroma
-        from langchain.schema import Document
+        import chromadb, uuid as _uuid
+        import requests as _req
+        from concurrent.futures import ThreadPoolExecutor
 
-        splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=60)
-        docs = [
-            Document(page_content=chunk, metadata={'source': filename})
-            for text in texts
-            for chunk in splitter.split_text(text)
-            if chunk.strip()
-        ]
-        if not docs:
+        started_at = time.perf_counter()
+
+        # Chunk all parsed texts
+        all_chunks = [c for text in texts for c in _chunk_text(text) if c.strip()]
+        if not all_chunks:
             return jsonify({'error': 'No usable content found in file'}), 400
+
+        embedding_model = os.getenv('OLLAMA_EMBEDDING_MODEL', 'nomic-embed-text')
+        max_workers = max(1, int(os.getenv('KB_EMBED_WORKERS', '4')))
+
+        log.info(
+            f"[RAG] Starting embedding for {len(all_chunks)} chunks "
+            f"(model={embedding_model}, workers={max_workers})"
+        )
+
+        # Embed chunks in parallel to reduce ingestion latency.
+        def _embed_chunk(chunk: str) -> list:
+            emb_resp = _req.post(
+                'http://localhost:11434/api/embeddings',
+                json={'model': embedding_model, 'prompt': chunk},
+                timeout=120,
+            )
+            if emb_resp.status_code != 200:
+                raise Exception(f"Ollama embedding error: {emb_resp.text}")
+            return emb_resp.json()['embedding']
+
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            embeddings_list = list(executor.map(_embed_chunk, all_chunks))
 
         store_path = os.path.join(_VECTOR_STORE_ROOT, business_id)
         os.makedirs(store_path, exist_ok=True)
 
-        embeddings = OllamaEmbeddings(model='nomic-embed-text', base_url='http://localhost:11434')
-        Chroma.from_documents(docs, embeddings, persist_directory=store_path)
+        client = chromadb.PersistentClient(path=store_path)
+        # Delete existing collection so re-uploads don't duplicate chunks
+        try:
+            client.delete_collection(_KB_COLLECTION)
+            log.info(f"[RAG] Cleared existing KB collection for bot {business_id}")
+        except Exception:
+            pass
+        collection = client.create_collection(_KB_COLLECTION)
+        ids        = [str(_uuid.uuid4()) for _ in all_chunks]
+        metadatas  = [{'source': filename} for _ in all_chunks]
+        collection.add(documents=all_chunks, embeddings=embeddings_list, ids=ids, metadatas=metadatas)
 
-        log.info(f"[RAG] Ingested {len(docs)} chunks for bot {business_id} from {filename!r}")
-        return jsonify({'message': f'Ingested {len(docs)} chunks from {filename}', 'chunks': len(docs)})
+        elapsed_seconds = round(time.perf_counter() - started_at, 2)
+        log.info(
+            f"[RAG] Ingested {len(all_chunks)} chunks for bot {business_id} "
+            f"from {filename!r} in {elapsed_seconds}s"
+        )
+        return jsonify({
+            'message': f'Ingested {len(all_chunks)} chunks from {filename}',
+            'chunks': len(all_chunks),
+            'embeddingModel': embedding_model,
+            'elapsedSeconds': elapsed_seconds,
+        })
 
     except ImportError:
-        return jsonify({'error': 'langchain-ollama or chromadb not installed on server. '
-                                 'Run: pip install langchain-ollama chromadb'}), 500
+        return jsonify({'error': 'chromadb not installed. Run: pip install chromadb'}), 500
     except Exception as exc:
         log.error(f"[RAG] KB upload failed for {business_id}: {exc}")
         return jsonify({'error': str(exc)}), 500
@@ -572,11 +977,10 @@ def get_kb_info(business_id: str):
     if not os.path.exists(store_path):
         return jsonify({'exists': False, 'chunks': 0})
     try:
-        from langchain_ollama import OllamaEmbeddings
-        from langchain_community.vectorstores import Chroma
-        embeddings = OllamaEmbeddings(model='nomic-embed-text', base_url='http://localhost:11434')
-        db    = Chroma(persist_directory=store_path, embedding_function=embeddings)
-        count = db._collection.count()
+        import chromadb
+        client     = chromadb.PersistentClient(path=store_path)
+        collection = client.get_collection(_KB_COLLECTION)
+        count      = collection.count()
         return jsonify({'exists': True, 'chunks': count})
     except Exception:
         return jsonify({'exists': True, 'chunks': -1})
@@ -714,6 +1118,52 @@ def activate_bot():
         'activatedAt':     now.isoformat(),
         'webhookUrl':      webhook_url
     })
+
+
+# ═════════════════════════════════════════════════════════════
+# ── ROUTE: Bot Deactivation
+# ═════════════════════════════════════════════════════════════
+
+@app.route('/api/bot/deactivate', methods=['POST'])
+def deactivate_bot():
+    """
+    Deactivate a bot — removes its allocated number and sets status to inactive.
+    After this, the Twilio number will route to whichever other bot is activated next.
+
+    Body:
+        { "businessId": "...", "userId": "..." }
+    """
+    data        = request.get_json(force=True) or {}
+    business_id = data.get('businessId')
+    user_id     = data.get('userId')
+
+    if not business_id or not user_id:
+        return jsonify({'error': 'businessId and userId are required'}), 400
+
+    bot = bots_col.find_one({'businessId': business_id, 'ownerUserId': user_id})
+    if not bot:
+        return jsonify({'error': 'Bot not found'}), 404
+
+    now = _now()
+    bots_col.update_one(
+        {'businessId': business_id, 'ownerUserId': user_id},
+        {
+            '$set': {
+                'verificationStatus': 'inactive',
+                'updatedAt':          now,
+            },
+            '$unset': {
+                'allocatedNumber': '',
+                'activatedAt':     '',
+            }
+        }
+    )
+
+    # Drop all active sessions tied to this bot so customers aren't stuck
+    sessions_col.delete_many({'businessId': business_id})
+
+    log.info(f"[DEACTIVATE] Bot {business_id} deactivated")
+    return jsonify({'message': 'Bot deactivated successfully', 'businessId': business_id})
 
 
 # ═════════════════════════════════════════════════════════════

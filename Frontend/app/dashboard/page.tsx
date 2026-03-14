@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useUser, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X, MessageCircle, BookOpen, Zap, Copy, CheckCircle, ExternalLink } from 'lucide-react'
+import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X, MessageCircle, BookOpen, Zap, Copy, CheckCircle, ExternalLink, Trash2 } from 'lucide-react'
 
 interface BotData {
   _id: string
@@ -21,8 +21,26 @@ interface BotData {
   humanHandoff: boolean
   messageLimit: number
   messageBalance: number
+  totalMessages?: number
   createdAt: string
   allocatedNumber?: string
+  // Editable extended fields
+  welcomeMessage?: string
+  fallbackMessage?: string
+  humanHandoffMessage?: string
+  keywordResponses?: Record<string, string>
+  mandis?: { name: string; location: string; address: string }[]
+  slots?: string[]
+  maxBookingsPerSlot?: number
+  city?: string
+  country?: string
+  defaultLanguage?: string
+  businessHours?: string
+  // AI fields
+  botType?: 'normal' | 'ai'
+  aiModel?: string
+  aiSystemPrompt?: string
+  aiRagEnabled?: boolean
 }
 
 export default function DashboardPage() {
@@ -32,6 +50,18 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activatingBotId, setActivatingBotId] = useState<string | null>(null)
+  const [deactivatingBotId, setDeactivatingBotId] = useState<string | null>(null)
+  const [deletingBotId, setDeletingBotId] = useState<string | null>(null)
+  const [confirmDeleteBot, setConfirmDeleteBot] = useState<BotData | null>(null)
+
+  // ── Edit Bot state ──────────────────────────────────────────
+  const [editBot, setEditBot] = useState<BotData | null>(null)
+  const [editDraft, setEditDraft] = useState<Record<string, unknown>>({})
+  const [editKeywords, setEditKeywords] = useState<{ keyword: string; response: string }[]>([])
+  const [editMandiList, setEditMandiList] = useState<{ name: string; location: string; address: string }[]>([])
+  const [editSlotTimes, setEditSlotTimes] = useState<string[]>([])
+  const [editMaxPerSlot, setEditMaxPerSlot] = useState(10)
+  const [editSaving, setEditSaving] = useState(false)
   const [activationModal, setActivationModal] = useState<{
     botName: string
     allocatedNumber: string
@@ -65,6 +95,166 @@ export default function DashboardPage() {
     setTimeout(() => setCopiedField(null), 2000)
   }
 
+  const deleteBot = async (bot: BotData) => {
+    setDeletingBotId(bot.businessId)
+    setConfirmDeleteBot(null)
+    try {
+      const res = await fetch('/api/bot', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ businessId: bot.businessId })
+      })
+      if (res.ok) {
+        setBots(prev => prev.filter(b => b.businessId !== bot.businessId))
+        setStats(prev => ({
+          ...prev,
+          totalBots: prev.totalBots - 1,
+          activeBots: bot.verificationStatus === 'verified' ? prev.activeBots - 1 : prev.activeBots
+        }))
+      } else {
+        const data = await res.json()
+        alert(data.message || 'Failed to delete bot')
+      }
+    } catch {
+      alert('Failed to connect to server')
+    } finally {
+      setDeletingBotId(null)
+    }
+  }
+
+  // ── AI KB state ──────────────────────────────────────────
+  const [kbInfo, setKbInfo] = useState<{ exists: boolean; chunks: number } | null>(null)
+  const [kbUploading, setKbUploading] = useState(false)
+  const [kbUploadProgress, setKbUploadProgress] = useState<number | null>(null)
+  const [ollamaModels, setOllamaModels] = useState<string[]>([])
+  const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:5000'
+
+  const fetchKbInfo = async (businessId: string) => {
+    try {
+      const res = await fetch(`${BACKEND}/api/ai/kb/${businessId}`)
+      const data = await res.json()
+      setKbInfo(data)
+    } catch { setKbInfo(null) }
+  }
+
+  const fetchOllamaModels = async () => {
+    try {
+      const res = await fetch('/api/ai/models')
+      const data = await res.json()
+      if (data.models?.length) setOllamaModels(data.models)
+    } catch { /* ignore */ }
+  }
+
+  const uploadKbFile = (businessId: string, file: File) => {
+    setKbUploading(true)
+    setKbUploadProgress(0)
+    const fd = new FormData()
+    fd.append('file', file)
+    const xhr = new XMLHttpRequest()
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) setKbUploadProgress(Math.round((e.loaded / e.total) * 100))
+    }
+    xhr.upload.onload = () => setKbUploadProgress(100) // upload done, now server is embedding
+    xhr.onload = () => {
+      try {
+        const data = JSON.parse(xhr.responseText)
+        if (xhr.status >= 200 && xhr.status < 300) fetchKbInfo(businessId)
+        else alert(`❌ ${data.error || 'Upload failed'}`)
+      } catch { alert('Upload failed — unexpected response') }
+      setKbUploadProgress(null)
+      setKbUploading(false)
+    }
+    xhr.onerror = () => { alert('Upload failed — is Flask running?'); setKbUploadProgress(null); setKbUploading(false) }
+    xhr.open('POST', `${BACKEND}/api/ai/kb/${businessId}`)
+    xhr.send(fd)
+  }
+
+  const deleteKb = async (businessId: string) => {
+    if (!confirm('Delete the entire knowledge base for this bot?')) return
+    await fetch(`${BACKEND}/api/ai/kb/${businessId}`, { method: 'DELETE' })
+    setKbInfo({ exists: false, chunks: 0 })
+  }
+  // ─────────────────────────────────────────────────────────
+
+  // ── Edit helpers ────────────────────────────────────────────
+  const openEditModal = (bot: BotData) => {
+    setEditBot(bot)
+    setKbInfo(null)
+    if (bot.botType === 'ai') {
+      fetchKbInfo(bot.businessId)
+      fetchOllamaModels()
+    }
+    setEditDraft({
+      botName: bot.botName || '',
+      businessName: bot.businessName || '',
+      useCaseType: bot.useCaseType || '',
+      category: bot.category || '',
+      city: bot.city || '',
+      country: bot.country || '',
+      defaultLanguage: bot.defaultLanguage || '',
+      businessHours: bot.businessHours || '',
+      autoReply: bot.autoReply ?? false,
+      humanHandoff: bot.humanHandoff ?? false,
+      welcomeMessage: bot.welcomeMessage || '',
+      fallbackMessage: bot.fallbackMessage || '',
+      humanHandoffMessage: bot.humanHandoffMessage || '',
+      maxBookingsPerSlot: bot.maxBookingsPerSlot ?? 10,
+      // AI fields
+      botType: bot.botType ?? 'normal',
+      aiModel: bot.aiModel ?? 'llama3.2',
+      aiSystemPrompt: bot.aiSystemPrompt ?? '',
+      aiRagEnabled: bot.aiRagEnabled ?? false,
+    })
+    const kw = bot.keywordResponses ?? {}
+    setEditKeywords(
+      Object.keys(kw).length
+        ? Object.entries(kw).map(([keyword, response]) => ({ keyword, response: response as string }))
+        : [{ keyword: '', response: '' }]
+    )
+    setEditMandiList(bot.mandis?.length ? bot.mandis : [{ name: '', location: '', address: '' }])
+    setEditSlotTimes(bot.slots?.length ? bot.slots : ['9:00 AM – 10:00 AM'])
+    setEditMaxPerSlot(bot.maxBookingsPerSlot ?? 10)
+  }
+
+  const saveEdit = async () => {
+    if (!editBot) return
+    setEditSaving(true)
+    try {
+      const keywordResponses = editKeywords.reduce((acc: Record<string, string>, { keyword, response }) => {
+        if (keyword.trim()) acc[keyword.trim().toLowerCase()] = response.trim()
+        return acc
+      }, {})
+      const body: Record<string, unknown> = {
+        businessId: editBot.businessId,
+        ...editDraft,
+        keywordResponses,
+        ...(editDraft.useCaseType === 'mandi_booking' && {
+          mandis: editMandiList.filter(m => m.name.trim()),
+          slots: editSlotTimes.filter(s => s.trim()),
+          maxBookingsPerSlot: editMaxPerSlot,
+        }),
+      }
+      const res = await fetch('/api/bot', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        setBots(prev => prev.map(b => b.businessId === editBot.businessId ? { ...b, ...data.bot } : b))
+        setEditBot(null)
+      } else {
+        const data = await res.json()
+        alert(data.message || 'Failed to save changes')
+      }
+    } catch {
+      alert('Failed to connect to server')
+    } finally {
+      setEditSaving(false)
+    }
+  }
+  // ────────────────────────────────────────────────────────────
+
   const fetchBots = async () => {
     try {
       const response = await fetch('/api/bot')
@@ -75,7 +265,10 @@ export default function DashboardPage() {
         // Calculate stats
         const totalBots = data.bots.length
         const activeBots = data.bots.filter((bot: BotData) => bot.verificationStatus === 'verified').length
-        const totalMessages = data.bots.reduce((sum: number, bot: BotData) => sum + (bot.messageBalance || 0), 0)
+        const totalMessages = data.bots.reduce(
+          (sum: number, bot: BotData) => sum + (bot.totalMessages ?? bot.messageBalance ?? 0),
+          0
+        )
         
         // Fetch total conversations across all bots
         let totalConversations = 0
@@ -150,6 +343,33 @@ export default function DashboardPage() {
       alert('Failed to connect to backend. Is the Python server running?')
     } finally {
       setActivatingBotId(null)
+    }
+  }
+
+  const deactivateBot = async (bot: BotData) => {
+    if (!confirm(`Deactivate "${bot.botName}"? It will stop receiving messages.`)) return
+    setDeactivatingBotId(bot.businessId)
+    try {
+      const res = await fetch('/api/bot/deactivate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ businessId: bot.businessId, userId: user?.id })
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setBots(prev => prev.map(b =>
+          b.businessId === bot.businessId
+            ? { ...b, verificationStatus: 'inactive', allocatedNumber: undefined }
+            : b
+        ))
+        setStats(prev => ({ ...prev, activeBots: Math.max(0, prev.activeBots - 1) }))
+      } else {
+        alert(data.error || 'Failed to deactivate bot')
+      }
+    } catch {
+      alert('Failed to connect to backend. Is the Python server running?')
+    } finally {
+      setDeactivatingBotId(null)
     }
   }
 
@@ -406,6 +626,9 @@ export default function DashboardPage() {
                         <div className="flex items-center gap-2">
                           <Bot className="w-4 h-4 text-blue-400" />
                           <span className="font-medium">{bot.botName}</span>
+                          {bot.botType === 'ai' && (
+                            <span className="text-xs font-medium bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 px-1.5 py-0.5 rounded-full">AI</span>
+                          )}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -438,7 +661,8 @@ export default function DashboardPage() {
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm">{bot.messageBalance || 0} / {bot.messageLimit || 0}</div>
+                        <div className="text-sm">{bot.totalMessages ?? 0} sent</div>
+                        <div className="text-xs text-white/60">Balance: {bot.messageBalance || 0} / {bot.messageLimit || 0}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex gap-2">
@@ -459,25 +683,54 @@ export default function DashboardPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            onClick={() => activateBot(bot)}
-                            disabled={activatingBotId === bot.businessId}
-                            className="bg-green-600 hover:bg-green-500 text-white text-xs px-3 h-7"
-                          >
-                            <Zap className="w-3 h-3 mr-1" />
-                            {activatingBotId === bot.businessId ? 'Activating…' : 'Activate'}
-                          </Button>
+                          {bot.verificationStatus === 'verified' ? (
+                            <Button
+                              size="sm"
+                              onClick={() => deactivateBot(bot)}
+                              disabled={deactivatingBotId === bot.businessId}
+                              className="bg-yellow-600 hover:bg-yellow-500 text-white text-xs px-3 h-7"
+                            >
+                              <Zap className="w-3 h-3 mr-1" />
+                              {deactivatingBotId === bot.businessId ? 'Deactivating…' : 'Deactivate'}
+                            </Button>
+                          ) : (
+                            <Button
+                              size="sm"
+                              onClick={() => activateBot(bot)}
+                              disabled={activatingBotId === bot.businessId}
+                              className="bg-green-600 hover:bg-green-500 text-white text-xs px-3 h-7"
+                            >
+                              <Zap className="w-3 h-3 mr-1" />
+                              {activatingBotId === bot.businessId ? 'Activating…' : 'Activate'}
+                            </Button>
+                          )}
                           <Link href={`/chats/${bot.businessId}`}>
                             <Button variant="ghost" size="sm" className="text-white/60 hover:text-white" title="View Chats">
                               <MessageCircle className="w-4 h-4" />
                             </Button>
                           </Link>
-                          <Button variant="ghost" size="sm" className="text-white/60 hover:text-white" title="Settings">
+                          {bot.useCaseType === 'mandi_booking' && (
+                            <Link href={`/dashboard/bookings?businessId=${bot.businessId}`}>
+                              <Button variant="ghost" size="sm" className="text-yellow-400/60 hover:text-yellow-400" title="View Mandi Bookings">
+                                <BookOpen className="w-4 h-4" />
+                              </Button>
+                            </Link>
+                          )}
+                          <Button variant="ghost" size="sm" onClick={() => openEditModal(bot)} className="text-white/60 hover:text-white" title="Edit Bot">
                             <Settings className="w-4 h-4" />
                           </Button>
                           <Button variant="ghost" size="sm" className="text-white/60 hover:text-white" title="Analytics">
                             <BarChart3 className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setConfirmDeleteBot(bot)}
+                            disabled={deletingBotId === bot.businessId}
+                            className="text-red-400/50 hover:text-red-400 hover:bg-red-500/10"
+                            title="Delete Bot"
+                          >
+                            <Trash2 className="w-4 h-4" />
                           </Button>
                         </div>
                       </td>
@@ -491,6 +744,391 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
+
+    {/* ── Edit Bot Modal ── */}
+    {editBot && (
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="bg-zinc-900 border border-white/20 rounded-2xl w-full max-w-2xl shadow-[0_0_60px_rgba(255,255,255,0.07)] my-4">
+          {/* Header */}
+          <div className="flex items-center justify-between px-8 py-5 border-b border-white/10">
+            <div>
+              <h2 className="text-xl font-light text-white">Edit Bot</h2>
+              <p className="text-xs text-white/40 mt-0.5">{editBot.botName}</p>
+            </div>
+            <button onClick={() => setEditBot(null)} className="text-white/40 hover:text-white transition-colors">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div className="px-8 py-6 space-y-6 max-h-[75vh] overflow-y-auto">
+
+            {/* Basic Info */}
+            <div>
+              <h3 className="text-xs uppercase tracking-wider text-white/40 mb-3">Basic Info</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {([
+                  ['botName', 'Bot Name *'],
+                  ['businessName', 'Business Name'],
+                  ['city', 'City'],
+                  ['country', 'Country'],
+                  ['defaultLanguage', 'Language'],
+                  ['businessHours', 'Business Hours'],
+                ] as [string, string][]).map(([field, label]) => (
+                  <div key={field}>
+                    <label className="block text-xs text-white/50 mb-1.5">{label}</label>
+                    <input
+                      type="text"
+                      value={String(editDraft[field] ?? '')}
+                      onChange={e => setEditDraft(prev => ({ ...prev, [field]: e.target.value }))}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30"
+                    />
+                  </div>
+                ))}
+                <div>
+                  <label className="block text-xs text-white/50 mb-1.5">Use-case Type</label>
+                  <select
+                    value={String(editDraft.useCaseType ?? '')}
+                    onChange={e => setEditDraft(prev => ({ ...prev, useCaseType: e.target.value }))}
+                    className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30"
+                  >
+                    <option value="booking">Booking</option>
+                    <option value="faq">FAQ</option>
+                    <option value="orders">Orders</option>
+                    <option value="leads">Leads</option>
+                    <option value="mandi_booking">🌾 Mandi Booking</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Toggles */}
+            <div>
+              <h3 className="text-xs uppercase tracking-wider text-white/40 mb-3">Behaviour</h3>
+              <div className="flex gap-4">
+                {(['autoReply', 'humanHandoff'] as const).map(field => (
+                  <label key={field} className="flex items-center gap-2 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(editDraft[field])}
+                      onChange={e => setEditDraft(prev => ({ ...prev, [field]: e.target.checked }))}
+                      className="w-4 h-4 accent-white"
+                    />
+                    <span className="text-sm text-white/70">{field === 'autoReply' ? 'Auto Reply' : 'Human Handoff'}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Auto-reply messages */}
+            {editDraft.autoReply && (
+              <div className="space-y-3 p-4 bg-green-500/5 border border-green-500/20 rounded-xl">
+                <h3 className="text-xs font-medium text-green-400">🤖 Auto-Reply Messages</h3>
+                {([
+                  ['welcomeMessage', 'Welcome Message', 'Sent on hi/hello'],
+                  ['fallbackMessage', 'Fallback Message', 'Sent when no keyword matches'],
+                ] as [string, string, string][]).map(([field, label, hint]) => (
+                  <div key={field}>
+                    <label className="block text-xs text-white/50 mb-1">{label}</label>
+                    <textarea
+                      rows={2}
+                      value={String(editDraft[field] ?? '')}
+                      onChange={e => setEditDraft(prev => ({ ...prev, [field]: e.target.value }))}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30 resize-none"
+                    />
+                    <p className="text-xs text-white/30 mt-0.5">{hint}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {editDraft.humanHandoff && (
+              <div className="p-4 bg-blue-500/5 border border-blue-500/20 rounded-xl">
+                <label className="block text-xs text-blue-400 mb-2">👤 Human Handoff Message</label>
+                <textarea
+                  rows={2}
+                  value={String(editDraft.humanHandoffMessage ?? '')}
+                  onChange={e => setEditDraft(prev => ({ ...prev, humanHandoffMessage: e.target.value }))}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30 resize-none"
+                />
+              </div>
+            )}
+
+            {/* Keyword Responses — Normal bots only */}
+            {editDraft.useCaseType !== 'mandi_booking' && editDraft.botType !== 'ai' && (
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-xs uppercase tracking-wider text-white/40">🔑 Keyword Responses</h3>
+                  <button
+                    type="button"
+                    onClick={() => setEditKeywords(prev => [...prev, { keyword: '', response: '' }])}
+                    className="text-xs text-white/50 hover:text-white border border-white/20 px-2 py-0.5 rounded transition-colors"
+                  >+ Add</button>
+                </div>
+                <div className="space-y-2">
+                  {editKeywords.map((pair, i) => (
+                    <div key={i} className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        value={pair.keyword}
+                        onChange={e => setEditKeywords(prev => prev.map((p, idx) => idx === i ? { ...p, keyword: e.target.value } : p))}
+                        placeholder="Keyword"
+                        className="w-1/3 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-white text-xs focus:outline-none focus:border-white/30"
+                      />
+                      <input
+                        type="text"
+                        value={pair.response}
+                        onChange={e => setEditKeywords(prev => prev.map((p, idx) => idx === i ? { ...p, response: e.target.value } : p))}
+                        placeholder="Reply"
+                        className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-white text-xs focus:outline-none focus:border-white/30"
+                      />
+                      {editKeywords.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => setEditKeywords(prev => prev.filter((_, idx) => idx !== i))}
+                          className="text-red-400/60 hover:text-red-400 px-1.5 text-base transition-colors">×</button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── AI Bot Config ──────────────────────────────────── */}
+            {editDraft.botType === 'ai' && (
+              <div className="space-y-4 p-4 bg-cyan-500/5 border border-cyan-500/20 rounded-xl">
+                <h3 className="text-xs font-medium text-cyan-400">🧠 AI Bot Configuration</h3>
+
+                {/* Model */}
+                <div>
+                  <label className="block text-xs text-white/50 mb-1.5">Ollama Model</label>
+                  {ollamaModels.length > 0 ? (
+                    <select
+                      value={String(editDraft.aiModel ?? 'llama3.2')}
+                      onChange={e => setEditDraft(prev => ({ ...prev, aiModel: e.target.value }))}
+                      className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30"
+                    >
+                      {ollamaModels.map(m => <option key={m} value={m}>{m}</option>)}
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      value={String(editDraft.aiModel ?? 'llama3.2')}
+                      onChange={e => setEditDraft(prev => ({ ...prev, aiModel: e.target.value }))}
+                      placeholder="e.g. llama3.2, mistral, phi3"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30"
+                    />
+                  )}
+                </div>
+
+                {/* System Prompt */}
+                <div>
+                  <label className="block text-xs text-white/50 mb-1.5">System Prompt</label>
+                  <textarea
+                    rows={4}
+                    value={String(editDraft.aiSystemPrompt ?? '')}
+                    onChange={e => setEditDraft(prev => ({ ...prev, aiSystemPrompt: e.target.value }))}
+                    placeholder="Describe the AI's personality and role..."
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30 resize-none"
+                  />
+                </div>
+
+                {/* RAG toggle */}
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(editDraft.aiRagEnabled)}
+                    onChange={e => {
+                      setEditDraft(prev => ({ ...prev, aiRagEnabled: e.target.checked }))
+                      if (e.target.checked && editBot) fetchKbInfo(editBot.businessId)
+                    }}
+                    className="w-4 h-4 accent-purple-400"
+                  />
+                  <span className="text-sm text-purple-300">Enable RAG (Knowledge Base)</span>
+                </label>
+
+                {/* Knowledge Base Manager */}
+                {editDraft.aiRagEnabled && editBot && (
+                  <div className="p-3 bg-purple-500/5 border border-purple-500/20 rounded-lg space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-purple-300 font-medium">📚 Knowledge Base</span>
+                      {kbInfo && (
+                        <span className="text-xs text-white/40">
+                          {kbInfo.exists ? `${kbInfo.chunks} chunks indexed` : 'No documents yet'}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-white/40">Upload TXT, JSON, or CSV files. Each upload appends to the existing knowledge base.</p>
+
+                    {/* Progress bar */}
+                    {kbUploading && (
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-xs text-white/40">
+                          <span>{kbUploadProgress !== null && kbUploadProgress < 100 ? `Uploading…` : '⏳ Embedding chunks…'}</span>
+                          {kbUploadProgress !== null && kbUploadProgress < 100 && <span>{kbUploadProgress}%</span>}
+                        </div>
+                        <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                          {kbUploadProgress !== null && kbUploadProgress < 100 ? (
+                            <div className="h-full bg-purple-500 rounded-full transition-all duration-150" style={{ width: `${kbUploadProgress}%` }} />
+                          ) : (
+                            <div className="h-full w-full bg-purple-500/60 rounded-full animate-pulse" />
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex gap-2">
+                      <label className="flex-1 cursor-pointer">
+                        <div className={`border rounded-lg px-3 py-2 text-xs text-center transition-colors ${
+                          kbUploading
+                            ? 'bg-white/5 border-purple-500/30 text-purple-400/50 cursor-wait'
+                            : 'bg-white/5 border-white/10 hover:border-white/30 text-white/60 hover:text-white'
+                        }`}>
+                          {kbUploading
+                            ? (kbUploadProgress !== null && kbUploadProgress < 100 ? `Uploading ${kbUploadProgress}%…` : 'Embedding…')
+                            : '⬆ Upload File (.txt / .json / .csv)'}
+                        </div>
+                        <input
+                          type="file"
+                          accept=".txt,.json,.csv,.md"
+                          className="hidden"
+                          disabled={kbUploading}
+                          onChange={e => {
+                            const f = e.target.files?.[0]
+                            if (f) uploadKbFile(editBot.businessId, f)
+                            e.target.value = ''
+                          }}
+                        />
+                      </label>
+                      {kbInfo?.exists && (
+                        <button
+                          type="button"
+                          onClick={() => deleteKb(editBot.businessId)}
+                          className="text-xs text-red-400/60 hover:text-red-400 border border-red-500/20 px-3 py-2 rounded-lg transition-colors"
+                        >
+                          🗑 Clear KB
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            {/* ──────────────────────────────────────────────────── */}
+
+            {/* Mandi Config — Normal bots only */}
+            {editDraft.useCaseType === 'mandi_booking' && editDraft.botType !== 'ai' && (
+              <div className="space-y-4 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-xl">
+                <h3 className="text-xs font-medium text-yellow-400">🌾 Mandi Booking Config</h3>
+
+                {/* Mandis */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs text-white/50">Mandis</label>
+                    <button type="button"
+                      onClick={() => setEditMandiList(prev => [...prev, { name: '', location: '', address: '' }])}
+                      className="text-xs text-yellow-400/70 hover:text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded transition-colors">+ Add</button>
+                  </div>
+                  {editMandiList.map((m, i) => (
+                    <div key={i} className="grid grid-cols-3 gap-2 mb-2 items-center">
+                      <input type="text" value={m.name} placeholder="Name *"
+                        onChange={e => setEditMandiList(prev => prev.map((x, idx) => idx === i ? { ...x, name: e.target.value } : x))}
+                        className="bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-white text-xs focus:outline-none focus:border-white/30" />
+                      <input type="text" value={m.location} placeholder="Location"
+                        onChange={e => setEditMandiList(prev => prev.map((x, idx) => idx === i ? { ...x, location: e.target.value } : x))}
+                        className="bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-white text-xs focus:outline-none focus:border-white/30" />
+                      <div className="flex gap-1 items-center">
+                        <input type="text" value={m.address} placeholder="Address"
+                          onChange={e => setEditMandiList(prev => prev.map((x, idx) => idx === i ? { ...x, address: e.target.value } : x))}
+                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-white text-xs focus:outline-none focus:border-white/30" />
+                        {editMandiList.length > 1 && (
+                          <button type="button" onClick={() => setEditMandiList(prev => prev.filter((_, idx) => idx !== i))}
+                            className="text-red-400/60 hover:text-red-400 text-base leading-none transition-colors">×</button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Slots */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs text-white/50">Time Slots</label>
+                    <button type="button" onClick={() => setEditSlotTimes(prev => [...prev, ''])}
+                      className="text-xs text-yellow-400/70 hover:text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded transition-colors">+ Add</button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {editSlotTimes.map((s, i) => (
+                      <div key={i} className="flex gap-1 items-center">
+                        <input type="text" value={s} placeholder="e.g. 9:00 AM – 10:00 AM"
+                          onChange={e => setEditSlotTimes(prev => prev.map((x, idx) => idx === i ? e.target.value : x))}
+                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-white text-xs focus:outline-none focus:border-white/30" />
+                        {editSlotTimes.length > 1 && (
+                          <button type="button" onClick={() => setEditSlotTimes(prev => prev.filter((_, idx) => idx !== i))}
+                            className="text-red-400/60 hover:text-red-400 text-base leading-none transition-colors">×</button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Max per slot */}
+                <div>
+                  <label className="block text-xs text-white/50 mb-1.5">Max Bookings per Slot</label>
+                  <input type="number" min={1} max={500} value={editMaxPerSlot}
+                    onChange={e => setEditMaxPerSlot(Number(e.target.value))}
+                    className="w-24 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-white/30" />
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Footer */}
+          <div className="flex gap-3 px-8 py-5 border-t border-white/10">
+            <button
+              onClick={() => setEditBot(null)}
+              className="flex-1 border border-white/20 hover:border-white/40 text-white/70 hover:text-white py-2.5 rounded-xl text-sm transition-colors"
+            >Cancel</button>
+            <button
+              onClick={saveEdit}
+              disabled={editSaving}
+              className="flex-1 bg-white text-black hover:bg-white/90 disabled:opacity-50 py-2.5 rounded-xl text-sm font-medium transition-colors"
+            >{editSaving ? 'Saving…' : 'Save Changes'}</button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ── Confirm Delete Modal ── */}
+    {confirmDeleteBot && (
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-100 flex items-center justify-center p-4">
+        <div className="bg-zinc-900 border border-white/20 rounded-2xl p-8 max-w-sm w-full shadow-[0_0_60px_rgba(239,68,68,0.1)]">
+          <div className="w-14 h-14 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Trash2 className="w-6 h-6 text-red-400" />
+          </div>
+          <h2 className="text-xl font-light text-white text-center mb-2">Delete Bot?</h2>
+          <p className="text-white/50 text-sm text-center mb-1">
+            <span className="text-white font-medium">{confirmDeleteBot.botName}</span>
+          </p>
+          <p className="text-white/40 text-xs text-center mb-6">
+            This will permanently delete the bot and all its conversations. This cannot be undone.
+          </p>
+          <div className="flex gap-3">
+            <button
+              onClick={() => setConfirmDeleteBot(null)}
+              className="flex-1 border border-white/20 hover:border-white/40 text-white/70 hover:text-white py-2.5 rounded-xl text-sm transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => deleteBot(confirmDeleteBot)}
+              className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-xl text-sm font-medium transition-colors"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
 
     {/* ── Activation Success Modal ── */}
     {activationModal && (
