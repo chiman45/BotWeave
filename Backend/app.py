@@ -193,7 +193,7 @@ def _build_reply(bot: Dict, incoming_msg: str) -> str:
 
 
 # ═════════════════════════════════════════════════════════════
-# ── MANDI BOOKING FLOW ENGINE JUST FOR TESTING
+# ── MANDI BOOKING FLOW ENGINE 
 # ═════════════════════════════════════════════════════════════
 
 # ── Language selection prompt (shown before any other step) ──
