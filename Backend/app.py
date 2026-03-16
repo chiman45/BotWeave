@@ -193,7 +193,7 @@ def _build_reply(bot: Dict, incoming_msg: str) -> str:
 
 
 # ═════════════════════════════════════════════════════════════
-# ── MANDI BOOKING FLOW ENGINE
+# ── MANDI BOOKING FLOW ENGINE JUST FOR TESTING
 # ═════════════════════════════════════════════════════════════
 
 # ── Language selection prompt (shown before any other step) ──
@@ -554,6 +554,14 @@ def _rag_query(business_id: str, query: str) -> str:
     Return the top-k most relevant chunks from this bot's Chroma vector store.
     Uses chromadb directly — no LangChain required.
     Returns '' when no store exists or services are unavailable.
+
+    Distance note:
+    - Collections created with cosine metric return distances in [0, 2].
+      A distance of 0 = identical, 1 = orthogonal, 2 = opposite.
+      Good threshold: ~0.7 (keeps results with ≥ 65% cosine similarity).
+    - Old collections created with default L2 metric return squared Euclidean
+      distances that can be 100-500+ for high-dim embeddings.
+    The code auto-detects which scale is in use and adjusts accordingly.
     """
     store_path = os.path.join(_VECTOR_STORE_ROOT, business_id)
     if not os.path.exists(store_path):
@@ -566,8 +574,7 @@ def _rag_query(business_id: str, query: str) -> str:
         collection = client.get_collection(_KB_COLLECTION)
         total      = collection.count()
         log.info(f"[RAG] Querying {total} chunks for bot {business_id}")
-        max_distance = float(os.getenv('RAG_MAX_DISTANCE', '0.85'))
-        fallback_top_k = max(1, int(os.getenv('RAG_FALLBACK_TOP_K', '3')))
+        fallback_top_k = max(1, int(os.getenv('RAG_FALLBACK_TOP_K', '5')))
         results = collection.query(
             query_embeddings=[query_embedding],
             n_results=min(12, total),
@@ -577,24 +584,40 @@ def _rag_query(business_id: str, query: str) -> str:
         docs = results.get('documents', [[]])[0] if results.get('documents') else []
         distances = results.get('distances', [[]])[0] if results.get('distances') else []
 
+        # Auto-detect distance scale:
+        # If any distance > 10, we are almost certainly in L2 space (not cosine).
+        # Cosine distances are always in [0, 2], L2 for 768-dim vectors is typically 100+.
+        env_threshold = float(os.getenv('RAG_MAX_DISTANCE', '0.0'))  # 0.0 = auto
+        if env_threshold > 0:
+            max_distance = env_threshold
+        elif distances and max(distances) > 10:
+            # L2 metric detected — use a permissive threshold based on the
+            # actual score distribution (keep best half of retrieved docs).
+            median_dist = sorted(distances)[len(distances) // 2]
+            max_distance = median_dist * 1.2  # keep anything not worse than 20% above median
+            log.info(f"[RAG] L2 metric detected (max_dist={max(distances):.1f}); "
+                     f"auto-threshold set to {max_distance:.1f}")
+        else:
+            # Cosine metric — use a strict similarity threshold.
+            max_distance = 0.75  # cosine distance: 0=same, 1=orthogonal, 2=opposite
+
         paired = list(zip(docs, distances)) if distances else [(d, None) for d in docs]
         filtered_docs = [doc for doc, dist in paired if dist is None or dist <= max_distance]
 
-        # Some Chroma metric setups return distances on a much larger numeric scale.
-        # If strict filtering drops everything, fall back to top-k retrieved chunks.
+        # Always fall back to top-k if filtering removed all results.
         if not filtered_docs and docs:
             filtered_docs = docs[:fallback_top_k]
             log.warning(
-                f"[RAG] Distance filter removed all chunks (threshold={max_distance}); "
+                f"[RAG] Distance filter removed all chunks (threshold={max_distance:.3f}); "
                 f"falling back to top-{fallback_top_k} retrieved chunk(s)"
             )
 
         log.info(
             f"[RAG] Retrieved {len(docs)} chunk(s), kept {len(filtered_docs)} "
-            f"after distance filter <= {max_distance} for query: {query!r}"
+            f"after distance filter <= {max_distance:.3f} for query: {query!r}"
         )
         if distances:
-            log.info(f"[RAG] Top distances: {distances[:4]}")
+            log.info(f"[RAG] Top distances: {[round(d,3) for d in distances[:4]]}")
         if filtered_docs:
             log.debug(f"[RAG] First kept chunk preview: {filtered_docs[0][:200]!r}")
 
@@ -946,7 +969,13 @@ def upload_kb(business_id: str):
             log.info(f"[RAG] Cleared existing KB collection for bot {business_id}")
         except Exception:
             pass
-        collection = client.create_collection(_KB_COLLECTION)
+        # Use cosine distance so scores are normalized to [0, 2].
+        # This avoids the L2 scale issue where distances can be 100-500+
+        # making the 0.85 threshold reject every chunk.
+        collection = client.create_collection(
+            _KB_COLLECTION,
+            metadata={'hnsw:space': 'cosine'},
+        )
         ids        = [str(_uuid.uuid4()) for _ in all_chunks]
         metadatas  = [{'source': filename} for _ in all_chunks]
         collection.add(documents=all_chunks, embeddings=embeddings_list, ids=ids, metadatas=metadatas)
