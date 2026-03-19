@@ -1,5 +1,5 @@
 """
-BotSetu — Menu-Driven WhatsApp Bot Manager
+BotSetu — A CLI tool for managing your WhatsApp bots and conversations without a server.
 ===========================================
 Manage bots, send messages, view conversations, and handle payments
 directly via Twilio + MongoDB — no Flask server needed.
