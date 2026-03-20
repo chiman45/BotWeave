@@ -1,23 +1,10 @@
 import React from "react"
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import {
   ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
 } from "@clerk/nextjs"
 import './globals.css'
-
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
-
-const bitcountSingle = {
-  fontFamily: 'var(--font-bitcount)'
-}
 
 export const metadata: Metadata = {
   title: 'BotSetu - WhatsApp Bot Builder for Small Business',
@@ -52,11 +39,17 @@ export default function RootLayout({
       signInFallbackRedirectUrl="/"
       signUpFallbackRedirectUrl="/"
     >
-      <html lang="en" style={{ '--font-bitcount': '"Bitcount Single", monospace' } as React.CSSProperties}>
+      <html
+        lang="en"
+        style={{
+          '--font-bitcount': '"Bitcount Prop Single", "Bitcount Single", sans-serif',
+        } as React.CSSProperties}
+      >
         <head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link href="https://fonts.googleapis.com/css2?family=Bitcount+Single:wght@100..900&display=swap" rel="stylesheet" />
+          <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet" />
+          <link href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@100..900&family=Bitcount+Single:wght@100..900&display=swap" rel="stylesheet" />
         </head>
         <body className={`font-sans antialiased`}>
           {children}

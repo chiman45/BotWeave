@@ -100,6 +100,87 @@ export default function CreateBotPage() {
   }
   // ────────────────────────────────────────────────────────────
 
+  // ── IVR Flow config state ──────────────────────────────────
+  interface IvrOption { label: string; nextNodeId: string }
+  interface IvrNode { id: string; message: string; options: IvrOption[]; isEndNode: boolean }
+
+  const makeNodeId = () => `node_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`
+
+  const [ivrNodes, setIvrNodes] = useState<IvrNode[]>([
+    { id: 'node_root', message: '', options: [], isEndNode: false },
+  ])
+
+  const addIvrChildNode = (parentId: string) => {
+    const newId = makeNodeId()
+    const newNode: IvrNode = { id: newId, message: '', options: [], isEndNode: true }
+    setIvrNodes(prev => [
+      ...prev.map(n =>
+        n.id === parentId
+          ? { ...n, isEndNode: false, options: [...n.options, { label: '', nextNodeId: newId }] }
+          : n
+      ),
+      newNode,
+    ])
+  }
+
+  const removeIvrNode = (nodeId: string) => {
+    if (nodeId === 'node_root') return
+    setIvrNodes(prev => {
+      const updated = prev
+        .filter(n => n.id !== nodeId)
+        .map(n => ({
+          ...n,
+          options: n.options.filter(o => o.nextNodeId !== nodeId),
+        }))
+      // Mark parent as isEndNode if it now has 0 options
+      return updated.map(n => ({ ...n, isEndNode: n.options.length === 0 && n.id !== 'node_root' }))
+    })
+  }
+
+  const updateIvrNode = (nodeId: string, field: 'message' | 'isEndNode', value: string | boolean) =>
+    setIvrNodes(prev => prev.map(n => n.id === nodeId ? { ...n, [field]: value } : n))
+
+  const updateIvrOption = (nodeId: string, optIdx: number, field: 'label', value: string) =>
+    setIvrNodes(prev => prev.map(n =>
+      n.id === nodeId
+        ? { ...n, options: n.options.map((o, i) => i === optIdx ? { ...o, [field]: value } : o) }
+        : n
+    ))
+
+  const addIvrOption = (nodeId: string) => {
+    const newId = makeNodeId()
+    setIvrNodes(prev => [
+      ...prev.map(n =>
+        n.id === nodeId
+          ? { ...n, isEndNode: false, options: [...n.options, { label: '', nextNodeId: newId }] }
+          : n
+      ),
+      { id: newId, message: '', options: [], isEndNode: true },
+    ])
+  }
+
+  const removeIvrOption = (nodeId: string, optIdx: number) => {
+    setIvrNodes(prev => {
+      const parent = prev.find(n => n.id === nodeId)
+      const targetNodeId = parent?.options[optIdx]?.nextNodeId
+      const filtered = prev
+        .filter(n => n.id !== targetNodeId)
+        .map(n => {
+          if (n.id !== nodeId) return n
+          const nextOptions = n.options.filter((_, idx) => idx !== optIdx)
+          return { ...n, options: nextOptions, isEndNode: nextOptions.length === 0 && n.id !== 'node_root' }
+        })
+
+      return filtered.map(n => ({
+        ...n,
+        options: n.options.filter(o => o.nextNodeId !== targetNodeId),
+      }))
+    })
+  }
+
+  const nodeById = (id: string) => ivrNodes.find(n => n.id === id)
+  // ─────────────────────────────────────────────────────────
+
   // ── Mandi Booking config state ────────────────────────────
   const [mandiList, setMandiList] = useState([{ name: '', location: '', address: '' }])
   const [slotTimes, setSlotTimes] = useState([
@@ -120,6 +201,8 @@ export default function CreateBotPage() {
   const updateSlot = (i: number, value: string) =>
     setSlotTimes(prev => prev.map((s, idx) => idx === i ? value : s))
   // ─────────────────────────────────────────────────────────
+
+  // (IVR state defined above)
 
   const [keywordPairs, setKeywordPairs] = useState<{ keyword: string; response: string }[]>([
     { keyword: '', response: '' }
@@ -190,6 +273,10 @@ export default function CreateBotPage() {
             maxBookingsPerSlot: maxPerSlot,
             autoReply: true,
           }),
+          ...(formData.useCaseType === 'ivr' && {
+            ivrNodes: ivrNodes.filter(n => n.message.trim()),
+            autoReply: true,
+          }),
           ...(formData.botType === 'ai' && {
             aiModel,
             aiSystemPrompt,
@@ -219,7 +306,7 @@ export default function CreateBotPage() {
 
   return (
     <>
-    <div className="min-h-screen bg-black text-white py-12 px-4 sm:px-6 lg:px-8" style={{ fontFamily: 'var(--font-bitcount)' }}>
+    <div className="min-h-screen bg-black text-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto border border-white/20 rounded-2xl p-8 shadow-[0_0_50px_rgba(255,255,255,0.15)] bg-black/50 backdrop-blur-sm">
         {/* Header */}
         <div className="mb-8">
@@ -230,7 +317,7 @@ export default function CreateBotPage() {
             </Link>
             <UserButton />
           </div>
-          <h1 className="text-4xl font-light mb-2">Create Your Bot</h1>
+          <h1 className="text-4xl font-bitcount mb-2">Create Your Bot</h1>
           <p className="text-white/60">Complete the steps to set up your WhatsApp bot</p>
         </div>
 
@@ -287,7 +374,7 @@ export default function CreateBotPage() {
           {/* Step 1: Business Info */}
           {currentStep === 1 && (
             <div className="space-y-6 animate-fadeIn">
-              <h2 className="text-2xl font-light border-b border-white/10 pb-2">🧾 Business Info</h2>
+              <h2 className="text-2xl font-bitcount border-b border-white/10 pb-2">🧾 Business Info</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm text-white/60 mb-2">Business Name *</label>
@@ -371,7 +458,7 @@ export default function CreateBotPage() {
           {/* Step 2: Bot Config */}
           {currentStep === 2 && (
             <div className="space-y-6 animate-fadeIn">
-              <h2 className="text-2xl font-light border-b border-white/10 pb-2">🤖 Bot Config</h2>
+              <h2 className="text-2xl font-bitcount border-b border-white/10 pb-2">🤖 Bot Config</h2>
 
               {/* ── Bot Type Toggle ─────────────────────────────── */}
               <div>
@@ -424,7 +511,7 @@ export default function CreateBotPage() {
                     name="useCaseType"
                     value={formData.useCaseType}
                     onChange={handleChange}
-                    required={formData.botType !== 'ai'}
+                    required
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
                   >
                     <option value="">Select Type</option>
@@ -433,6 +520,7 @@ export default function CreateBotPage() {
                     <option value="orders">Orders</option>
                     <option value="leads">Leads</option>
                     <option value="mandi_booking">🌾 Mandi Booking (Farmer Flow)</option>
+                    <option value="ivr">📞 IVR Call Bot (Phone Menu)</option>
                   </select>
                 </div>
                 )}
@@ -585,6 +673,119 @@ export default function CreateBotPage() {
                 </div>
               )}
 
+              {/* ══ IVR FLOW BUILDER ═══════════════════════════════════ */}
+              {formData.useCaseType === 'ivr' && (
+                <div className="space-y-4 p-5 bg-orange-500/5 border border-orange-500/20 rounded-xl">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">📞</span>
+                    <h3 className="text-sm font-medium text-orange-400">IVR Menu Builder</h3>
+                    <span className="ml-auto text-xs text-white/30">{ivrNodes.length} node{ivrNodes.length !== 1 ? 's' : ''}</span>
+                  </div>
+                  <p className="text-xs text-white/40">Build a multi-level WhatsApp menu. Customers navigate by replying with numbers.</p>
+
+                  <div className="space-y-3">
+                    {ivrNodes.map((node) => {
+                      const parentNode = ivrNodes.find(n => n.options.some(o => o.nextNodeId === node.id))
+                      const optionIndex = parentNode?.options.findIndex(o => o.nextNodeId === node.id)
+
+                      return (
+                        <div
+                          key={node.id}
+                          className={`rounded-xl border p-4 space-y-3 ${
+                            node.id === 'node_root'
+                              ? 'border-orange-500/40 bg-orange-500/10'
+                              : 'border-white/10 bg-white/5'
+                          }`}
+                        >
+                          {/* Node header */}
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-mono text-orange-400/70">
+                              {node.id === 'node_root' ? '🌳 Root' : `↳ Option ${(optionIndex ?? 0) + 1} of ${parentNode?.id === 'node_root' ? 'Root' : parentNode?.id.slice(-8)}`}
+                            </span>
+                            <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${
+                              node.isEndNode
+                                ? 'bg-orange-500/15 text-orange-300 border border-orange-500/30'
+                                : 'bg-green-500/15 text-green-300 border border-green-500/30'
+                            }`}>
+                              {node.isEndNode ? 'Leaf (no sub-options)' : `${node.options.length} sub-option${node.options.length !== 1 ? 's' : ''}`}
+                            </span>
+                            {node.id !== 'node_root' && (
+                              <button
+                                type="button"
+                                onClick={() => removeIvrNode(node.id)}
+                                className="text-red-400/50 hover:text-red-400 transition-colors text-lg leading-none ml-1"
+                                title="Remove this node"
+                              >
+                                ×
+                              </button>
+                            )}
+                          </div>
+
+                          {/* Option label (shown only for non-root) */}
+                          {node.id !== 'node_root' && parentNode && (
+                            <div>
+                              <label className="block text-xs text-white/40 mb-1">Menu option label (what the parent shows)</label>
+                              <input
+                                type="text"
+                                value={parentNode.options[optionIndex!]?.label ?? ''}
+                                onChange={e => updateIvrOption(parentNode.id, optionIndex!, 'label', e.target.value)}
+                                placeholder={`e.g. Sales, Support, Hours…`}
+                                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-orange-500/40"
+                              />
+                            </div>
+                          )}
+
+                          {/* Node message */}
+                          <div>
+                            <label className="block text-xs text-white/40 mb-1">
+                              {node.id === 'node_root' ? 'Root menu message (shown first)' : 'Response message'}
+                            </label>
+                            <textarea
+                              rows={3}
+                              value={node.message}
+                              onChange={e => updateIvrNode(node.id, 'message', e.target.value)}
+                              placeholder={
+                                node.id === 'node_root'
+                                  ? 'Welcome! Please choose:\n1️⃣ Sales\n2️⃣ Support\n3️⃣ Hours'
+                                  : 'Our sales team will call you back. Email: sales@example.com'
+                              }
+                              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-orange-500/40 resize-none"
+                            />
+                            <p className="text-xs text-white/30 mt-1">The numbered list is <em>auto-appended</em> by the bot — just write the intro line here.</p>
+                          </div>
+
+                          {/* Options listed */}
+                          {node.options.length > 0 && (
+                            <div className="space-y-1">
+                              {node.options.map((opt, oi) => (
+                                <div key={oi} className="flex items-center gap-2 text-xs text-white/40">
+                                  <span className="w-5 h-5 flex items-center justify-center rounded-full bg-orange-500/20 text-orange-300 shrink-0">{oi + 1}</span>
+                                  <span className="truncate">{opt.label || <em className="opacity-50">unlabelled</em>}</span>
+                                  <span className="font-mono text-white/20 ml-auto shrink-0">{nodeById(opt.nextNodeId)?.isEndNode ? '🔚' : '▶'}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Add sub-option button */}
+                          {!node.isEndNode || node.id === 'node_root' ? (
+                            <button
+                              type="button"
+                              onClick={() => addIvrChildNode(node.id)}
+                              className="text-xs text-orange-400/70 hover:text-orange-400 border border-orange-500/20 hover:border-orange-500/40 px-3 py-1.5 rounded-md transition-colors w-full"
+                            >
+                              + Add Sub-option to this node
+                            </button>
+                          ) : null}
+                        </div>
+                      )
+                    })}
+                  </div>
+                  <p className="text-xs text-white/30">💡 Tip: keep each level to ≤ 9 options so customers can reply with a single digit.</p>
+                </div>
+              )}
+              {/* ═══════════════════════════════════════════════════ */}
+
               {/* ── Mandi Booking Configuration ──────────────────────── */}
               {formData.useCaseType === 'mandi_booking' && (
                 <div className="space-y-6 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-lg">
@@ -660,6 +861,96 @@ export default function CreateBotPage() {
               )}
               {/* ─────────────────────────────────────────────────────── */}
 
+              {/* ══ IVR BUILDER ═══════════════════════════════════════ */}
+              {formData.useCaseType === 'ivr' && (
+                <div className="space-y-4 p-5 bg-orange-500/5 border border-orange-500/20 rounded-xl">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">📞</span>
+                      <h3 className="text-sm font-medium text-orange-400">IVR Flow Builder</h3>
+                    </div>
+                  </div>
+                  <p className="text-xs text-white/40">Build a multi-level menu tree. Each node is a message the bot sends. Add numbered options to navigate between nodes.</p>
+
+                  <div className="space-y-3">
+                    {ivrNodes.map((node) => (
+                      <div key={node.id} className={`p-4 rounded-xl border ${
+                        node.id === 'node_root'
+                          ? 'bg-orange-500/10 border-orange-500/30'
+                          : 'bg-white/5 border-white/10'
+                      }`}>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-mono text-orange-300/70">
+                            {node.id === 'node_root' ? '🌳 Root Node' : `📄 ${node.id}`}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            <label className="flex items-center gap-1.5 text-xs text-white/50 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={node.isEndNode}
+                                onChange={e => updateIvrNode(node.id, 'isEndNode', e.target.checked)}
+                                className="w-3 h-3 accent-orange-400"
+                                disabled={node.id === 'node_root'}
+                              />
+                              End node
+                            </label>
+                            {node.id !== 'node_root' && (
+                              <button
+                                type="button"
+                                onClick={() => removeIvrNode(node.id)}
+                                className="text-red-400/50 hover:text-red-400 text-xs px-1.5 py-0.5 border border-red-500/20 rounded transition-colors"
+                              >✕ Remove</button>
+                            )}
+                          </div>
+                        </div>
+                        <textarea
+                          rows={3}
+                          value={node.message}
+                          onChange={e => updateIvrNode(node.id, 'message', e.target.value)}
+                          placeholder={node.id === 'node_root'
+                            ? 'Welcome! Press 1 for Sales, 2 for Support, 3 for Hours'
+                            : 'Enter the message for this node…'}
+                          className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-orange-400/40 resize-none mb-3"
+                        />
+                        {!node.isEndNode && (
+                          <div className="space-y-2">
+                            {node.options.map((opt, optIdx) => (
+                              <div key={optIdx} className="flex gap-2 items-center">
+                                <span className="text-xs text-orange-300/60 w-5 shrink-0">{optIdx + 1}.</span>
+                                <input
+                                  type="text"
+                                  value={opt.label}
+                                  onChange={e => updateIvrOption(node.id, optIdx, 'label', e.target.value)}
+                                  placeholder="Option label (e.g. Sales)"
+                                  className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-white text-xs focus:outline-none focus:border-orange-400/40"
+                                />
+                                <span className="text-xs text-white/30">→</span>
+                                <span className="text-xs font-mono text-orange-300/50 shrink-0">
+                                  {opt.nextNodeId}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => removeIvrOption(node.id, optIdx)}
+                                  className="text-red-400/50 hover:text-red-400 text-base leading-none transition-colors"
+                                >×</button>
+                              </div>
+                            ))}
+                            <button
+                              type="button"
+                              onClick={() => addIvrOption(node.id)}
+                              className="text-xs text-orange-400/70 hover:text-orange-400 border border-orange-500/20 hover:border-orange-500/40 px-3 py-1 rounded-md transition-colors"
+                            >
+                              + Add Option
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {/* ═══════════════════════════════════════════════════════ */}
+
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-medium text-white/80">🔑 Keyword Responses</h3>
@@ -706,7 +997,7 @@ export default function CreateBotPage() {
           {/* Step 3: WhatsApp Setup */}
           {currentStep === 3 && (
             <div className="space-y-6 animate-fadeIn">
-              <h2 className="text-2xl font-light border-b border-white/10 pb-2">📞 WhatsApp Setup</h2>
+              <h2 className="text-2xl font-bitcount border-b border-white/10 pb-2">📞 WhatsApp Setup</h2>
               <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
                 <p className="text-sm text-blue-300">
                   <strong>💡 How it works:</strong> BotSetu uses a shared Twilio WhatsApp number.
@@ -747,7 +1038,7 @@ export default function CreateBotPage() {
           {/* Step 4: Templates */}
           {currentStep === 4 && (
             <div className="space-y-6 animate-fadeIn">
-              <h2 className="text-2xl font-light border-b border-white/10 pb-2">📝 Templates</h2>
+              <h2 className="text-2xl font-bitcount border-b border-white/10 pb-2">📝 Templates</h2>
               <p className="text-white/60 text-sm">Configure message templates for your bot (optional)</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -791,7 +1082,7 @@ export default function CreateBotPage() {
           {/* Step 5: Conversation */}
           {currentStep === 5 && (
             <div className="space-y-6 animate-fadeIn">
-              <h2 className="text-2xl font-light border-b border-white/10 pb-2">💬 Conversation</h2>
+              <h2 className="text-2xl font-bitcount border-b border-white/10 pb-2">💬 Conversation</h2>
               <p className="text-white/60 text-sm">Configure conversation flow settings (optional)</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -812,7 +1103,7 @@ export default function CreateBotPage() {
           {/* Step 6: Billing */}
           {currentStep === 6 && (
             <div className="space-y-6 animate-fadeIn">
-              <h2 className="text-2xl font-light border-b border-white/10 pb-2">💰 Billing</h2>
+              <h2 className="text-2xl font-bitcount border-b border-white/10 pb-2">💰 Billing</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm text-white/60 mb-2">Plan Type *</label>
@@ -904,7 +1195,7 @@ export default function CreateBotPage() {
           <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle className="w-8 h-8 text-green-400" />
           </div>
-          <h2 className="text-2xl font-light text-white mb-2">Bot Created!</h2>
+          <h2 className="text-2xl font-bitcount text-white mb-2">Bot Created!</h2>
           <p className="text-white/50 text-sm mb-4">Your bot is saved. Follow the steps below to go live.</p>
 
           {/* ── RAG Knowledge Base Upload (shown right after creation when RAG enabled) ── */}

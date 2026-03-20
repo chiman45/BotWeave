@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useUser, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X, MessageCircle, BookOpen, Zap, Copy, CheckCircle, ExternalLink, Trash2 } from 'lucide-react'
+import { Plus, Bot, TrendingUp, MessageSquare, Users, DollarSign, Settings, BarChart3, Home, CreditCard, Info, Tag, Menu, X, MessageCircle, BookOpen, Zap, Copy, CheckCircle, ExternalLink, Trash2, Phone } from 'lucide-react'
 
 interface BotData {
   _id: string
@@ -41,6 +41,8 @@ interface BotData {
   aiModel?: string
   aiSystemPrompt?: string
   aiRagEnabled?: boolean
+  // IVR fields
+  ivrNodes?: { id: string; message: string; options: { label: string; nextNodeId: string }[]; isEndNode: boolean }[]
 }
 
 export default function DashboardPage() {
@@ -62,10 +64,18 @@ export default function DashboardPage() {
   const [editSlotTimes, setEditSlotTimes] = useState<string[]>([])
   const [editMaxPerSlot, setEditMaxPerSlot] = useState(10)
   const [editSaving, setEditSaving] = useState(false)
+  // IVR edit state
+  type EditIvrNode = { id: string; message: string; options: { label: string; nextNodeId: string }[]; isEndNode: boolean }
+  const [editIvrNodes, setEditIvrNodes] = useState<EditIvrNode[]>([])
   const [activationModal, setActivationModal] = useState<{
     botName: string
     allocatedNumber: string
     webhookUrl: string
+  } | null>(null)
+  const [ivrModal, setIvrModal] = useState<{
+    botName: string
+    phone: string
+    voiceWebhookUrl: string
   } | null>(null)
   const [copiedField, setCopiedField] = useState<string | null>(null)
   const [stats, setStats] = useState({
@@ -214,6 +224,12 @@ export default function DashboardPage() {
     setEditMandiList(bot.mandis?.length ? bot.mandis : [{ name: '', location: '', address: '' }])
     setEditSlotTimes(bot.slots?.length ? bot.slots : ['9:00 AM – 10:00 AM'])
     setEditMaxPerSlot(bot.maxBookingsPerSlot ?? 10)
+    // IVR nodes
+    setEditIvrNodes(
+      bot.ivrNodes?.length
+        ? bot.ivrNodes
+        : [{ id: 'node_root', message: '', options: [], isEndNode: false }]
+    )
   }
 
   const saveEdit = async () => {
@@ -232,6 +248,9 @@ export default function DashboardPage() {
           mandis: editMandiList.filter(m => m.name.trim()),
           slots: editSlotTimes.filter(s => s.trim()),
           maxBookingsPerSlot: editMaxPerSlot,
+        }),
+        ...(editDraft.useCaseType === 'ivr' && {
+          ivrNodes: editIvrNodes.filter(n => n.message.trim()),
         }),
       }
       const res = await fetch('/api/bot', {
@@ -270,42 +289,42 @@ export default function DashboardPage() {
           0
         )
         
-        // Fetch total conversations across all bots
-        let totalConversations = 0
-        for (const bot of data.bots) {
-          try {
-            const convResponse = await fetch(`/api/conversations?businessId=${bot.businessId}`)
-            if (convResponse.ok) {
-              const convData = await convResponse.json()
-              totalConversations += convData.count || 0
-            }
-          } catch (err) {
-            // Skip if conversations not available
-          }
-        }
-        
-        // Fetch payment stats
-        let paymentDue = 0
-        let paymentCompleted = 0
-        try {
-          const paymentResponse = await fetch('/api/payments')
-          if (paymentResponse.ok) {
-            const paymentData = await paymentResponse.json()
-            paymentDue = paymentData.totalDue || 0
-            paymentCompleted = paymentData.totalCompleted || 0
-          }
-        } catch (err) {
-          // Use default values if payment API not available
-        }
-        
+        // Show page immediately with bot data
+        setLoading(false)
+        setStats(prev => ({
+          ...prev,
+          totalBots,
+          activeBots,
+          totalMessages,
+          totalRevenue: totalBots * 99,
+        }))
+
+        // Fetch conversations (all in parallel) + payments simultaneously
+        const [convResults, paymentData] = await Promise.all([
+          Promise.all(
+            data.bots.map((bot: BotData) =>
+              fetch(`/api/conversations?businessId=${bot.businessId}`)
+                .then(r => r.ok ? r.json() : { count: 0 })
+                .catch(() => ({ count: 0 }))
+            )
+          ),
+          fetch('/api/payments')
+            .then(r => r.ok ? r.json() : { totalDue: 0, totalCompleted: 0 })
+            .catch(() => ({ totalDue: 0, totalCompleted: 0 }))
+        ])
+
+        const totalConversations = (convResults as { count?: number }[]).reduce(
+          (sum, d) => sum + (d.count || 0), 0
+        )
+
         setStats({
           totalBots,
           activeBots,
           totalMessages,
-          totalRevenue: totalBots * 99, // Mock calculation
+          totalRevenue: totalBots * 99,
           totalConversations,
-          paymentDue,
-          paymentCompleted
+          paymentDue: paymentData.totalDue || 0,
+          paymentCompleted: paymentData.totalCompleted || 0,
         })
       }
     } catch (error) {
@@ -409,7 +428,7 @@ export default function DashboardPage() {
 
   return (
     <>
-    <div className="min-h-screen bg-black text-white flex">
+    <div className="min-h-screen bg-black text-white flex overflow-x-hidden">
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-black border-r border-white/10 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex flex-col h-full">
@@ -495,7 +514,7 @@ export default function DashboardPage() {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex-1 flex flex-col min-h-screen min-w-0 overflow-x-hidden">
         {/* Header */}
         <div className="border-b border-white/10 bg-black/50 backdrop-blur-sm sticky top-0 z-30">
           <div className="px-4 sm:px-6 lg:px-8">
@@ -716,6 +735,25 @@ export default function DashboardPage() {
                               </Button>
                             </Link>
                           )}
+                          {bot.useCaseType === 'ivr' && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              title="IVR Call Info"
+                              className="text-orange-400/60 hover:text-orange-400"
+                              onClick={async () => {
+                                const res = await fetch(`${BACKEND}/api/bot/ivr-number`).catch(() => null)
+                                const data = res?.ok ? await res.json() : {}
+                                setIvrModal({
+                                  botName: bot.botName,
+                                  phone: data.phoneNumber || 'N/A',
+                                  voiceWebhookUrl: data.voiceWebhookUrl || '',
+                                })
+                              }}
+                            >
+                              <Phone className="w-4 h-4" />
+                            </Button>
+                          )}
                           <Button variant="ghost" size="sm" onClick={() => openEditModal(bot)} className="text-white/60 hover:text-white" title="Edit Bot">
                             <Settings className="w-4 h-4" />
                           </Button>
@@ -796,6 +834,7 @@ export default function DashboardPage() {
                     <option value="orders">Orders</option>
                     <option value="leads">Leads</option>
                     <option value="mandi_booking">🌾 Mandi Booking</option>
+                    <option value="ivr">📞 IVR Menu</option>
                   </select>
                 </div>
               </div>
@@ -820,7 +859,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Auto-reply messages */}
-            {editDraft.autoReply && (
+            {Boolean(editDraft.autoReply) && (
               <div className="space-y-3 p-4 bg-green-500/5 border border-green-500/20 rounded-xl">
                 <h3 className="text-xs font-medium text-green-400">🤖 Auto-Reply Messages</h3>
                 {([
@@ -841,7 +880,7 @@ export default function DashboardPage() {
               </div>
             )}
 
-            {editDraft.humanHandoff && (
+            {Boolean(editDraft.humanHandoff) && (
               <div className="p-4 bg-blue-500/5 border border-blue-500/20 rounded-xl">
                 <label className="block text-xs text-blue-400 mb-2">👤 Human Handoff Message</label>
                 <textarea
@@ -947,7 +986,7 @@ export default function DashboardPage() {
                 </label>
 
                 {/* Knowledge Base Manager */}
-                {editDraft.aiRagEnabled && editBot && (
+                {Boolean(editDraft.aiRagEnabled) && editBot && (
                   <div className="p-3 bg-purple-500/5 border border-purple-500/20 rounded-lg space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-purple-300 font-medium">📚 Knowledge Base</span>
@@ -1126,6 +1165,71 @@ export default function DashboardPage() {
               Delete
             </button>
           </div>
+        </div>
+      </div>
+    )}
+
+    {/* ── IVR Call Info Modal ── */}
+    {ivrModal && (
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-100 flex items-center justify-center p-4">
+        <div className="bg-zinc-900 border border-white/20 rounded-2xl p-8 max-w-lg w-full shadow-[0_0_60px_rgba(249,115,22,0.15)]">
+          <div className="text-center mb-6">
+            <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Phone className="w-8 h-8 text-orange-400" />
+            </div>
+            <h2 className="text-2xl font-light text-white mb-1">IVR Call Bot Active</h2>
+            <p className="text-white/50 text-sm">{ivrModal.botName}</p>
+          </div>
+
+          <div className="mb-4 p-4 bg-orange-500/5 border border-orange-500/20 rounded-xl">
+            <p className="text-xs text-white/40 mb-2 uppercase tracking-wider">Twilio Phone Number</p>
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-xl font-mono text-orange-400 font-semibold">{ivrModal.phone}</p>
+              <button
+                onClick={() => copyToClipboard(ivrModal.phone, 'ivr-phone')}
+                className="flex items-center gap-1.5 text-xs text-white/60 hover:text-white border border-white/10 hover:border-white/30 px-3 py-1.5 rounded-lg transition-colors"
+              >
+                {copiedField === 'ivr-phone'
+                  ? <><CheckCircle className="w-3.5 h-3.5 text-green-400" /> Copied!</>
+                  : <><Copy className="w-3.5 h-3.5" /> Copy</>}
+              </button>
+            </div>
+            <p className="text-xs text-white/40 mt-2">Call this number from any phone to interact with your IVR bot</p>
+          </div>
+
+          {ivrModal.voiceWebhookUrl && (
+            <div className="mb-4 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-xl">
+              <p className="text-xs text-yellow-400/80 mb-2 uppercase tracking-wider">⚡ Twilio Voice Webhook URL</p>
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <p className="text-xs font-mono text-white/80 break-all leading-relaxed">{ivrModal.voiceWebhookUrl}</p>
+                <button
+                  onClick={() => copyToClipboard(ivrModal.voiceWebhookUrl, 'ivr-webhook')}
+                  className="shrink-0 flex items-center gap-1.5 text-xs text-white/60 hover:text-white border border-white/10 hover:border-white/30 px-3 py-1.5 rounded-lg transition-colors"
+                >
+                  {copiedField === 'ivr-webhook'
+                    ? <><CheckCircle className="w-3.5 h-3.5 text-green-400" /> Copied!</>
+                    : <><Copy className="w-3.5 h-3.5" /> Copy</>}
+                </button>
+              </div>
+              <p className="text-xs text-white/40">Paste this in Twilio Console → Phone Numbers → Configure → &quot;A call comes in&quot;</p>
+            </div>
+          )}
+
+          <div className="mb-6 p-4 bg-white/5 border border-white/10 rounded-xl">
+            <p className="text-xs text-white/60 font-medium mb-2">📞 How to test:</p>
+            <ol className="text-xs text-white/40 space-y-1 list-decimal list-inside">
+              <li>Set the voice webhook URL in Twilio Console → Phone Numbers</li>
+              <li>Call the Twilio number from any phone</li>
+              <li>Navigate the menu using your keypad (DTMF tones)</li>
+            </ol>
+          </div>
+
+          <button
+            onClick={() => setIvrModal(null)}
+            className="w-full bg-white text-black hover:bg-white/90 py-3 rounded-xl font-medium transition-colors"
+          >
+            Got it!
+          </button>
         </div>
       </div>
     )}

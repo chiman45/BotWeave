@@ -108,6 +108,7 @@ export async function PATCH(request: NextRequest) {
       'businessName', 'category', 'city', 'country',
       'defaultLanguage', 'businessHours', 'planType',
       'botType', 'aiModel', 'aiSystemPrompt', 'aiRagEnabled',
+      'ivrNodes',
     ]
     const patch: Record<string, unknown> = { updatedAt: new Date() }
     for (const key of ALLOWED) {

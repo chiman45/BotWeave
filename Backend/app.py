@@ -21,6 +21,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
+from twilio.twiml.voice_response import VoiceResponse, Gather
 from pymongo import MongoClient, ASCENDING, DESCENDING
 from bson import ObjectId
 from datetime import datetime, timezone
@@ -53,6 +54,9 @@ TWILIO_ACCOUNT_SID     = os.getenv('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN      = os.getenv('TWILIO_AUTH_TOKEN')
 # Format: whatsapp:+14155238886  (the Twilio sandbox or approved number)
 TWILIO_WHATSAPP_NUMBER = os.getenv('TWILIO_WHATSAPP_NUMBER')
+# Raw phone number for voice calls (strips "whatsapp:" prefix if present)
+TWILIO_PHONE_NUMBER     = os.getenv('TWILIO_PHONE_NUMBER',
+                                    (TWILIO_WHATSAPP_NUMBER or '').replace('whatsapp:', ''))
 MONGODB_URI            = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
 PORT                   = int(os.getenv('PORT', 5000))
 
@@ -1440,6 +1444,149 @@ def get_bookings(business_id: str):
             d['createdAt'] = d['createdAt'].isoformat()
 
     return jsonify({'bookings': docs, 'count': len(docs)})
+
+
+# ═════════════════════════════════════════════════════════════
+# ── IVR VOICE HELPERS + ROUTES  (Twilio Voice / DTMF)
+# ═════════════════════════════════════════════════════════════
+
+def _ivr_webhook_base() -> str:
+    """Return the base URL for IVR gather callbacks (strips WhatsApp webhook path)."""
+    base = os.getenv('WEBHOOK_URL', '')
+    if base.endswith('/webhook/whatsapp'):
+        base = base[: -len('/webhook/whatsapp')]
+    return base.rstrip('/')
+
+
+def _build_ivr_twiml(node: Dict, all_nodes: List[Dict],
+                     business_id: str, webhook_base: str):
+    """
+    Recursively build a TwiML VoiceResponse for the given IVR node.
+    - End nodes: say the message and hang up.
+    - Branch nodes: build a <Gather> menu, then hang up if no input.
+    Returns a Flask (response_str, status, headers) tuple.
+    """
+    response = VoiceResponse()
+    message  = (node.get('message') or '').strip()
+    options  = node.get('options') or []
+
+    if not message:
+        response.say("This menu has no message configured. Goodbye.", voice='alice')
+        response.hangup()
+        return str(response), 200, {'Content-Type': 'text/xml'}
+
+    if node.get('isEndNode') or not options:
+        response.say(message, voice='alice', language='en-IN')
+        response.hangup()
+        return str(response), 200, {'Content-Type': 'text/xml'}
+
+    # Build DTMF menu text
+    menu_text = message + ' '
+    for i, opt in enumerate(options, 1):
+        label = (opt.get('label') or '').strip()
+        if label:
+            menu_text += f"Press {i} for {label}. "
+
+    gather = Gather(
+        num_digits=1,
+        action=f"{webhook_base}/webhook/voice/gather/{business_id}/{node['id']}",
+        method='POST',
+        timeout=10,
+    )
+    gather.say(menu_text, voice='alice', language='en-IN')
+    response.append(gather)
+
+    # No input fallback
+    response.say("We did not receive any input. Goodbye.", voice='alice')
+    response.hangup()
+    return str(response), 200, {'Content-Type': 'text/xml'}
+
+
+@app.route('/webhook/voice', methods=['GET', 'POST'])
+def voice_webhook():
+    """
+    Twilio Voice webhook — handles incoming phone calls and presents the IVR menu.
+    Set this as the "A call comes in" webhook URL in Twilio Console → Phone Numbers.
+    """
+    from_number = request.values.get('From', 'unknown')
+    log.info(f"[VOICE] Incoming call from {from_number}")
+
+    # Find the most-recently-activated IVR bot
+    bot = bots_col.find_one(
+        {'verificationStatus': 'verified', 'useCaseType': 'ivr'},
+        sort=[('activatedAt', -1)]
+    )
+
+    if not bot:
+        response = VoiceResponse()
+        response.say("No IVR bot is currently active. Goodbye.", voice='alice')
+        response.hangup()
+        return str(response), 200, {'Content-Type': 'text/xml'}
+
+    business_id = bot['businessId']
+    ivr_nodes   = bot.get('ivrNodes') or []
+    root_node   = next((n for n in ivr_nodes if n['id'] == 'node_root'), None)
+
+    if not root_node or not (root_node.get('message') or '').strip():
+        response = VoiceResponse()
+        response.say("This bot has no IVR flow configured. Goodbye.", voice='alice')
+        response.hangup()
+        return str(response), 200, {'Content-Type': 'text/xml'}
+
+    log.info(f"[VOICE] Routing to IVR bot {business_id}")
+    return _build_ivr_twiml(root_node, ivr_nodes, business_id, _ivr_webhook_base())
+
+
+@app.route('/webhook/voice/gather/<business_id>/<node_id>', methods=['POST'])
+def voice_gather(business_id: str, node_id: str):
+    """
+    Handle DTMF digit input from a Twilio <Gather>.
+    Navigates the IVR tree and returns the next TwiML node.
+    """
+    digit = request.values.get('Digits', '').strip()
+    log.info(f"[VOICE] Gather: bot={business_id} node={node_id} digit={digit!r}")
+
+    bot = bots_col.find_one({'businessId': business_id})
+    if not bot:
+        response = VoiceResponse()
+        response.say("Bot not found. Goodbye.", voice='alice')
+        response.hangup()
+        return str(response), 200, {'Content-Type': 'text/xml'}
+
+    ivr_nodes    = bot.get('ivrNodes') or []
+    current_node = next((n for n in ivr_nodes if n['id'] == node_id), None)
+
+    if not current_node:
+        response = VoiceResponse()
+        response.say("Invalid menu. Goodbye.", voice='alice')
+        response.hangup()
+        return str(response), 200, {'Content-Type': 'text/xml'}
+
+    options = current_node.get('options') or []
+    try:
+        opt_index = int(digit) - 1
+        if 0 <= opt_index < len(options):
+            next_node_id = options[opt_index].get('nextNodeId', '')
+            next_node    = next((n for n in ivr_nodes if n['id'] == next_node_id), None)
+            if next_node:
+                return _build_ivr_twiml(next_node, ivr_nodes, business_id, _ivr_webhook_base())
+    except (ValueError, IndexError):
+        pass
+
+    response = VoiceResponse()
+    response.say("Invalid option. Please try again. Goodbye.", voice='alice')
+    response.hangup()
+    return str(response), 200, {'Content-Type': 'text/xml'}
+
+
+@app.route('/api/bot/ivr-number', methods=['GET'])
+def get_ivr_number():
+    """Return the Twilio phone number and voice webhook URL for IVR bots."""
+    voice_webhook = _ivr_webhook_base() + '/webhook/voice'
+    return jsonify({
+        'phoneNumber':    TWILIO_PHONE_NUMBER,
+        'voiceWebhookUrl': voice_webhook,
+    })
 
 
 # ═════════════════════════════════════════════════════════════

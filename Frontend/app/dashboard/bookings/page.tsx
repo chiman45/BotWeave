@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { Suspense, useState, useEffect, useCallback } from 'react'
 import { useUser, UserButton } from '@clerk/nextjs'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
@@ -24,7 +24,7 @@ interface Booking {
   createdAt: string
 }
 
-export default function BookingsPage() {
+function BookingsPageContent() {
   const { user } = useUser()
   const searchParams = useSearchParams()
   const businessId = searchParams.get('businessId') ?? ''
@@ -209,5 +209,13 @@ export default function BookingsPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function BookingsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Loading bookings...</div>}>
+      <BookingsPageContent />
+    </Suspense>
   )
 }
