@@ -78,6 +78,7 @@ conversations_col = db['conversations']       # message history
 sessions_col      = db['bot-sessions']        # customer phone → businessId mapping
 payments_col      = db['payments']            # payment records
 bookings_col      = db['mandi-bookings']      # mandi slot bookings
+credits_col       = db['credits']             # per-user credit balance
 
 # Indexes (idempotent — safe to run every start)
 sessions_col.create_index([('customerPhone', ASCENDING)], unique=True)
@@ -127,6 +128,38 @@ def _upsert_session(customer_phone: str, business_id: str) -> None:
         {'$set': {'businessId': business_id, 'updatedAt': _now()}},
         upsert=True
     )
+
+
+INITIAL_CREDITS = 100
+
+
+def _get_or_init_credits(user_id: str) -> int:
+    """Return credit balance for user, creating with 100 free credits if new."""
+    now = _now()
+    doc = credits_col.find_one({'userId': user_id})
+    if doc is None:
+        credits_col.insert_one({
+            'userId':      user_id,
+            'credits':     INITIAL_CREDITS,
+            'totalEarned': INITIAL_CREDITS,
+            'totalUsed':   0,
+            'createdAt':   now,
+            'updatedAt':   now,
+        })
+        return INITIAL_CREDITS
+    return int(doc.get('credits', 0))
+
+
+def _deduct_credit(user_id: str) -> bool:
+    """Deduct 1 credit from user. Returns True if deducted, False if insufficient."""
+    result = credits_col.update_one(
+        {'userId': user_id, 'credits': {'$gt': 0}},
+        {
+            '$inc': {'credits': -1, 'totalUsed': 1},
+            '$set': {'updatedAt': _now()},
+        }
+    )
+    return result.modified_count == 1
 
 
 def _log_message(business_id: str, user_id: str, customer_phone: str,
@@ -1071,6 +1104,19 @@ def whatsapp_webhook():
         media_url = request.values.get('MediaUrl0', '')
         log.info(f"[WEBHOOK] Media received: {media_url}")
 
+    # ── Credit check ────────────────────────────────────────────
+    resp = MessagingResponse()
+    if user_id:
+        credits = _get_or_init_credits(user_id)
+        if credits <= 0:
+            no_credit_msg = (
+                "⚠️ Your BotSetu message credits are exhausted. "
+                "Please top up at https://botsetu.com/payment to continue."
+            )
+            resp.message(no_credit_msg)
+            log.warning(f"[CREDITS] User {user_id} has no credits — blocking reply for bot {business_id}")
+            return str(resp), 200, {'Content-Type': 'text/xml'}
+
     # Build and send reply – route based on botType and useCaseType
     bot_type = bot.get('botType', 'normal')
     if bot_type == 'ai':
@@ -1079,10 +1125,12 @@ def whatsapp_webhook():
         reply = _handle_mandi_flow(bot, customer_phone, incoming_msg)
     else:
         reply = _build_reply(bot, incoming_msg)
-    resp = MessagingResponse()
+
     if reply:
         resp.message(reply)
         _log_message(business_id, user_id, customer_phone, reply, 'bot')
+        if user_id:
+            _deduct_credit(user_id)
         log.info(f"[WEBHOOK] Auto-reply sent to {customer_phone}: {reply!r}")
     else:
         log.info(f"[WEBHOOK] autoReply disabled for bot {business_id} — no reply sent")

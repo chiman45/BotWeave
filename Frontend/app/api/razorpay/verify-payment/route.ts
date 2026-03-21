@@ -14,13 +14,14 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json()
-    const { 
-      razorpay_order_id, 
-      razorpay_payment_id, 
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
       razorpay_signature,
       amount,
       planName,
-      planType 
+      planType,
+      creditsAmount
     } = body
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
@@ -70,7 +71,21 @@ export async function POST(request: Request) {
     }
     
     const result = await db.collection('payments').insertOne(payment)
-    
+
+    // If this is a credits purchase, top up the user's credit balance
+    if (planType === 'credits' && creditsAmount && creditsAmount > 0) {
+      const now = new Date()
+      await db.collection('credits').updateOne(
+        { userId },
+        {
+          $inc: { credits: creditsAmount, totalEarned: creditsAmount },
+          $set: { updatedAt: now },
+          $setOnInsert: { totalUsed: 0, createdAt: now },
+        },
+        { upsert: true }
+      )
+    }
+
     paymentLogger.success('Payment verified and saved successfully', {
       userId,
       orderId: razorpay_order_id,
@@ -85,6 +100,7 @@ export async function POST(request: Request) {
       success: true,
       message: 'Payment verified successfully',
       paymentId: result.insertedId.toString(),
+      creditsAdded: planType === 'credits' ? (creditsAmount || 0) : 0,
       payment: {
         ...payment,
         _id: result.insertedId.toString()

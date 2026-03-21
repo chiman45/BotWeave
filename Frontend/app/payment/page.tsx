@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { UserButton } from '@clerk/nextjs'
-import { Bot, Check, ArrowLeft, CreditCard, Shield, Zap, Building2, Rocket } from 'lucide-react'
+import { Bot, Check, ArrowLeft, CreditCard, Shield, Zap, Building2, Rocket, Coins, AlertTriangle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 declare global {
@@ -12,9 +12,16 @@ declare global {
   }
 }
 
+const creditPacks = [
+  { id: 'credits_500',   credits: 500,   price: 49,  label: 'Starter Pack',  popular: false },
+  { id: 'credits_2000',  credits: 2000,  price: 149, label: 'Growth Pack',   popular: true  },
+  { id: 'credits_10000', credits: 10000, price: 499, label: 'Power Pack',    popular: false },
+]
+
 export default function PaymentPage() {
   const [loading, setLoading] = useState<string | null>(null)
   const [scriptLoaded, setScriptLoaded] = useState(false)
+  const [credits, setCredits] = useState<number | null>(null)
 
   const plans = [
     {
@@ -66,6 +73,12 @@ export default function PaymentPage() {
     script.async = true
     script.onload = () => setScriptLoaded(true)
     document.body.appendChild(script)
+
+    // Fetch current credit balance
+    fetch('/api/credits')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d) setCredits(d.credits) })
+      .catch(() => {})
 
     return () => {
       document.body.removeChild(script)
@@ -160,6 +173,72 @@ export default function PaymentPage() {
     }
   }
 
+  const handleCreditPurchase = async (pack: typeof creditPacks[0]) => {
+    setLoading(pack.id)
+    try {
+      const orderResponse = await fetch('/api/razorpay/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: pack.price,
+          planName: pack.label,
+          planType: 'credits'
+        })
+      })
+
+      if (!orderResponse.ok) throw new Error('Failed to create order')
+      const orderData = await orderResponse.json()
+
+      const options = {
+        key: orderData.keyId,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: 'BotSetu',
+        description: `${pack.label} — ${pack.credits.toLocaleString()} Credits`,
+        order_id: orderData.orderId,
+        handler: async function (response: any) {
+          try {
+            const verifyResponse = await fetch('/api/razorpay/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                amount: orderData.amount,
+                planName: pack.label,
+                planType: 'credits',
+                creditsAmount: pack.credits
+              })
+            })
+            const verifyData = await verifyResponse.json()
+            if (verifyData.success) {
+              setCredits(prev => (prev ?? 0) + pack.credits)
+              alert(`✅ ${pack.credits.toLocaleString()} credits added to your account!`)
+              window.location.href = '/dashboard'
+            } else {
+              alert('Payment verification failed. Please contact support.')
+            }
+          } catch {
+            alert('Payment verification failed. Please contact support.')
+          }
+        },
+        theme: { color: '#f97316' },
+        modal: { ondismiss: () => setLoading(null) }
+      }
+
+      if (scriptLoaded && window.Razorpay) {
+        new window.Razorpay(options).open()
+      } else {
+        alert('Payment gateway is loading. Please try again.')
+      }
+    } catch {
+      alert('Failed to initiate payment. Please try again.')
+    } finally {
+      setLoading(null)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* Header */}
@@ -207,6 +286,88 @@ export default function PaymentPage() {
             </div>
           </div>
 
+          {/* ── Credit Balance Banner ── */}
+          {credits !== null && (
+            <div className={`flex items-center justify-between gap-4 p-4 rounded-xl border mb-10 ${
+              credits <= 20
+                ? 'bg-red-500/10 border-red-500/30'
+                : 'bg-orange-500/10 border-orange-500/20'
+            }`}>
+              <div className="flex items-center gap-3">
+                {credits <= 20
+                  ? <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />
+                  : <Coins className="w-5 h-5 text-orange-400 shrink-0" />
+                }
+                <div>
+                  <p className="text-sm font-medium text-white">
+                    {credits <= 20 ? '⚠️ Low credits — top up now' : 'Your message credits'}
+                  </p>
+                  <p className="text-xs text-white/50">
+                    1 credit is deducted per bot reply sent
+                  </p>
+                </div>
+              </div>
+              <span className={`text-2xl font-bold tabular-nums ${credits <= 20 ? 'text-red-400' : 'text-orange-400'}`}>
+                {credits.toLocaleString()}
+              </span>
+            </div>
+          )}
+
+          {/* ── Buy Credits ── */}
+          <div className="mb-16">
+            <h2 className="text-3xl font-light text-center mb-2">Buy Message Credits</h2>
+            <p className="text-center text-white/50 text-sm mb-8">
+              Credits are shared across all your bots. 1 credit = 1 bot reply sent.
+              New accounts get <span className="text-orange-400 font-medium">100 free credits</span> automatically.
+            </p>
+            <div className="grid sm:grid-cols-3 gap-6">
+              {creditPacks.map((pack) => (
+                <div
+                  key={pack.id}
+                  className={`relative rounded-xl border p-6 flex flex-col gap-4 transition-all hover:bg-white/5 ${
+                    pack.popular
+                      ? 'border-orange-500 shadow-lg shadow-orange-500/20 scale-105'
+                      : 'border-white/10 bg-white/3'
+                  }`}
+                >
+                  {pack.popular && (
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-medium px-3 py-0.5 rounded-full">
+                      Best Value
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-xs text-white/40 uppercase tracking-wider mb-1">{pack.label}</p>
+                    <p className="text-3xl font-bold text-orange-400 tabular-nums">
+                      {pack.credits.toLocaleString()}
+                      <span className="text-sm font-normal text-white/40 ml-1">credits</span>
+                    </p>
+                    <p className="text-xs text-white/40 mt-1">
+                      ≈ ₹{(pack.price / pack.credits * 1000).toFixed(2)} per 1,000 messages
+                    </p>
+                  </div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-white/50 text-sm">₹</span>
+                    <span className="text-2xl font-light">{pack.price}</span>
+                  </div>
+                  <Button
+                    onClick={() => handleCreditPurchase(pack)}
+                    disabled={loading !== null}
+                    className={`w-full ${
+                      pack.popular
+                        ? 'bg-orange-500 hover:bg-orange-600 text-white'
+                        : 'bg-white/10 hover:bg-white/20 text-white border border-white/10'
+                    }`}
+                  >
+                    <Coins className="w-4 h-4 mr-2" />
+                    {loading === pack.id ? 'Processing…' : `Buy ${pack.credits.toLocaleString()} Credits`}
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Subscription Plans ── */}
+          <h2 className="text-3xl font-light text-center mb-8">Subscription Plans</h2>
           {/* Pricing Cards */}
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {plans.map((plan) => {
