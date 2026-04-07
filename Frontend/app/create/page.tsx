@@ -82,7 +82,7 @@ export default function CreateBotPage() {
   }
 
   // ── AI Bot config state ──────────────────────────────────────────
-  const [aiModel, setAiModel] = useState('llama3.2')
+  const [aiModel, setAiModel] = useState('gemini-2.0-flash')
   const [aiSystemPrompt, setAiSystemPrompt] = useState('')
   const [aiRagEnabled, setAiRagEnabled] = useState(false)
   const [ollamaModels, setOllamaModels] = useState<string[]>([])
@@ -555,36 +555,30 @@ export default function CreateBotPage() {
                 <div className="space-y-5 p-5 bg-cyan-500/5 border border-cyan-500/20 rounded-xl">
                   <div className="flex items-center gap-2">
                     <span className="text-lg">🧠</span>
-                    <h3 className="text-sm font-medium text-cyan-400">AI Bot Configuration (Ollama)</h3>
+                    <h3 className="text-sm font-medium text-cyan-400">AI Bot Configuration</h3>
                     {ollamaOnline === true && <span className="ml-auto text-xs text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full">● Ollama online</span>}
-                    {ollamaOnline === false && <span className="ml-auto text-xs text-red-400 bg-red-500/10 px-2 py-0.5 rounded-full">✕ Ollama offline</span>}
                   </div>
-                  <p className="text-xs text-white/40">
-                    Requires <code className="bg-white/10 px-1 rounded">ollama</code> running locally.
-                    Pull a model: <code className="bg-white/10 px-1 rounded">ollama pull llama3.2</code>
-                  </p>
 
                   {/* Model */}
                   <div>
-                    <label className="block text-sm text-white/60 mb-2">Ollama Model *</label>
-                    {ollamaModels.length > 0 ? (
-                      <select
-                        value={aiModel}
-                        onChange={e => setAiModel(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30"
-                      >
-                        {ollamaModels.map(m => <option key={m} value={m}>{m}</option>)}
-                      </select>
-                    ) : (
-                      <input
-                        type="text"
-                        value={aiModel}
-                        onChange={e => setAiModel(e.target.value)}
-                        placeholder="e.g. llama3.2, mistral, phi3, gemma2"
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30"
-                      />
-                    )}
-                    <p className="text-xs text-white/40 mt-1">The model must be pulled via <code className="bg-white/10 px-1 rounded">ollama pull &lt;model&gt;</code></p>
+                    <label className="block text-sm text-white/60 mb-2">AI Model *</label>
+                    <select
+                      value={aiModel}
+                      onChange={e => setAiModel(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30"
+                    >
+                      <optgroup label="Gemini (Cloud)">
+                        <option value="gemini-2.0-flash">gemini-2.0-flash (recommended)</option>
+                        <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+                        <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+                      </optgroup>
+                      {ollamaModels.length > 0 && (
+                        <optgroup label="Local (Ollama)">
+                          {ollamaModels.map(m => <option key={m} value={m}>{m}</option>)}
+                        </optgroup>
+                      )}
+                    </select>
+                    <p className="text-xs text-white/40 mt-1">Gemini models use the cloud API. Local models require Ollama running.</p>
                   </div>
 
                   {/* System Prompt */}
@@ -616,7 +610,6 @@ export default function CreateBotPage() {
                     </div>
                     <p className="text-xs text-white/40">
                       The bot will search your uploaded documents before answering.
-                      Requires: <code className="bg-white/10 px-1 rounded">ollama pull nomic-embed-text</code>
                     </p>
                     {aiRagEnabled && (
                       <p className="text-xs text-purple-300/60 bg-purple-500/10 px-3 py-2 rounded-lg">

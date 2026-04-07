@@ -142,7 +142,8 @@ export default function DashboardPage() {
   const [kbInfo, setKbInfo] = useState<{ exists: boolean; chunks: number } | null>(null)
   const [kbUploading, setKbUploading] = useState(false)
   const [kbUploadProgress, setKbUploadProgress] = useState<number | null>(null)
-  const [ollamaModels, setOllamaModels] = useState<string[]>([])
+  const [kbStatusMsg, setKbStatusMsg] = useState('')
+  const [ollamaModels] = useState<string[]>([])
   const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:5000'
 
   const fetchKbInfo = async (businessId: string) => {
@@ -153,34 +154,67 @@ export default function DashboardPage() {
     } catch { setKbInfo(null) }
   }
 
-  const fetchOllamaModels = async () => {
-    try {
-      const res = await fetch('/api/ai/models')
-      const data = await res.json()
-      if (data.models?.length) setOllamaModels(data.models)
-    } catch { /* ignore */ }
-  }
-
   const uploadKbFile = (businessId: string, file: File) => {
     setKbUploading(true)
     setKbUploadProgress(0)
+    setKbStatusMsg('Uploading file…')
     const fd = new FormData()
     fd.append('file', file)
     const xhr = new XMLHttpRequest()
+
     xhr.upload.onprogress = (e) => {
-      if (e.lengthComputable) setKbUploadProgress(Math.round((e.loaded / e.total) * 100))
+      if (e.lengthComputable) {
+        const pct = Math.round((e.loaded / e.total) * 100)
+        setKbUploadProgress(pct)
+        setKbStatusMsg(`Uploading… ${pct}%`)
+      }
     }
-    xhr.upload.onload = () => setKbUploadProgress(100) // upload done, now server is embedding
+
     xhr.onload = () => {
       try {
         const data = JSON.parse(xhr.responseText)
-        if (xhr.status >= 200 && xhr.status < 300) fetchKbInfo(businessId)
-        else alert(`❌ ${data.error || 'Upload failed'}`)
-      } catch { alert('Upload failed — unexpected response') }
+        if (xhr.status >= 200 && xhr.status < 300 && data.jobId) {
+          setKbStatusMsg('Chunking & embedding…')
+          // Poll the progress endpoint
+          const poll = setInterval(async () => {
+            try {
+              const res = await fetch(`${BACKEND}/api/ai/kb/progress/${data.jobId}`)
+              const job = await res.json()
+              const pct = job.progress ?? 0
+              setKbUploadProgress(pct)
+              setKbStatusMsg(
+                job.status === 'done'  ? `Done — ${job.chunks} chunks indexed` :
+                job.status === 'error' ? `Error: ${job.error}` :
+                `Embedding chunks… ${pct}%`
+              )
+              if (job.status === 'done' || job.status === 'error') {
+                clearInterval(poll)
+                if (job.status === 'done') fetchKbInfo(businessId)
+                setTimeout(() => { setKbUploadProgress(null); setKbUploading(false); setKbStatusMsg('') }, 1500)
+              }
+            } catch { /* retry next tick */ }
+          }, 800)
+        } else {
+          alert(`❌ ${data.error || 'Upload failed'}`)
+          setKbUploadProgress(null)
+          setKbUploading(false)
+          setKbStatusMsg('')
+        }
+      } catch {
+        alert('Upload failed — unexpected response')
+        setKbUploadProgress(null)
+        setKbUploading(false)
+        setKbStatusMsg('')
+      }
+    }
+
+    xhr.onerror = () => {
+      alert('Upload failed — is Flask running?')
       setKbUploadProgress(null)
       setKbUploading(false)
+      setKbStatusMsg('')
     }
-    xhr.onerror = () => { alert('Upload failed — is Flask running?'); setKbUploadProgress(null); setKbUploading(false) }
+
     xhr.open('POST', `${BACKEND}/api/ai/kb/${businessId}`)
     xhr.send(fd)
   }
@@ -198,7 +232,6 @@ export default function DashboardPage() {
     setKbInfo(null)
     if (bot.botType === 'ai') {
       fetchKbInfo(bot.businessId)
-      fetchOllamaModels()
     }
     setEditDraft({
       botName: bot.botName || '',
@@ -956,24 +989,23 @@ export default function DashboardPage() {
 
                 {/* Model */}
                 <div>
-                  <label className="block text-xs text-white/50 mb-1.5">Ollama Model</label>
-                  {ollamaModels.length > 0 ? (
-                    <select
-                      value={String(editDraft.aiModel ?? 'llama3.2')}
-                      onChange={e => setEditDraft(prev => ({ ...prev, aiModel: e.target.value }))}
-                      className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30"
-                    >
-                      {ollamaModels.map(m => <option key={m} value={m}>{m}</option>)}
-                    </select>
-                  ) : (
-                    <input
-                      type="text"
-                      value={String(editDraft.aiModel ?? 'llama3.2')}
-                      onChange={e => setEditDraft(prev => ({ ...prev, aiModel: e.target.value }))}
-                      placeholder="e.g. llama3.2, mistral, phi3"
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30"
-                    />
-                  )}
+                  <label className="block text-xs text-white/50 mb-1.5">AI Model</label>
+                  <select
+                    value={String(editDraft.aiModel ?? 'gemini-2.0-flash')}
+                    onChange={e => setEditDraft(prev => ({ ...prev, aiModel: e.target.value }))}
+                    className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30"
+                  >
+                    <optgroup label="Gemini (Cloud)">
+                      <option value="gemini-2.0-flash">gemini-2.0-flash (recommended)</option>
+                      <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+                      <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+                    </optgroup>
+                    {ollamaModels.length > 0 && (
+                      <optgroup label="Local (Ollama)">
+                        {ollamaModels.map(m => <option key={m} value={m}>{m}</option>)}
+                      </optgroup>
+                    )}
+                  </select>
                 </div>
 
                 {/* System Prompt */}
@@ -1019,15 +1051,14 @@ export default function DashboardPage() {
                     {kbUploading && (
                       <div className="space-y-1">
                         <div className="flex justify-between text-xs text-white/40">
-                          <span>{kbUploadProgress !== null && kbUploadProgress < 100 ? `Uploading…` : '⏳ Embedding chunks…'}</span>
-                          {kbUploadProgress !== null && kbUploadProgress < 100 && <span>{kbUploadProgress}%</span>}
+                          <span>{kbStatusMsg || 'Processing…'}</span>
+                          {kbUploadProgress !== null && <span>{kbUploadProgress}%</span>}
                         </div>
                         <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                          {kbUploadProgress !== null && kbUploadProgress < 100 ? (
-                            <div className="h-full bg-purple-500 rounded-full transition-all duration-150" style={{ width: `${kbUploadProgress}%` }} />
-                          ) : (
-                            <div className="h-full w-full bg-purple-500/60 rounded-full animate-pulse" />
-                          )}
+                          <div
+                            className="h-full bg-purple-500 rounded-full transition-all duration-300"
+                            style={{ width: `${kbUploadProgress ?? 0}%` }}
+                          />
                         </div>
                       </div>
                     )}
@@ -1039,9 +1070,7 @@ export default function DashboardPage() {
                             ? 'bg-white/5 border-purple-500/30 text-purple-400/50 cursor-wait'
                             : 'bg-white/5 border-white/10 hover:border-white/30 text-white/60 hover:text-white'
                         }`}>
-                          {kbUploading
-                            ? (kbUploadProgress !== null && kbUploadProgress < 100 ? `Uploading ${kbUploadProgress}%…` : 'Embedding…')
-                            : '⬆ Upload File (.txt / .json / .csv)'}
+                          {kbUploading ? (kbStatusMsg || 'Processing…') : '⬆ Upload File (.txt / .json / .csv)'}
                         </div>
                         <input
                           type="file"

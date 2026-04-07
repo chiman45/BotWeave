@@ -28,7 +28,6 @@ from datetime import datetime, timezone
 from typing import Optional, Dict, List
 import os
 import logging
-import time
 import re
 from dotenv import load_dotenv
 
@@ -93,11 +92,6 @@ CORS(app)
 # ── HELPERS
 # ═════════════════════════════════════════════════════════════
 
-def _serialize(doc: dict) -> dict:
-    """Convert MongoDB ObjectId fields to strings."""
-    if doc and '_id' in doc:
-        doc['_id'] = str(doc['_id'])
-    return doc
 
 
 def _find_bot_for_customer(customer_phone: str) -> Optional[Dict]:
@@ -560,16 +554,19 @@ _VECTOR_STORE_ROOT = os.path.join(os.path.dirname(__file__), 'vector_stores')
 _KB_COLLECTION = 'knowledge_base'
 
 
-def _get_ollama_embedding(text: str, model: str = 'nomic-embed-text') -> list:
-    """Get an embedding vector from the local Ollama server via REST."""
+def _get_gemini_embedding(text: str) -> list:
+    """Get a single embedding vector from Gemini text-embedding-004."""
     import requests as _req
+    api_key = os.getenv('GEMINI_API_KEY', '')
     resp = _req.post(
-        'http://localhost:11434/api/embeddings',
-        json={'model': model, 'prompt': text},
-        timeout=60,
+        f'https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key={api_key}',
+        json={'model': 'models/text-embedding-004', 'content': {'parts': [{'text': text}]}},
+        timeout=30,
     )
     resp.raise_for_status()
-    return resp.json()['embedding']
+    return resp.json()['embedding']['values']
+
+
 
 
 def _chunk_text(text: str, size: int = 500, overlap: int = 60) -> List[str]:
@@ -606,7 +603,7 @@ def _rag_query(business_id: str, query: str) -> str:
         return ''
     try:
         import chromadb
-        query_embedding = _get_ollama_embedding(query)
+        query_embedding = _get_gemini_embedding(query)
         client     = chromadb.PersistentClient(path=store_path)
         collection = client.get_collection(_KB_COLLECTION)
         total      = collection.count()
@@ -731,17 +728,56 @@ def _extract_faculty_names(context: str, max_names: int = 25) -> List[str]:
     return names
 
 
+_OUTREACH_KEYWORDS = {
+    # internship / training / placement intent
+    'internship', 'internships', 'intern', 'interns',
+    'placement', 'placements', 'placed',
+    'training', 'trainee', 'trainees',
+    'outreach', 'industrial training', 'industry training',
+    'summer training', 'winter training', 'summer internship', 'winter internship',
+    'job opportunity', 'job opportunities', 'opportunity', 'opportunities',
+    'apprenticeship', 'apprenticeships',
+    'how to apply', 'apply for', 'application process',
+    'collaborate', 'collaboration', 'partner', 'partnership',
+    'hire', 'hiring', 'recruit', 'recruitment', 'campus recruitment',
+    'on-campus', 'off-campus',
+    'tnp', 't&p', 'training and placement', 'placement cell',
+    'company visit', 'company visits', 'campus drive',
+}
+
+_OUTREACH_URL = 'https://www.iiitnr.ac.in/content/outreach-2025'
+
+
+def _is_outreach_query(text: str) -> bool:
+    """Return True if the message is asking about internships, placements, or outreach."""
+    lower = text.lower()
+    # Direct keyword match
+    for kw in _OUTREACH_KEYWORDS:
+        if kw in lower:
+            return True
+    return False
+
+
 def _handle_ai_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str:
     """
-    Handle a message using a local Ollama LLM via the REST API.
+    Handle a message using the Gemini API (gemini-2.0-flash).
     Automatically injects RAG context when aiRagEnabled = True.
-    Only requires 'requests' (already installed) — no LangChain needed.
     """
     import requests as _req
 
-    model_name  = bot.get('aiModel', 'llama3.2')
     business_id = bot['businessId']
     rag_enabled = bool(bot.get('aiRagEnabled', False))
+    model_name  = bot.get('aiModel', 'gemini-2.0-flash')
+
+    # ── Outreach / Internship keyword redirect ─────────────────
+    if _is_outreach_query(incoming_msg):
+        return (
+            "For internship and outreach/placement opportunities at IIIT Naya Raipur, "
+            "please visit the official Outreach 2025 page:\n\n"
+            f"{_OUTREACH_URL}\n\n"
+            "You can find details about how to apply, collaboration programs, and "
+            "training/placement drives there."
+        )
 
     # ── Conversation history (last 8 turns, oldest first) ──
     history_docs = list(
@@ -832,82 +868,73 @@ def _handle_ai_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str:
         f"User: {incoming_msg}\nAssistant:"
     )
 
-    log.info(f"[AI] Sending prompt to Ollama (model={model_name!r}, rag={rag_enabled}, ctx_chars={len(rag_context)})")
+    gemini_api_key = os.getenv('GEMINI_API_KEY', '')
+    if not gemini_api_key:
+        log.error("[AI] GEMINI_API_KEY not set in environment")
+        return "⚠️ AI service is not configured. Please contact the administrator."
+
+    log.info(f"[AI] Sending prompt to Gemini (rag={rag_enabled}, ctx_chars={len(rag_context)})")
 
     try:
         resp = _req.post(
-            'http://localhost:11434/api/generate',
-            json={'model': model_name, 'prompt': prompt, 'stream': False},
-            timeout=120,
+            f'https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={gemini_api_key}',
+            json={
+                'contents': [{'parts': [{'text': prompt}]}],
+                'generationConfig': {'temperature': 0.4, 'maxOutputTokens': 1024},
+            },
+            timeout=30,
         )
         resp.raise_for_status()
-        reply = resp.json().get('response', '').strip()
-        log.info(f"[AI] Ollama reply: {reply[:200]!r}")
-        return reply
+        data = resp.json()
+        reply = (
+            data.get('candidates', [{}])[0]
+                .get('content', {})
+                .get('parts', [{}])[0]
+                .get('text', '')
+                .strip()
+        )
+        log.info(f"[AI] Gemini reply: {reply[:200]!r}")
+        return reply or "I couldn't generate a response. Please try again."
     except Exception as exc:
-        log.error(f"[AI] Ollama error (model={model_name!r}): {exc}")
+        log.error(f"[AI] Gemini error: {exc}")
         return (
-            "⚠️ I'm having trouble thinking right now — the AI model may be loading. "
-            "Please send your message again in a moment."
+            "⚠️ I'm having trouble connecting to the AI service right now. "
+            "Please try again in a moment."
         )
 
 
-# ── ROUTE: AI — List Ollama models ────────────────────────────
+# ── ROUTE: AI — List available models ────────────────────────
 @app.route('/api/ai/models', methods=['GET'])
-def list_ollama_models():
-    """Return available model names from the local Ollama server."""
-    try:
-        import requests as _req
-        resp = _req.get('http://localhost:11434/api/tags', timeout=5)
-        if resp.status_code == 200:
-            models = [m['name'] for m in resp.json().get('models', [])]
-            return jsonify({'models': models, 'ollamaRunning': True})
-    except Exception as exc:
-        log.warning(f"[AI] Ollama not reachable: {exc}")
-    return jsonify({'models': [], 'ollamaRunning': False,
-                    'error': 'Ollama not running at localhost:11434'})
+def list_ai_models():
+    """Return available Gemini model names."""
+    models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro']
+    return jsonify({'models': models, 'provider': 'gemini'})
 
 
-# ── ROUTE: AI — Knowledge Base (RAG) ─────────────────────────
-@app.route('/api/ai/kb/<business_id>', methods=['POST'])
-def upload_kb(business_id: str):
-    """
-    Ingest a knowledge base file (TXT, JSON, CSV, MD) into the bot's
-    per-bot Chroma vector store.  Embeddings are generated via Ollama
-    nomic-embed-text (must be pulled: ollama pull nomic-embed-text).
-    """
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file provided (field name: file)'}), 400
+# ── In-memory KB job progress store ──────────────────────────
+_kb_jobs: Dict[str, Dict] = {}  # job_id -> {status, progress, total, done, error}
 
-    file     = request.files['file']
-    filename = file.filename or 'kb.txt'
-    ext      = filename.rsplit('.', 1)[-1].lower() if '.' in filename else 'txt'
 
-    raw = file.read().decode('utf-8', errors='replace')
-
-    # ── Parse file into text segments ─────────────────────
+def _parse_kb_texts(raw: str, ext: str) -> List[str]:
+    """Parse raw file content into text segments based on file type."""
     texts: List[str] = []
     if ext == 'json':
         try:
             import json as _json
             data = _json.loads(raw)
             if isinstance(data, list) and data and isinstance(data[0], dict):
-                # Detect scraped-website format: [{url, title, section, content, key_links}, ...]
                 if 'content' in data[0]:
                     for item in data:
                         content   = item.get('content', '')
                         title     = item.get('title', '')
                         url       = item.get('url', '')
                         section   = item.get('section', '')
-                        key_links = item.get('key_links', [])  # [{text, url}, ...]
+                        key_links = item.get('key_links', [])
 
-                        # Strip nav boilerplate — everything before "Home >" is nav menu
-                        # (only needed for older scraped files; new scraper already strips this)
                         home_idx = content.find('Home >')
                         if home_idx != -1:
                             content = content[home_idx + len('Home >'):]
 
-                        # Strip repeated footer/contact block
                         for footer_marker in ('Contact IIIT', 'Sitemap Terms', 'Back to Top',
                                               'Plot No. 7, Sector 24'):
                             idx = content.find(footer_marker)
@@ -919,17 +946,11 @@ def upload_kb(business_id: str):
                         if not content:
                             continue
 
-                        # Build rich text block so model sees REAL URLs to cite
-                        parts = []
-                        parts.append(f"Source URL: {url}")
-                        if title:
-                            parts.append(f"Page Title: {title}")
-                        if section:
-                            parts.append(f"Section: {section}")
+                        parts = [f"Source URL: {url}"]
+                        if title:   parts.append(f"Page Title: {title}")
+                        if section: parts.append(f"Section: {section}")
                         parts.append('')
                         parts.append(content)
-
-                        # Append key links so model can cite specific sub-links
                         if key_links:
                             parts.append('')
                             parts.append('Related links on this page:')
@@ -938,15 +959,12 @@ def upload_kb(business_id: str):
                                 lnk_url  = lnk.get('url', '')
                                 if lnk_text and lnk_url:
                                     parts.append(f"  - {lnk_text}: {lnk_url}")
-
                         texts.append('\n'.join(parts))
                 else:
-                    # Generic list of objects — stringify each
                     texts = [_json.dumps(item, ensure_ascii=False) for item in data]
             elif isinstance(data, list):
                 texts = [str(item) for item in data]
             elif isinstance(data, dict):
-                # Support {question: answer, ...}
                 texts = [f"{k}: {v}" for k, v in data.items()]
             else:
                 texts = [raw]
@@ -957,83 +975,120 @@ def upload_kb(business_id: str):
         reader = _csv.DictReader(_io.StringIO(raw))
         texts  = [', '.join(f"{k}: {v}" for k, v in row.items()) for row in reader if row]
     else:
-        # TXT / MD / anything else — split on blank lines to preserve paragraphs
-        texts = [p.strip() for p in raw.split('\n\n') if p.strip()]
-        if not texts:
-            texts = [raw]
+        texts = [p.strip() for p in raw.split('\n\n') if p.strip()] or [raw]
+    return texts
+
+
+def _run_kb_embed_job(job_id: str, business_id: str, filename: str, all_chunks: List[str]):
+    """
+    Background thread: embed all chunks via Gemini embedContent with retry on
+    rate-limit (429) errors, then persist to ChromaDB.
+    Workers are kept low to avoid hitting Gemini's RPM limit.
+    """
+    import requests as _req
+    import chromadb, uuid as _uuid
+    import threading
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+    job = _kb_jobs[job_id]
+    total = len(all_chunks)
+    api_key = os.getenv('GEMINI_API_KEY', '')
+    all_embeddings: List[list] = [None] * total
+    completed = [0]
+    lock = threading.Lock()
+
+    def _embed_one(idx: int, text: str) -> tuple:
+        url = f'https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key={api_key}'
+        payload = {'model': 'models/text-embedding-004', 'content': {'parts': [{'text': text}]}}
+        backoff = 2
+        for attempt in range(6):
+            resp = _req.post(url, json=payload, timeout=30)
+            if resp.status_code == 429:
+                wait = backoff * (2 ** attempt)
+                log.warning(f"[RAG] Rate limited on chunk {idx}, retrying in {wait}s (attempt {attempt+1})")
+                import time as _t; _t.sleep(wait)
+                continue
+            resp.raise_for_status()
+            return idx, resp.json()['embedding']['values']
+        raise Exception(f"Chunk {idx} failed after 6 retries (rate limit)")
 
     try:
-        import chromadb, uuid as _uuid
-        import requests as _req
-        from concurrent.futures import ThreadPoolExecutor
+        # 10 workers — stays comfortably under Gemini's free-tier RPM limit
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = {executor.submit(_embed_one, i, chunk): i for i, chunk in enumerate(all_chunks)}
+            for future in as_completed(futures):
+                idx, vec = future.result()
+                all_embeddings[idx] = vec
+                with lock:
+                    completed[0] += 1
+                    done = completed[0]
+                job['progress'] = min(round((done / total) * 95), 95)
+                if done % 200 == 0 or done == total:
+                    log.info(f"[RAG] Job {job_id}: {done}/{total} chunks embedded")
+        log.info(f"[RAG] Job {job_id}: embedding complete, writing to ChromaDB…")
 
-        started_at = time.perf_counter()
-
-        # Chunk all parsed texts
-        all_chunks = [c for text in texts for c in _chunk_text(text) if c.strip()]
-        if not all_chunks:
-            return jsonify({'error': 'No usable content found in file'}), 400
-
-        embedding_model = os.getenv('OLLAMA_EMBEDDING_MODEL', 'nomic-embed-text')
-        max_workers = max(1, int(os.getenv('KB_EMBED_WORKERS', '4')))
-
-        log.info(
-            f"[RAG] Starting embedding for {len(all_chunks)} chunks "
-            f"(model={embedding_model}, workers={max_workers})"
-        )
-
-        # Embed chunks in parallel to reduce ingestion latency.
-        def _embed_chunk(chunk: str) -> list:
-            emb_resp = _req.post(
-                'http://localhost:11434/api/embeddings',
-                json={'model': embedding_model, 'prompt': chunk},
-                timeout=120,
-            )
-            if emb_resp.status_code != 200:
-                raise Exception(f"Ollama embedding error: {emb_resp.text}")
-            return emb_resp.json()['embedding']
-
-        with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            embeddings_list = list(executor.map(_embed_chunk, all_chunks))
-
+        # Write to ChromaDB
         store_path = os.path.join(_VECTOR_STORE_ROOT, business_id)
         os.makedirs(store_path, exist_ok=True)
-
         client = chromadb.PersistentClient(path=store_path)
-        # Delete existing collection so re-uploads don't duplicate chunks
         try:
             client.delete_collection(_KB_COLLECTION)
-            log.info(f"[RAG] Cleared existing KB collection for bot {business_id}")
         except Exception:
             pass
-        # Use cosine distance so scores are normalized to [0, 2].
-        # This avoids the L2 scale issue where distances can be 100-500+
-        # making the 0.85 threshold reject every chunk.
-        collection = client.create_collection(
-            _KB_COLLECTION,
-            metadata={'hnsw:space': 'cosine'},
-        )
-        ids        = [str(_uuid.uuid4()) for _ in all_chunks]
-        metadatas  = [{'source': filename} for _ in all_chunks]
-        collection.add(documents=all_chunks, embeddings=embeddings_list, ids=ids, metadatas=metadatas)
+        collection = client.create_collection(_KB_COLLECTION, metadata={'hnsw:space': 'cosine'})
+        ids       = [str(_uuid.uuid4()) for _ in all_chunks]
+        metadatas = [{'source': filename} for _ in all_chunks]
+        collection.add(documents=all_chunks, embeddings=all_embeddings, ids=ids, metadatas=metadatas)
 
-        elapsed_seconds = round(time.perf_counter() - started_at, 2)
-        log.info(
-            f"[RAG] Ingested {len(all_chunks)} chunks for bot {business_id} "
-            f"from {filename!r} in {elapsed_seconds}s"
-        )
-        return jsonify({
-            'message': f'Ingested {len(all_chunks)} chunks from {filename}',
-            'chunks': len(all_chunks),
-            'embeddingModel': embedding_model,
-            'elapsedSeconds': elapsed_seconds,
-        })
-
-    except ImportError:
-        return jsonify({'error': 'chromadb not installed. Run: pip install chromadb'}), 500
+        job['progress'] = 100
+        job['status']   = 'done'
+        job['chunks']   = total
+        log.info(f"[RAG] Job {job_id}: done — {total} chunks ingested for bot {business_id}")
     except Exception as exc:
-        log.error(f"[RAG] KB upload failed for {business_id}: {exc}")
-        return jsonify({'error': str(exc)}), 500
+        log.error(f"[RAG] Job {job_id} failed: {exc}")
+        job['status'] = 'error'
+        job['error']  = str(exc)
+
+
+# ── ROUTE: AI — Knowledge Base (RAG) ─────────────────────────
+@app.route('/api/ai/kb/<business_id>', methods=['POST'])
+def upload_kb(business_id: str):
+    """
+    Ingest a KB file (TXT, JSON, CSV, MD) into the bot's Chroma vector store.
+    Returns a job_id immediately; embeddings run in a background thread.
+    Poll GET /api/ai/kb/progress/<job_id> for live progress.
+    """
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file provided (field name: file)'}), 400
+
+    file     = request.files['file']
+    filename = file.filename or 'kb.txt'
+    ext      = filename.rsplit('.', 1)[-1].lower() if '.' in filename else 'txt'
+    raw      = file.read().decode('utf-8', errors='replace')
+
+    texts = _parse_kb_texts(raw, ext)
+    all_chunks = [c for text in texts for c in _chunk_text(text) if c.strip()]
+    if not all_chunks:
+        return jsonify({'error': 'No usable content found in file'}), 400
+
+    import uuid as _uuid, threading
+    job_id = str(_uuid.uuid4())
+    _kb_jobs[job_id] = {'status': 'processing', 'progress': 0, 'total': len(all_chunks), 'chunks': 0, 'error': None}
+
+    t = threading.Thread(target=_run_kb_embed_job, args=(job_id, business_id, filename, all_chunks), daemon=True)
+    t.start()
+
+    log.info(f"[RAG] Started KB embed job {job_id} for bot {business_id} ({len(all_chunks)} chunks)")
+    return jsonify({'jobId': job_id, 'totalChunks': len(all_chunks), 'message': 'Embedding started'})
+
+
+@app.route('/api/ai/kb/progress/<job_id>', methods=['GET'])
+def kb_job_progress(job_id: str):
+    """Poll this endpoint to get live embedding progress for a KB upload job."""
+    job = _kb_jobs.get(job_id)
+    if not job:
+        return jsonify({'error': 'Job not found'}), 404
+    return jsonify(job)
 
 
 @app.route('/api/ai/kb/<business_id>', methods=['GET'])
@@ -1506,8 +1561,7 @@ def _ivr_webhook_base() -> str:
     return base.rstrip('/')
 
 
-def _build_ivr_twiml(node: Dict, all_nodes: List[Dict],
-                     business_id: str, webhook_base: str):
+def _build_ivr_twiml(node: Dict, business_id: str, webhook_base: str):
     """
     Recursively build a TwiML VoiceResponse for the given IVR node.
     - End nodes: say the message and hang up.
@@ -1582,7 +1636,7 @@ def voice_webhook():
         return str(response), 200, {'Content-Type': 'text/xml'}
 
     log.info(f"[VOICE] Routing to IVR bot {business_id}")
-    return _build_ivr_twiml(root_node, ivr_nodes, business_id, _ivr_webhook_base())
+    return _build_ivr_twiml(root_node, business_id, _ivr_webhook_base())
 
 
 @app.route('/webhook/voice/gather/<business_id>/<node_id>', methods=['POST'])
@@ -1617,7 +1671,7 @@ def voice_gather(business_id: str, node_id: str):
             next_node_id = options[opt_index].get('nextNodeId', '')
             next_node    = next((n for n in ivr_nodes if n['id'] == next_node_id), None)
             if next_node:
-                return _build_ivr_twiml(next_node, ivr_nodes, business_id, _ivr_webhook_base())
+                return _build_ivr_twiml(next_node, business_id, _ivr_webhook_base())
     except (ValueError, IndexError):
         pass
 
