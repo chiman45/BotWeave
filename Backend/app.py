@@ -554,17 +554,18 @@ _VECTOR_STORE_ROOT = os.path.join(os.path.dirname(__file__), 'vector_stores')
 _KB_COLLECTION = 'knowledge_base'
 
 
-def _get_gemini_embedding(text: str) -> list:
-    """Get a single embedding vector from Gemini text-embedding-004."""
+def _get_ollama_embedding(text: str) -> list:
+    """Get a single embedding vector from a local Ollama embedding model."""
     import requests as _req
-    api_key = os.getenv('GEMINI_API_KEY', '')
+    base_url = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434')
+    model    = os.getenv('OLLAMA_EMBED_MODEL', 'nomic-embed-text')
     resp = _req.post(
-        f'https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key={api_key}',
-        json={'model': 'models/text-embedding-004', 'content': {'parts': [{'text': text}]}},
-        timeout=30,
+        f'{base_url}/api/embeddings',
+        json={'model': model, 'prompt': text},
+        timeout=60,
     )
     resp.raise_for_status()
-    return resp.json()['embedding']['values']
+    return resp.json()['embedding']
 
 
 
@@ -603,7 +604,7 @@ def _rag_query(business_id: str, query: str) -> str:
         return ''
     try:
         import chromadb
-        query_embedding = _get_gemini_embedding(query)
+        query_embedding = _get_ollama_embedding(query)
         client     = chromadb.PersistentClient(path=store_path)
         collection = client.get_collection(_KB_COLLECTION)
         total      = collection.count()
@@ -767,7 +768,6 @@ def _handle_ai_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str:
 
     business_id = bot['businessId']
     rag_enabled = bool(bot.get('aiRagEnabled', False))
-    model_name  = bot.get('aiModel', 'gemini-2.0-flash')
 
     # ── Outreach / Internship keyword redirect ─────────────────
     if _is_outreach_query(incoming_msg):
@@ -861,54 +861,91 @@ def _handle_ai_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str:
     else:
         context_block = ''
 
-    prompt = (
-        f"{system_prompt}\n\n"
-        f"{context_block}"
-        f"Conversation so far:\n{history_str}"
-        f"User: {incoming_msg}\nAssistant:"
-    )
 
-    gemini_api_key = os.getenv('GEMINI_API_KEY', '')
-    if not gemini_api_key:
-        log.error("[AI] GEMINI_API_KEY not set in environment")
-        return "⚠️ AI service is not configured. Please contact the administrator."
+    import time as _time
 
-    log.info(f"[AI] Sending prompt to Gemini (rag={rag_enabled}, ctx_chars={len(rag_context)})")
+    # ── Helper: call Grok (xAI) via Responses API ──────────────
+    def _try_grok() -> str | None:
+        api_key = os.getenv('GROK_API_KEY', '')
+        if not api_key:
+            return None
+        grok_model = os.getenv('GROK_MODEL', 'grok-4.20-reasoning')
+        user_input = f"{context_block}{history_str}User: {incoming_msg}"
+        log.info(f"[AI] Sending prompt to Grok ({grok_model}, rag={rag_enabled})")
+        for attempt in range(3):
+            try:
+                resp = _req.post(
+                    'https://api.x.ai/v1/responses',
+                    headers={'Authorization': f'Bearer {api_key}', 'Content-Type': 'application/json'},
+                    json={
+                        'model': grok_model,
+                        'instructions': system_prompt,
+                        'input': user_input,
+                    },
+                    timeout=60,
+                )
+                if resp.status_code == 429:
+                    wait = 2 ** attempt
+                    log.warning(f"[AI] Grok 429, retrying in {wait}s")
+                    _time.sleep(wait)
+                    continue
+                resp.raise_for_status()
+                data = resp.json()
+                # Responses API: output[0].content[0].text
+                reply = (
+                    data.get('output', [{}])[0]
+                        .get('content', [{}])[0]
+                        .get('text', '')
+                        .strip()
+                )
+                log.info(f"[AI] Grok reply: {reply[:200]!r}")
+                return reply or None
+            except Exception as exc:
+                log.warning(f"[AI] Grok attempt {attempt+1} failed: {exc}")
+                if attempt < 2:
+                    _time.sleep(2 ** attempt)
+        return None
 
-    try:
-        resp = _req.post(
-            f'https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={gemini_api_key}',
-            json={
-                'contents': [{'parts': [{'text': prompt}]}],
-                'generationConfig': {'temperature': 0.4, 'maxOutputTokens': 1024},
-            },
-            timeout=30,
-        )
-        resp.raise_for_status()
-        data = resp.json()
-        reply = (
-            data.get('candidates', [{}])[0]
-                .get('content', {})
-                .get('parts', [{}])[0]
-                .get('text', '')
-                .strip()
-        )
-        log.info(f"[AI] Gemini reply: {reply[:200]!r}")
-        return reply or "I couldn't generate a response. Please try again."
-    except Exception as exc:
-        log.error(f"[AI] Gemini error: {exc}")
-        return (
-            "⚠️ I'm having trouble connecting to the AI service right now. "
-            "Please try again in a moment."
-        )
+    # ── Helper: call Ollama (local) as fallback ─────────────────
+    def _try_ollama() -> str | None:
+        base_url    = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434')
+        chat_model  = os.getenv('OLLAMA_CHAT_MODEL', 'llama3')
+        log.info(f"[AI] Falling back to Ollama ({chat_model})")
+        try:
+            resp = _req.post(
+                f'{base_url}/api/chat',
+                json={
+                    'model': chat_model,
+                    'messages': [
+                        {'role': 'system',    'content': system_prompt},
+                        {'role': 'user',      'content': f"{context_block}{history_str}User: {incoming_msg}"},
+                    ],
+                    'stream': False,
+                    'options': {'temperature': 0.4, 'num_predict': 1024},
+                },
+                timeout=60,
+            )
+            resp.raise_for_status()
+            reply = resp.json().get('message', {}).get('content', '').strip()
+            log.info(f"[AI] Ollama reply: {reply[:200]!r}")
+            return reply or None
+        except Exception as exc:
+            log.error(f"[AI] Ollama fallback failed: {exc}")
+            return None
+
+    reply = _try_grok() or _try_ollama()
+    if reply:
+        return reply
+    log.error("[AI] Both Grok and Ollama failed")
+    return "⚠️ I'm having trouble connecting to the AI service right now. Please try again in a moment."
 
 
 # ── ROUTE: AI — List available models ────────────────────────
 @app.route('/api/ai/models', methods=['GET'])
 def list_ai_models():
-    """Return available Gemini model names."""
-    models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro']
-    return jsonify({'models': models, 'provider': 'gemini'})
+    """Return available model names."""
+    models = ['grok-3-mini', 'grok-3', 'grok-2']
+    return jsonify({'models': models, 'provider': 'grok'})
 
 
 # ── In-memory KB job progress store ──────────────────────────
@@ -981,9 +1018,8 @@ def _parse_kb_texts(raw: str, ext: str) -> List[str]:
 
 def _run_kb_embed_job(job_id: str, business_id: str, filename: str, all_chunks: List[str]):
     """
-    Background thread: embed all chunks via Gemini embedContent with retry on
-    rate-limit (429) errors, then persist to ChromaDB.
-    Workers are kept low to avoid hitting Gemini's RPM limit.
+    Background thread: embed all chunks via local Ollama embedding model,
+    then persist to ChromaDB.
     """
     import requests as _req
     import chromadb, uuid as _uuid
@@ -992,29 +1028,24 @@ def _run_kb_embed_job(job_id: str, business_id: str, filename: str, all_chunks: 
 
     job = _kb_jobs[job_id]
     total = len(all_chunks)
-    api_key = os.getenv('GEMINI_API_KEY', '')
+    base_url    = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434')
+    embed_model = os.getenv('OLLAMA_EMBED_MODEL', 'nomic-embed-text')
     all_embeddings: List[list] = [None] * total
     completed = [0]
     lock = threading.Lock()
 
     def _embed_one(idx: int, text: str) -> tuple:
-        url = f'https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key={api_key}'
-        payload = {'model': 'models/text-embedding-004', 'content': {'parts': [{'text': text}]}}
-        backoff = 2
-        for attempt in range(6):
-            resp = _req.post(url, json=payload, timeout=30)
-            if resp.status_code == 429:
-                wait = backoff * (2 ** attempt)
-                log.warning(f"[RAG] Rate limited on chunk {idx}, retrying in {wait}s (attempt {attempt+1})")
-                import time as _t; _t.sleep(wait)
-                continue
-            resp.raise_for_status()
-            return idx, resp.json()['embedding']['values']
-        raise Exception(f"Chunk {idx} failed after 6 retries (rate limit)")
+        resp = _req.post(
+            f'{base_url}/api/embeddings',
+            json={'model': embed_model, 'prompt': text},
+            timeout=60,
+        )
+        resp.raise_for_status()
+        return idx, resp.json()['embedding']
 
     try:
-        # 10 workers — stays comfortably under Gemini's free-tier RPM limit
-        with ThreadPoolExecutor(max_workers=10) as executor:
+        # Parallel workers — no rate limit since Ollama is local
+        with ThreadPoolExecutor(max_workers=4) as executor:
             futures = {executor.submit(_embed_one, i, chunk): i for i, chunk in enumerate(all_chunks)}
             for future in as_completed(futures):
                 idx, vec = future.result()

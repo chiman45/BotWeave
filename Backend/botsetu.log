@@ -1812,3 +1812,1319 @@ PermissionError: [WinError 32] The process cannot access the file because it is 
 2026-04-07 07:50:01,557 [INFO] t=2026-04-07T07:50:01+0530 lvl=info msg="session closing" obj=tunnels.session err=nil
 2026-04-07 07:50:01,580 [INFO] t=2026-04-07T07:50:01+0530 lvl=info msg="accept failed" obj=tunnels.session obj=csess id=8ba8cda457e8 err="reconnecting session closed"
 2026-04-07 07:50:01,586 [INFO] t=2026-04-07T07:50:01+0530 lvl=info msg="failed to accept connection: Listener closed" obj=tunnels.session clientid=6a37718c768d806a4ee0e6e62fcd7b35
+2026-04-07 07:50:41,859 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.67:5000
+2026-04-07 07:50:41,859 [INFO] [33mPress CTRL+C to quit[0m
+2026-04-07 07:50:45,277 [INFO] 127.0.0.1 - - [07/Apr/2026 07:50:45] "GET /api/ai/kb/business_1775528316422_imqyi6ygs HTTP/1.1" 200 -
+2026-04-07 07:50:50,950 [INFO] 127.0.0.1 - - [07/Apr/2026 07:50:50] "OPTIONS /api/ai/kb/business_1775528316422_imqyi6ygs HTTP/1.1" 200 -
+2026-04-07 07:50:51,278 [INFO] [RAG] Started KB embed job aa90dfc0-a8c5-4599-8681-e68fbea23bd9 for bot business_1775528316422_imqyi6ygs (3172 chunks)
+2026-04-07 07:50:51,279 [INFO] 127.0.0.1 - - [07/Apr/2026 07:50:51] "POST /api/ai/kb/business_1775528316422_imqyi6ygs HTTP/1.1" 200 -
+2026-04-07 07:50:52,112 [INFO] 127.0.0.1 - - [07/Apr/2026 07:50:52] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:50:53,225 [INFO] 127.0.0.1 - - [07/Apr/2026 07:50:53] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:50:53,709 [INFO] 127.0.0.1 - - [07/Apr/2026 07:50:53] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:50:54,834 [INFO] 127.0.0.1 - - [07/Apr/2026 07:50:54] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:50:55,318 [INFO] 127.0.0.1 - - [07/Apr/2026 07:50:55] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:50:56,418 [INFO] 127.0.0.1 - - [07/Apr/2026 07:50:56] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:50:56,922 [INFO] 127.0.0.1 - - [07/Apr/2026 07:50:56] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:50:58,032 [INFO] 127.0.0.1 - - [07/Apr/2026 07:50:58] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:50:58,770 [INFO] 127.0.0.1 - - [07/Apr/2026 07:50:58] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:00,080 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:00] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:00,765 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:00] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:02,090 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:02] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:02,513 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:02] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:04,074 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:04] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:04,764 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:04] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:06,076 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:06] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:06,766 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:06] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:07,626 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:07] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:08,766 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:08] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:09,215 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:09] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:09,715 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:09] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:11,078 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:11] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:11,323 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:11] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:13,086 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:13] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:13,773 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:13] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:15,080 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:15] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:15,773 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:15] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:17,085 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:17] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:17,775 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:17] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:19,089 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:19] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:19,767 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:19] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:21,078 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:21] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:21,767 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:21] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:33,494 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:33] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:33,760 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:33] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:34,524 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:34] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:35,635 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:35] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:36,767 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:36] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:38,089 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:38] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:38,776 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:38] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:40,081 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:40] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:40,770 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:40] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:42,076 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:42] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:42,766 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:42] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:44,077 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:44] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:44,765 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:44] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:51:46,075 [INFO] 127.0.0.1 - - [07/Apr/2026 07:51:46] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:01,283 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:01] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:02,028 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:02] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:02,519 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:02] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:03,626 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:03] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:04,770 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:04] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:06,081 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:06] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:06,768 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:06] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:08,078 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:08] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:08,763 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:08] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:10,076 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:10] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:10,778 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:10] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:11,636 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:11] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:12,121 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:12] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:13,216 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:13] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:13,712 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:13] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:14,813 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:14] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:15,310 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:15] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:16,434 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:16] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:16,921 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:16] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:18,077 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:18] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:18,527 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:18] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:19,997 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:19] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:20,263 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:20] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:21,766 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:21] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:23,086 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:23] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:23,776 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:23] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:25,085 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:25] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:25,774 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:25] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:27,087 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:27] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:27,766 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:27] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:29,074 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:29] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:29,764 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:29] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:36,861 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:36] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:37,109 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:37] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:37,709 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:37] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:38,840 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:38] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:39,774 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:39] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:41,086 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:41] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:41,351 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:41] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:41,710 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:41] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:42,831 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:42] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:43,315 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:43] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:45,086 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:45] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:45,765 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:45] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:47,088 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:47] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:47,773 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:47] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:49,079 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:49] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:49,768 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:49] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:51,082 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:51] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:51,766 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:51] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:53,079 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:53] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:52:53,771 [INFO] 127.0.0.1 - - [07/Apr/2026 07:52:53] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:03,069 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:03] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:03,334 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:03] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:04,115 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:04] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:05,224 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:05] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:05,723 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:05] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:06,838 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:06] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:07,308 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:07] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:08,433 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:08] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:08,921 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:08] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:10,035 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:10] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:10,518 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:10] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:11,626 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:11] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:12,111 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:12] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:13,231 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:13] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:13,717 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:13] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:14,830 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:14] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:15,312 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:15] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:16,427 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:16] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:16,916 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:16] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:18,029 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:18] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:18,514 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:18] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:19,618 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:19] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:20,118 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:20] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:22,079 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:22] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:22,764 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:22] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:24,088 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:24] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:24,763 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:24] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:26,076 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:26] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:26,764 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:26] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:28,072 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:28] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:28,780 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:28] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:53:30,078 [INFO] 127.0.0.1 - - [07/Apr/2026 07:53:30] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 07:54:07,726 [ERROR] [RAG] Job aa90dfc0-a8c5-4599-8681-e68fbea23bd9 failed: 404 Client Error: Not Found for url: https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=AIzaSyALKx2TOI19MOHJsRfke9UDO7RQ84I9l6s
+2026-04-07 07:55:04,877 [INFO] 127.0.0.1 - - [07/Apr/2026 07:55:04] "GET /api/ai/kb/progress/aa90dfc0-a8c5-4599-8681-e68fbea23bd9 HTTP/1.1" 200 -
+2026-04-07 10:40:03,206 [ERROR] t=2026-04-07T10:40:03+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=0a70bf4578b6 err="read EOF from remote peer"
+2026-04-07 10:40:03,337 [ERROR] t=2026-04-07T10:40:03+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=fd70c0f6b8d0 clientid=7149985c96689f20ade00dbd702b4382
+2026-04-07 10:40:05,361 [INFO] t=2026-04-07T10:40:05+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-07 10:40:05,362 [INFO] t=2026-04-07T10:40:05+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-07 10:52:39,505 [ERROR] t=2026-04-07T10:52:39+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=e486a9e0d037 clientid=7149985c96689f20ade00dbd702b4382
+2026-04-07 10:52:39,506 [ERROR] t=2026-04-07T10:52:39+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=0a70bf4578b6 err="read EOF from remote peer"
+2026-04-07 10:52:41,248 [INFO] t=2026-04-07T10:52:41+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-07 10:52:41,248 [INFO] t=2026-04-07T10:52:41+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-07 13:16:39,558 [ERROR] t=2026-04-07T13:16:39+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=084f6c960fc1 clientid=7149985c96689f20ade00dbd702b4382
+2026-04-07 13:16:39,572 [ERROR] t=2026-04-07T13:16:39+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=0a70bf4578b6 err="session closed"
+2026-04-07 13:16:42,533 [INFO] t=2026-04-07T13:16:42+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-07 13:16:42,533 [INFO] t=2026-04-07T13:16:42+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-07 13:50:40,691 [INFO] t=2026-04-07T13:50:40+0530 lvl=info msg="update available" obj=updater
+2026-04-07 16:46:11,959 [ERROR] t=2026-04-07T16:46:11+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=094e9a3d989c clientid=7149985c96689f20ade00dbd702b4382
+2026-04-07 16:46:11,960 [ERROR] t=2026-04-07T16:46:11+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=0a70bf4578b6 err="session closed"
+2026-04-07 16:46:16,015 [INFO] t=2026-04-07T16:46:16+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-07 16:46:16,016 [INFO] t=2026-04-07T16:46:16+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-07 19:50:42,315 [INFO] t=2026-04-07T19:50:42+0530 lvl=info msg="update available" obj=updater
+2026-04-08 00:20:16,906 [ERROR] t=2026-04-08T00:20:16+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=e6c1a9c49016 clientid=7149985c96689f20ade00dbd702b4382
+2026-04-08 00:20:17,098 [ERROR] t=2026-04-08T00:20:17+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=0a70bf4578b6 err="session closed"
+2026-04-08 00:20:19,530 [INFO] t=2026-04-08T00:20:19+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-08 00:20:19,532 [INFO] t=2026-04-08T00:20:19+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-08 01:50:44,172 [INFO] t=2026-04-08T01:50:44+0530 lvl=info msg="update available" obj=updater
+2026-04-08 07:31:08,884 [ERROR] t=2026-04-08T07:31:08+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=e5617c0b0808 clientid=7149985c96689f20ade00dbd702b4382
+2026-04-08 07:31:08,974 [ERROR] t=2026-04-08T07:31:08+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=0a70bf4578b6 err="write tcp 172.16.163.67:7517->3.108.208.206:443: wsasend: An established connection was aborted by the software in your host machine."
+2026-04-08 07:31:11,172 [INFO] t=2026-04-08T07:31:11+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-08 07:31:11,173 [INFO] t=2026-04-08T07:31:11+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-08 07:32:05,770 [ERROR] t=2026-04-08T07:32:05+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=0a70bf4578b6 err="read tcp 172.16.163.67:11901->13.127.105.236:443: wsarecv: An established connection was aborted by the software in your host machine."
+2026-04-08 07:32:05,795 [ERROR] t=2026-04-08T07:32:05+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=68afff80d9c8 clientid=7149985c96689f20ade00dbd702b4382
+2026-04-08 07:32:06,923 [INFO] t=2026-04-08T07:32:06+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-08 07:32:06,924 [INFO] t=2026-04-08T07:32:06+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-08 09:42:52,379 [ERROR] t=2026-04-08T09:42:52+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=bebe38762ced clientid=7149985c96689f20ade00dbd702b4382
+2026-04-08 09:42:52,386 [ERROR] t=2026-04-08T09:42:52+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=0a70bf4578b6 err="read EOF from remote peer"
+2026-04-08 09:42:53,542 [INFO] t=2026-04-08T09:42:53+0530 lvl=info msg="update available" obj=updater
+2026-04-08 09:42:53,570 [INFO] t=2026-04-08T09:42:53+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-08 09:42:53,572 [INFO] t=2026-04-08T09:42:53+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-08 16:35:00,011 [ERROR] t=2026-04-08T16:34:59+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=0a70bf4578b6 err="read EOF from remote peer"
+2026-04-08 16:35:00,057 [ERROR] t=2026-04-08T16:35:00+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=7d5b951eef3d clientid=7149985c96689f20ade00dbd702b4382
+2026-04-08 16:35:05,056 [WARNING] t=2026-04-08T16:35:05+0530 lvl=warn msg="failed to check for update" obj=updater err="Post \"https://update.ngrok-agent.com/check\": context deadline exceeded"
+2026-04-08 16:35:09,841 [ERROR] t=2026-04-08T16:35:09+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: i/o timeout"
+2026-04-08 16:35:13,854 [ERROR] t=2026-04-08T16:35:13+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-04-08 16:35:14,858 [ERROR] t=2026-04-08T16:35:14+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-04-08 16:35:16,867 [ERROR] t=2026-04-08T16:35:16+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-04-08 16:35:20,879 [ERROR] t=2026-04-08T16:35:20+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-04-08 16:35:38,879 [ERROR] t=2026-04-08T16:35:38+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: i/o timeout"
+2026-04-08 16:35:54,887 [ERROR] t=2026-04-08T16:35:54+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to send authentication request: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+2026-04-08 16:36:28,548 [INFO] t=2026-04-08T16:36:28+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-08 16:36:28,549 [INFO] t=2026-04-08T16:36:28+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-08 18:23:27,188 [ERROR] t=2026-04-08T18:23:27+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=0a70bf4578b6 err="read EOF from remote peer"
+2026-04-08 18:23:27,216 [ERROR] t=2026-04-08T18:23:27+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=8d438e9e17d1 clientid=7149985c96689f20ade00dbd702b4382
+2026-04-08 18:23:30,242 [INFO] t=2026-04-08T18:23:30+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-08 18:23:30,243 [INFO] t=2026-04-08T18:23:30+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-08 20:20:40,593 [ERROR] t=2026-04-08T20:20:40+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=ed7437b7da37 clientid=7149985c96689f20ade00dbd702b4382
+2026-04-08 20:20:40,748 [ERROR] t=2026-04-08T20:20:40+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=0a70bf4578b6 err="write tcp 172.16.163.67:36672->13.233.205.122:443: wsasend: An established connection was aborted by the software in your host machine."
+2026-04-08 20:20:42,385 [INFO] t=2026-04-08T20:20:42+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-08 20:20:42,385 [INFO] t=2026-04-08T20:20:42+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-08 20:24:36,711 [INFO] t=2026-04-08T20:24:36+0530 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
+2026-04-08 20:24:36,712 [INFO] t=2026-04-08T20:24:36+0530 lvl=info msg="session closing" obj=tunnels.session err=nil
+2026-04-08 20:24:36,712 [INFO] t=2026-04-08T20:24:36+0530 lvl=info msg="accept failed" obj=tunnels.session obj=csess id=0a70bf4578b6 err="reconnecting session closed"
+2026-04-08 20:24:36,713 [INFO] t=2026-04-08T20:24:36+0530 lvl=info msg="no more state changes" obj=tunnels.session
+2026-04-08 20:24:36,713 [INFO] t=2026-04-08T20:24:36+0530 lvl=info msg="failed to accept connection: Listener closed" obj=tunnels.session clientid=cb4721a600148783b6155010db174cc7
+2026-04-08 20:25:03,086 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.67:5000
+2026-04-08 20:25:03,086 [INFO] [33mPress CTRL+C to quit[0m
+2026-04-08 20:25:20,843 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:20] "OPTIONS /api/ai/kb/business_1775528316422_imqyi6ygs HTTP/1.1" 200 -
+2026-04-08 20:25:21,141 [INFO] [RAG] Started KB embed job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 for bot business_1775528316422_imqyi6ygs (3172 chunks)
+2026-04-08 20:25:21,142 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:21] "POST /api/ai/kb/business_1775528316422_imqyi6ygs HTTP/1.1" 200 -
+2026-04-08 20:25:21,979 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:23,125 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:23,580 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:24,677 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:25,189 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:26,295 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:26,776 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:27,880 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:28,375 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:29,494 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:29,979 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:31,097 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:31,581 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:32,681 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:33,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:34,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:35,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:36,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:37,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:38,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:39,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:40,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:41,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:42,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:43,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:44,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:45,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:46,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:47,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:48,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:49,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:50,292 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:50,775 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:51,896 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:52,378 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:53,502 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:53,983 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:55,095 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:55,576 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:56,698 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:57,181 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:58,285 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:25:58,784 [INFO] 127.0.0.1 - - [08/Apr/2026 20:25:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:00,613 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:01,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:02,612 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:03,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:04,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:05,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:06,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:07,320 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:08,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:09,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:10,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:11,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:12,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:13,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:14,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:15,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:16,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:17,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:18,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:19,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:20,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:21,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:22,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:23,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:24,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:25,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:26,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:27,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:28,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:29,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:30,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:31,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:32,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:33,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:34,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:35,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:36,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:37,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:38,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:39,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:40,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:41,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:42,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:43,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:44,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:45,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:46,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:47,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:48,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:49,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:50,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:51,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:52,631 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:53,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:54,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:55,320 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:56,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:57,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:26:58,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:26:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:27:12,368 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 200/3172 chunks embedded
+2026-04-08 20:27:40,329 [INFO] 127.0.0.1 - - [08/Apr/2026 20:27:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:16,552 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:16,819 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:17,176 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:18,286 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:18,786 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:19,886 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:20,377 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:21,491 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:22,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:23,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:24,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:25,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:26,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:27,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:28,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:29,512 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:29,983 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:31,097 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:31,580 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:33,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:34,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:35,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:36,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:37,631 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:38,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:39,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:40,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:41,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:42,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:43,092 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:43,586 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:44,691 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:45,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:46,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:47,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:48,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:49,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:50,614 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:51,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:52,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:53,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:54,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:55,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:56,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:57,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:58,523 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 400/3172 chunks embedded
+2026-04-08 20:28:58,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:28:59,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:28:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:00,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:01,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:02,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:03,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:04,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:05,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:06,631 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:07,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:08,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:09,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:10,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:11,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:12,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:13,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:14,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:15,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:16,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:17,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:18,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:19,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:20,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:21,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:22,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:23,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:24,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:25,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:26,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:27,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:28,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:29,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:30,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:31,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:32,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:33,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:34,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:35,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:36,613 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:37,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:38,380 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:38,786 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:39,888 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:40,387 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:41,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:42,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:43,507 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:43,774 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:44,382 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:45,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:46,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:47,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:48,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:49,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:50,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:51,612 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:52,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:53,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:54,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:55,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:56,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:57,631 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:58,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:29:59,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:29:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:00,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:01,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:02,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:03,632 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:04,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:05,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:06,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:07,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:08,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:09,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:10,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:11,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:12,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:13,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:14,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:15,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:16,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:17,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:18,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:19,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:20,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:21,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:22,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:23,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:24,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:25,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:26,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:27,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:28,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:29,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:30,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:31,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:32,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:33,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:34,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:35,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:36,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:37,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:38,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:39,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:40,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:41,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:42,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:43,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:44,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:30:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:30:44,540 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 600/3172 chunks embedded
+2026-04-08 20:31:36,293 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:36,557 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:37,182 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:38,288 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:39,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:40,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:41,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:42,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:43,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:44,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:45,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:46,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:47,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:48,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:49,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:50,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:51,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:52,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:53,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:54,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:55,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:56,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:57,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:58,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:31:59,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:31:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:00,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:01,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:02,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:03,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:04,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:05,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:06,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:07,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:08,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:09,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:10,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:11,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:12,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:13,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:14,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:15,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:16,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:17,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:18,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:19,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:20,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:21,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:22,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:23,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:24,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:25,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:26,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:27,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:28,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:29,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:30,568 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 800/3172 chunks embedded
+2026-04-08 20:32:30,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:31,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:32,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:33,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:34,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:35,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:36,632 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:37,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:40,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:47,545 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:48,694 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:49,176 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:50,298 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:51,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:52,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:53,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:54,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:55,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:56,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:57,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:58,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:32:59,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:32:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:00,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:01,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:02,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:03,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:04,610 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:05,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:06,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:07,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:08,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:09,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:10,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:11,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:12,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:13,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:14,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:15,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:16,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:17,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:18,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:19,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:20,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:21,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:22,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:23,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:24,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:25,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:26,605 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:27,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:28,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:29,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:30,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:31,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:32,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:33,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:34,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:35,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:36,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:37,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:38,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:39,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:40,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:41,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:42,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:43,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:44,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:45,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:46,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:47,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:48,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:49,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:33:50,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:33:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:34:16,785 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 1000/3172 chunks embedded
+2026-04-08 20:34:40,328 [INFO] 127.0.0.1 - - [08/Apr/2026 20:34:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:08,699 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:09,181 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:10,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:11,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:12,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:13,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:14,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:15,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:16,633 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:17,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:18,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:19,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:20,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:21,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:22,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:23,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:24,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:25,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:26,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:27,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:28,631 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:29,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:30,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:31,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:32,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:33,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:34,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:35,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:36,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:37,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:38,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:39,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:40,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:41,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:42,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:43,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:44,632 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:45,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:46,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:47,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:48,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:49,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:50,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:51,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:52,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:53,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:54,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:55,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:56,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:57,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:58,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:35:59,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:35:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:00,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:01,303 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:02,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:03,156 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 1200/3172 chunks embedded
+2026-04-08 20:36:03,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:04,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:05,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:06,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:07,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:08,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:09,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:40,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:42,724 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:43,093 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:43,576 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:44,692 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:45,189 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:46,294 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:47,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:48,632 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:49,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:50,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:51,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:52,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:53,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:54,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:55,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:56,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:57,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:58,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:36:59,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:36:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:00,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:01,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:02,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:03,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:04,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:05,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:06,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:07,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:08,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:09,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:10,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:11,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:12,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:13,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:14,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:15,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:16,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:17,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:18,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:19,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:20,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:21,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:22,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:23,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:24,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:25,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:26,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:27,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:28,614 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:29,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:30,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:31,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:32,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:33,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:34,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:35,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:36,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:37,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:38,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:39,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:40,614 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:41,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:42,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:43,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:44,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:45,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:46,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:37:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:37:49,331 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 1400/3172 chunks embedded
+2026-04-08 20:38:20,757 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:21,500 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:21,977 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:23,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:24,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:25,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:26,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:27,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:28,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:29,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:30,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:31,632 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:32,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:33,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:34,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:35,631 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:36,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:37,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:38,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:39,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:40,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:41,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:42,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:43,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:44,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:45,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:46,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:47,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:48,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:49,631 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:50,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:51,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:52,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:53,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:54,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:55,614 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:56,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:57,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:58,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:38:59,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:38:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:00,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:01,612 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:02,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:03,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:04,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:05,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:06,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:07,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:08,321 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:09,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:10,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:11,614 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:12,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:13,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:14,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:15,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:16,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:17,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:18,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:19,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:20,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:21,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:22,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:39:35,699 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 1600/3172 chunks embedded
+2026-04-08 20:39:40,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:39:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:40:40,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:40:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:41:21,896 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 1800/3172 chunks embedded
+2026-04-08 20:41:40,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:41:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:41:59,458 [INFO] 127.0.0.1 - - [08/Apr/2026 20:41:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:41:59,888 [INFO] 127.0.0.1 - - [08/Apr/2026 20:41:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:00,375 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:01,496 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:01,978 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:03,098 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:04,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:05,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:06,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:07,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:08,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:09,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:10,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:11,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:12,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:13,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:14,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:15,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:16,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:17,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:18,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:19,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:20,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:21,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:22,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:23,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:24,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:25,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:26,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:27,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:28,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:29,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:30,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:31,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:32,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:33,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:34,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:35,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:36,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:37,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:38,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:39,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:40,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:41,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:42,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:43,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:44,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:45,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:46,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:47,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:48,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:49,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:50,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:51,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:52,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:53,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:54,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:55,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:56,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:57,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:58,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:42:59,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:42:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:00,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:01,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:02,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:03,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:04,085 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:04,700 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:05,183 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:06,287 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:06,786 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:07,560 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 2000/3172 chunks embedded
+2026-04-08 20:43:08,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:09,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:10,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:11,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:12,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:13,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:14,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:15,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:16,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:17,320 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:18,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:19,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:20,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:21,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:22,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:23,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:24,608 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:25,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:26,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:27,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:28,632 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:29,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:30,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:31,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:32,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:33,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:34,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:35,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:36,632 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:37,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:38,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:39,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:40,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:41,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:42,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:43,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:44,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:45,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:46,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:47,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:48,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:49,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:50,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:51,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:52,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:53,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:54,612 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:55,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:56,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:57,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:58,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:43:59,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:43:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:00,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:01,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:02,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:03,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:04,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:05,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:06,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:39,802 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:40,696 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:41,178 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:42,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:43,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:44,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:45,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:46,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:47,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:48,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:49,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:50,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:51,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:52,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:53,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:53,661 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 2200/3172 chunks embedded
+2026-04-08 20:44:54,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:55,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:56,632 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:57,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:58,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:44:59,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:44:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:00,631 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:01,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:02,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:03,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:04,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:05,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:06,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:07,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:08,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:09,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:10,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:11,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:12,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:13,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:14,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:15,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:16,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:17,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:18,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:19,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:20,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:21,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:22,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:23,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:24,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:25,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:26,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:27,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:28,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:29,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:30,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:31,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:32,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:33,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:34,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:35,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:36,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:37,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:38,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:39,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:40,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:45:41,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:45:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:46:40,016 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 2400/3172 chunks embedded
+2026-04-08 20:46:40,638 [INFO] 127.0.0.1 - - [08/Apr/2026 20:46:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:47:40,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:47:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:25,108 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:25,375 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:25,929 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 2600/3172 chunks embedded
+2026-04-08 20:48:25,980 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:27,101 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:27,585 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:29,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:30,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:31,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:32,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:33,632 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:34,317 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:35,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:36,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:37,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:38,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:39,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:40,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:41,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:42,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:43,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:44,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:45,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:46,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:47,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:48,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:49,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:50,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:51,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:52,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:53,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:54,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:55,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:56,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:57,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:58,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:48:59,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:48:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:00,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:01,608 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:02,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:03,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:04,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:05,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:06,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:07,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:08,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:09,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:10,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:11,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:12,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:13,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:14,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:15,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:16,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:17,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:18,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:19,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:20,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:21,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:22,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:23,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:24,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:25,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:26,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:27,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:49:40,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:49:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:50:12,215 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 2800/3172 chunks embedded
+2026-04-08 20:50:40,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:50:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:50:52,931 [INFO] 127.0.0.1 - - [08/Apr/2026 20:50:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:50:53,178 [INFO] 127.0.0.1 - - [08/Apr/2026 20:50:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:50:54,285 [INFO] 127.0.0.1 - - [08/Apr/2026 20:50:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:50:55,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:50:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:50:56,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:50:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:50:57,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:50:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:50:58,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:50:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:50:59,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:50:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:00,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:01,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:02,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:03,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:04,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:05,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:06,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:07,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:08,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:09,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:10,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:11,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:12,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:13,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:14,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:15,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:16,632 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:17,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:18,622 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:19,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:20,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:21,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:22,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:23,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:24,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:25,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:26,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:27,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:28,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:29,316 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:30,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:30] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:31,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:32,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:33,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:34,615 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:34] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:35,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:36,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:37,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:38,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:39,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:40,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:41,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:42,626 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:43,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:44,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:45,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:46,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:47,307 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:48,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:49,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:50,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:51,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:52,614 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:53,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:54,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:51:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:51:58,555 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 3000/3172 chunks embedded
+2026-04-08 20:52:32,848 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:32] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:33,479 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:33,974 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:33] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:35,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:35] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:36,320 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:36] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:37,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:37] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:38,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:38] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:39,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:39] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:40,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:40] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:41,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:41] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:42,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:42] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:43,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:43] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:44,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:44] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:45,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:45] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:46,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:46] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:47,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:47] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:48,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:48] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:49,620 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:49] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:50,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:50] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:51,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:51] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:52,306 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:52] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:53,614 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:53] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:54,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:54] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:55,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:55] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:56,312 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:56] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:57,619 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:57] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:58,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:58] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:52:59,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:52:59] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:00,314 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:00] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:01,628 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:01] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:02,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:02] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:03,616 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:03] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:04,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:04] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:05,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:05] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:06,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:06] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:07,631 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:07] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:08,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:08] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:09,623 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:09] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:10,308 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:10] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:11,632 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:11] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:12,318 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:12] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:13,630 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:13] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:14,304 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:14] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:15,625 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:15] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:16,309 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:16] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:17,621 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:17] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:18,310 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:18] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:19,617 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:19] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:20,305 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:20] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:21,629 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:21] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:22,311 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:22] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:23,618 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:23] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:24,319 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:24] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:25,627 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:25] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:26,315 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:26] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:27,624 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:27] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:28,313 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:28] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:29,301 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: 3172/3172 chunks embedded
+2026-04-08 20:53:29,301 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: embedding complete, writing to ChromaDB…
+2026-04-08 20:53:29,677 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:29] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:31,646 [INFO] [RAG] Job 2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7: done — 3172 chunks ingested for bot business_1775528316422_imqyi6ygs
+2026-04-08 20:53:31,646 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:31,986 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:31] "GET /api/ai/kb/progress/2fbb9f99-3b8c-42fd-92ee-bf6f370a3df7 HTTP/1.1" 200 -
+2026-04-08 20:53:32,007 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:32] "GET /api/ai/kb/business_1775528316422_imqyi6ygs HTTP/1.1" 200 -
+2026-04-08 20:53:32,262 [INFO] 127.0.0.1 - - [08/Apr/2026 20:53:32] "GET /api/ai/kb/business_1775528316422_imqyi6ygs HTTP/1.1" 200 -
+2026-04-08 20:54:40,761 [INFO] [ACTIVATE] Bot business_1775528316422_imqyi6ygs activated → +16183522793
+2026-04-08 20:54:40,762 [INFO] 127.0.0.1 - - [08/Apr/2026 20:54:40] "POST /api/bot/activate HTTP/1.1" 200 -
+2026-04-08 20:58:25,901 [INFO] t=2026-04-08T20:58:25+0530 lvl=info msg="join connections" obj=join id=1108e4d510ff l=127.0.0.1:5000 r=54.204.159.129:53404
+2026-04-08 20:58:25,902 [INFO] [WEBHOOK] Incoming from +918770441755: 'hii'
+2026-04-08 20:58:29,462 [INFO] [RAG] Querying 3172 chunks for bot business_1775528316422_imqyi6ygs
+2026-04-08 20:58:29,469 [INFO] [RAG] Retrieved 12 chunk(s), kept 12 after distance filter <= 0.750 for query: 'hii'
+2026-04-08 20:58:29,469 [INFO] [RAG] Top distances: [0.388, 0.404, 0.446, 0.455]
+2026-04-08 20:58:29,470 [INFO] [RAG] Final context chunks after hybrid boost: 8
+2026-04-08 20:58:29,470 [INFO] [AI] RAG context length: 3201 chars
+2026-04-08 20:58:29,471 [INFO] [AI] Sending prompt to Gemini (rag=True, ctx_chars=3201)
+2026-04-08 20:58:30,087 [ERROR] [AI] Gemini error: 404 Client Error: Not Found for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyALKx2TOI19MOHJsRfke9UDO7RQ84I9l6s
+2026-04-08 20:58:30,093 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: "⚠️ I'm having trouble connecting to the AI service right now. Please try again in a moment."
+2026-04-08 20:58:30,094 [INFO] 127.0.0.1 - - [08/Apr/2026 20:58:30] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-04-08 20:58:46,660 [INFO] t=2026-04-08T20:58:46+0530 lvl=info msg="join connections" obj=join id=a1e481b8dd89 l=127.0.0.1:5000 r=3.81.46.146:22280
+2026-04-08 20:58:46,660 [INFO] [WEBHOOK] Incoming from +918770441755: 'hi'
+2026-04-08 20:58:48,780 [INFO] [RAG] Querying 3172 chunks for bot business_1775528316422_imqyi6ygs
+2026-04-08 20:58:48,782 [INFO] [RAG] Retrieved 12 chunk(s), kept 12 after distance filter <= 0.750 for query: 'hi'
+2026-04-08 20:58:48,783 [INFO] [RAG] Top distances: [0.405, 0.438, 0.447, 0.448]
+2026-04-08 20:58:48,783 [INFO] [RAG] Final context chunks after hybrid boost: 8
+2026-04-08 20:58:48,783 [INFO] [AI] RAG context length: 2874 chars
+2026-04-08 20:58:48,783 [INFO] [AI] Sending prompt to Gemini (rag=True, ctx_chars=2874)
+2026-04-08 20:58:49,270 [ERROR] [AI] Gemini error: 404 Client Error: Not Found for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyALKx2TOI19MOHJsRfke9UDO7RQ84I9l6s
+2026-04-08 20:58:49,273 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: "⚠️ I'm having trouble connecting to the AI service right now. Please try again in a moment."
+2026-04-08 20:58:49,273 [INFO] 127.0.0.1 - - [08/Apr/2026 20:58:49] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-04-08 21:00:03,380 [INFO] t=2026-04-08T21:00:03+0530 lvl=info msg="join connections" obj=join id=68da93236aae l=127.0.0.1:5000 r=54.152.204.124:32534
+2026-04-08 21:00:03,381 [INFO] [WEBHOOK] Incoming from +918770441755: 'hi'
+2026-04-08 21:00:05,463 [INFO] [RAG] Querying 3172 chunks for bot business_1775528316422_imqyi6ygs
+2026-04-08 21:00:05,465 [INFO] [RAG] Retrieved 12 chunk(s), kept 12 after distance filter <= 0.750 for query: 'hi'
+2026-04-08 21:00:05,465 [INFO] [RAG] Top distances: [0.405, 0.438, 0.447, 0.448]
+2026-04-08 21:00:05,465 [INFO] [RAG] Final context chunks after hybrid boost: 8
+2026-04-08 21:00:05,465 [INFO] [AI] RAG context length: 2874 chars
+2026-04-08 21:00:05,466 [INFO] [AI] Sending prompt to Gemini (rag=True, ctx_chars=2874)
+2026-04-08 21:00:05,947 [ERROR] [AI] Gemini error: 404 Client Error: Not Found for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyALKx2TOI19MOHJsRfke9UDO7RQ84I9l6s
+2026-04-08 21:00:05,950 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: "⚠️ I'm having trouble connecting to the AI service right now. Please try again in a moment."
+2026-04-08 21:00:05,951 [INFO] 127.0.0.1 - - [08/Apr/2026 21:00:05] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-04-08 21:00:30,927 [INFO] t=2026-04-08T21:00:30+0530 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
+2026-04-08 21:00:30,928 [INFO] t=2026-04-08T21:00:30+0530 lvl=info msg="session closing" obj=tunnels.session err=nil
+2026-04-08 21:00:30,928 [INFO] t=2026-04-08T21:00:30+0530 lvl=info msg="accept failed" obj=tunnels.session obj=csess id=b4bc40127418 err="reconnecting session closed"
+2026-04-08 21:00:39,063 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.67:5000
+2026-04-08 21:00:39,064 [INFO] [33mPress CTRL+C to quit[0m
+2026-04-08 21:00:57,899 [INFO] t=2026-04-08T21:00:57+0530 lvl=info msg="join connections" obj=join id=5b840c15a1c1 l=127.0.0.1:5000 r=34.227.116.72:20888
+2026-04-08 21:00:57,901 [INFO] [WEBHOOK] Incoming from +918770441755: 'hi'
+2026-04-08 21:01:01,109 [INFO] [RAG] Querying 3172 chunks for bot business_1775528316422_imqyi6ygs
+2026-04-08 21:01:01,112 [INFO] [RAG] Retrieved 12 chunk(s), kept 12 after distance filter <= 0.750 for query: 'hi'
+2026-04-08 21:01:01,112 [INFO] [RAG] Top distances: [0.405, 0.438, 0.447, 0.448]
+2026-04-08 21:01:01,112 [INFO] [RAG] Final context chunks after hybrid boost: 8
+2026-04-08 21:01:01,113 [INFO] [AI] RAG context length: 2874 chars
+2026-04-08 21:01:01,113 [INFO] [AI] Sending prompt to Gemini (rag=True, ctx_chars=2874)
+2026-04-08 21:01:01,601 [ERROR] [AI] Gemini error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyALKx2TOI19MOHJsRfke9UDO7RQ84I9l6s
+2026-04-08 21:01:01,604 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: "⚠️ I'm having trouble connecting to the AI service right now. Please try again in a moment."
+2026-04-08 21:01:01,605 [INFO] 127.0.0.1 - - [08/Apr/2026 21:01:01] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-04-08 21:01:16,558 [INFO] t=2026-04-08T21:01:16+0530 lvl=info msg="join connections" obj=join id=508eef07adf7 l=127.0.0.1:5000 r=98.81.237.92:52200
+2026-04-08 21:01:16,559 [INFO] [WEBHOOK] Incoming from +918770441755: 'tell me about this college'
+2026-04-08 21:01:18,711 [INFO] [RAG] Querying 3172 chunks for bot business_1775528316422_imqyi6ygs
+2026-04-08 21:01:18,713 [INFO] [RAG] Retrieved 12 chunk(s), kept 12 after distance filter <= 0.750 for query: 'tell me about this college'
+2026-04-08 21:01:18,713 [INFO] [RAG] Top distances: [0.388, 0.389, 0.424, 0.426]
+2026-04-08 21:01:18,725 [INFO] [RAG] Final context chunks after hybrid boost: 8
+2026-04-08 21:01:18,725 [INFO] [AI] RAG context length: 3457 chars
+2026-04-08 21:01:18,725 [INFO] [AI] Sending prompt to Gemini (rag=True, ctx_chars=3457)
+2026-04-08 21:01:19,306 [ERROR] [AI] Gemini error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyALKx2TOI19MOHJsRfke9UDO7RQ84I9l6s
+2026-04-08 21:01:19,309 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: "⚠️ I'm having trouble connecting to the AI service right now. Please try again in a moment."
+2026-04-08 21:01:19,310 [INFO] 127.0.0.1 - - [08/Apr/2026 21:01:19] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-04-08 21:03:57,434 [INFO] t=2026-04-08T21:03:57+0530 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
+2026-04-08 21:03:57,435 [INFO] t=2026-04-08T21:03:57+0530 lvl=info msg="session closing" obj=tunnels.session err=nil
+2026-04-08 21:03:57,435 [INFO] t=2026-04-08T21:03:57+0530 lvl=info msg="accept failed" obj=tunnels.session obj=csess id=498cbfc1aaef err="reconnecting session closed"
+2026-04-08 21:04:04,567 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.67:5000
+2026-04-08 21:04:04,567 [INFO] [33mPress CTRL+C to quit[0m
+2026-04-08 21:04:28,219 [INFO] t=2026-04-08T21:04:28+0530 lvl=info msg="join connections" obj=join id=1087dd05ce55 l=127.0.0.1:5000 r=54.161.114.225:45544
+2026-04-08 21:04:28,221 [INFO] [WEBHOOK] Incoming from +918770441755: 'hi'
+2026-04-08 21:04:31,299 [INFO] [RAG] Querying 3172 chunks for bot business_1775528316422_imqyi6ygs
+2026-04-08 21:04:31,302 [INFO] [RAG] Retrieved 12 chunk(s), kept 12 after distance filter <= 0.750 for query: 'hi'
+2026-04-08 21:04:31,302 [INFO] [RAG] Top distances: [0.405, 0.438, 0.447, 0.448]
+2026-04-08 21:04:31,302 [INFO] [RAG] Final context chunks after hybrid boost: 8
+2026-04-08 21:04:31,303 [INFO] [AI] RAG context length: 2874 chars
+2026-04-08 21:04:31,303 [INFO] [AI] Sending prompt to Gemini (rag=True, ctx_chars=2874)
+2026-04-08 21:04:31,792 [WARNING] [AI] Gemini 429 rate-limited, retrying in 1s (attempt 1)
+2026-04-08 21:04:33,230 [WARNING] [AI] Gemini 429 rate-limited, retrying in 2s (attempt 2)
+2026-04-08 21:04:35,647 [WARNING] [AI] Gemini 429 rate-limited, retrying in 4s (attempt 3)
+2026-04-08 21:04:40,066 [WARNING] [AI] Gemini 429 rate-limited, retrying in 8s (attempt 4)
+2026-04-08 21:04:48,067 [ERROR] [AI] Gemini: all retries exhausted after rate limiting
+2026-04-08 21:04:48,071 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: '⚠️ The AI service is currently busy. Please try again in a few seconds.'
+2026-04-08 21:04:48,072 [INFO] 127.0.0.1 - - [08/Apr/2026 21:04:48] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-04-08 21:09:40,181 [INFO] t=2026-04-08T21:09:40+0530 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
+2026-04-08 21:09:40,181 [INFO] t=2026-04-08T21:09:40+0530 lvl=info msg="session closing" obj=tunnels.session err=nil
+2026-04-08 21:09:40,181 [INFO] t=2026-04-08T21:09:40+0530 lvl=info msg="accept failed" obj=tunnels.session obj=csess id=e8146295b473 err="reconnecting session closed"
+2026-04-08 21:09:40,182 [INFO] t=2026-04-08T21:09:40+0530 lvl=info msg="no more state changes" obj=tunnels.session
+2026-04-08 21:09:40,182 [INFO] t=2026-04-08T21:09:40+0530 lvl=info msg="failed to accept connection: Listener closed" obj=tunnels.session clientid=34382c422acb46ed0bc6f6fdd032125a
+2026-04-08 21:09:47,674 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.67:5000
+2026-04-08 21:09:47,674 [INFO] [33mPress CTRL+C to quit[0m
+2026-04-08 21:09:55,508 [INFO] t=2026-04-08T21:09:55+0530 lvl=info msg="join connections" obj=join id=a317bd787d89 l=127.0.0.1:5000 r=54.158.128.31:59022
+2026-04-08 21:09:55,509 [INFO] [WEBHOOK] Incoming from +918770441755: 'hello'
+2026-04-08 21:09:59,542 [INFO] [RAG] Querying 3172 chunks for bot business_1775528316422_imqyi6ygs
+2026-04-08 21:09:59,545 [INFO] [RAG] Retrieved 12 chunk(s), kept 12 after distance filter <= 0.750 for query: 'hello'
+2026-04-08 21:09:59,545 [INFO] [RAG] Top distances: [0.408, 0.439, 0.446, 0.448]
+2026-04-08 21:09:59,551 [INFO] [RAG] Final context chunks after hybrid boost: 8
+2026-04-08 21:09:59,552 [INFO] [AI] RAG context length: 2375 chars
+2026-04-08 21:09:59,552 [INFO] [AI] Sending prompt to Grok (grok-3-mini, rag=True)
+2026-04-08 21:10:00,163 [WARNING] [AI] Grok attempt 1 failed: 403 Client Error: Forbidden for url: https://api.x.ai/v1/chat/completions
+2026-04-08 21:10:01,689 [WARNING] [AI] Grok attempt 2 failed: 403 Client Error: Forbidden for url: https://api.x.ai/v1/chat/completions
+2026-04-08 21:10:04,179 [WARNING] [AI] Grok attempt 3 failed: 403 Client Error: Forbidden for url: https://api.x.ai/v1/chat/completions
+2026-04-08 21:10:04,180 [INFO] [AI] Falling back to Ollama (llama3)
+2026-04-08 21:10:21,943 [ERROR] [AI] Ollama fallback failed: 500 Server Error: Internal Server Error for url: http://localhost:11434/api/chat
+2026-04-08 21:10:21,943 [ERROR] [AI] Both Grok and Ollama failed
+2026-04-08 21:10:21,945 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: "⚠️ I'm having trouble connecting to the AI service right now. Please try again in a moment."
+2026-04-08 21:10:21,946 [INFO] 127.0.0.1 - - [08/Apr/2026 21:10:21] "POST /webhook/whatsapp HTTP/1.1" 200 -
+2026-04-08 21:10:32,768 [INFO] t=2026-04-08T21:10:32+0530 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
+2026-04-08 21:10:32,768 [INFO] t=2026-04-08T21:10:32+0530 lvl=info msg="session closing" obj=tunnels.session err=nil
+2026-04-08 21:10:32,769 [INFO] t=2026-04-08T21:10:32+0530 lvl=info msg="accept failed" obj=tunnels.session obj=csess id=179c1bf76655 err="reconnecting session closed"
+2026-04-08 21:10:32,769 [INFO] t=2026-04-08T21:10:32+0530 lvl=info msg="no more state changes" obj=tunnels.session
+2026-04-08 21:10:32,769 [INFO] t=2026-04-08T21:10:32+0530 lvl=info msg="failed to accept connection: Listener closed" obj=tunnels.session clientid=8543476a99cf201d038db46d6ca04614
+2026-04-08 21:10:32,769 [WARNING] t=2026-04-08T21:10:32+0530 lvl=warn msg="Stopping forwarder" name=http-5000-709c3672-4211-4634-9782-1d272c14cc2c acceptErr="failed to accept connection: Listener closed"
