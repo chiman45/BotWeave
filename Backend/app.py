@@ -624,6 +624,92 @@ def _get_ollama_embedding(text: str) -> list:
     return resp.json()['embedding']
 
 
+# ── BM25 helpers ─────────────────────────────────────────────────────────────
+
+# In-memory cache: bot_id → (file_mtime, BM25Okapi, chunks_list)
+_BM25_CACHE: Dict[str, tuple] = {}
+
+def _tokenize_bm25(text: str) -> List[str]:
+    """
+    Unicode-aware tokenizer for BM25.
+    Splits on non-word characters, lowercases — works for English and Indian scripts.
+    """
+    return re.findall(r'\w+', text.lower())
+
+
+def _load_bm25(business_id: str):
+    """
+    Load BM25Okapi + chunk list from disk with mtime-based cache invalidation.
+    Returns (bm25_obj, chunks) or (None, None) if index doesn't exist.
+    """
+    import pickle
+    index_path = os.path.join(_VECTOR_STORE_ROOT, business_id, 'bm25_index.pkl')
+    if not os.path.exists(index_path):
+        return None, None
+    try:
+        mtime = os.path.getmtime(index_path)
+        cached = _BM25_CACHE.get(business_id)
+        if cached and cached[0] == mtime:
+            return cached[1], cached[2]          # cache hit
+        with open(index_path, 'rb') as f:
+            data = pickle.load(f)
+        bm25_obj = data['bm25']
+        chunks   = data['chunks']
+        _BM25_CACHE[business_id] = (mtime, bm25_obj, chunks)
+        log.info(f"[BM25] Loaded index for {business_id} ({len(chunks)} chunks)")
+        return bm25_obj, chunks
+    except Exception as exc:
+        log.warning(f"[BM25] Failed to load index for {business_id}: {exc}")
+        return None, None
+
+
+def _bm25_search(business_id: str, query: str, top_k: int) -> List[tuple]:
+    """
+    Run BM25 keyword search.
+    Returns list of (chunk_text, bm25_score) sorted by score desc, length = top_k.
+    Returns [] if BM25 index not available.
+    """
+    bm25_obj, chunks = _load_bm25(business_id)
+    if bm25_obj is None:
+        return []
+    tokens = _tokenize_bm25(query)
+    if not tokens:
+        return []
+    scores = bm25_obj.get_scores(tokens)
+    # Get top_k indices sorted by score descending
+    top_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:top_k]
+    results = [(chunks[i], float(scores[i])) for i in top_indices if scores[i] > 0]
+    log.info(f"[BM25] Top scores: {[round(s, 3) for _, s in results[:4]]}")
+    return results
+
+
+def _rrf_merge(
+    vector_results: List[tuple],   # [(text, distance), ...]  distance lower = better
+    bm25_results:   List[tuple],   # [(text, score), ...]     score higher = better
+    top_k: int,
+    k: int = 60,
+) -> List[str]:
+    """
+    Reciprocal Rank Fusion.
+    Returns top_k chunk texts ranked by combined RRF score.
+    Formula: rrf(d) = Σ  1 / (k + rank_i(d))  across all ranked lists.
+    """
+    rrf: Dict[str, float] = {}
+
+    for rank, (text, _) in enumerate(vector_results):
+        rrf[text] = rrf.get(text, 0.0) + 1.0 / (k + rank + 1)
+
+    for rank, (text, _) in enumerate(bm25_results):
+        rrf[text] = rrf.get(text, 0.0) + 1.0 / (k + rank + 1)
+
+    merged = sorted(rrf.items(), key=lambda x: x[1], reverse=True)
+    log.info(
+        f"[RRF] vector={len(vector_results)} bm25={len(bm25_results)} "
+        f"merged={len(merged)} → top {top_k}"
+    )
+    return [text for text, _ in merged[:top_k]]
+
+
 
 
 def _chunk_text(text: str, size: int = 500, overlap: int = 60) -> List[str]:
@@ -642,82 +728,91 @@ def _chunk_text(text: str, size: int = 500, overlap: int = 60) -> List[str]:
 
 def _rag_query(business_id: str, query: str) -> str:
     """
-    Return the top-k most relevant chunks from this bot's Chroma vector store.
-    Uses chromadb directly — no LangChain required.
-    Returns '' when no store exists or services are unavailable.
+    Hybrid RAG: ChromaDB vector search + BM25 keyword search, fused via RRF.
 
-    Distance note:
-    - Collections created with cosine metric return distances in [0, 2].
-      A distance of 0 = identical, 1 = orthogonal, 2 = opposite.
-      Good threshold: ~0.7 (keeps results with ≥ 65% cosine similarity).
-    - Old collections created with default L2 metric return squared Euclidean
-      distances that can be 100-500+ for high-dim embeddings.
-    The code auto-detects which scale is in use and adjusts accordingly.
+    Pipeline:
+      1. Vector search  — semantic similarity via nomic-embed-text + ChromaDB
+      2. BM25 search    — exact keyword recall via rank_bm25 (graceful fallback if index missing)
+      3. RRF fusion     — Reciprocal Rank Fusion (k=60) to merge & rerank both lists
+      4. Returns top-5 chunks as a single string for the LLM prompt
+
+    Kill switch: set RAG_BM25_ENABLED=false in .env to revert to pure vector search.
     """
     store_path = os.path.join(_VECTOR_STORE_ROOT, business_id)
     if not os.path.exists(store_path):
-        log.warning(f"[RAG] No vector store found for bot {business_id} at {store_path}")
+        log.warning(f"[RAG] No vector store found for bot {business_id}")
         return ''
+
+    TOP_K      = 5    # final chunks sent to the LLM
+    CANDIDATES = 10   # candidates fetched from each source before merging
+
     try:
         import chromadb
+
+        # ── 1. Vector search ──────────────────────────────────
         query_embedding = _get_ollama_embedding(query)
         client     = chromadb.PersistentClient(path=store_path)
         collection = client.get_collection(_KB_COLLECTION)
         total      = collection.count()
-        log.info(f"[RAG] Querying {total} chunks for bot {business_id}")
-        fallback_top_k = max(1, int(os.getenv('RAG_FALLBACK_TOP_K', '5')))
-        results = collection.query(
+        log.info(f"[RAG] Vector search over {total} chunks for bot {business_id}")
+
+        results   = collection.query(
             query_embeddings=[query_embedding],
-            n_results=min(12, total),
-            include=['documents', 'distances']
+            n_results=min(CANDIDATES, total),
+            include=['documents', 'distances'],
         )
+        docs      = results.get('documents', [[]])[0] or []
+        distances = results.get('distances',  [[]])[0] or []
 
-        docs = results.get('documents', [[]])[0] if results.get('documents') else []
-        distances = results.get('distances', [[]])[0] if results.get('distances') else []
-
-        # Auto-detect distance scale:
-        # If any distance > 10, we are almost certainly in L2 space (not cosine).
-        # Cosine distances are always in [0, 2], L2 for 768-dim vectors is typically 100+.
-        env_threshold = float(os.getenv('RAG_MAX_DISTANCE', '0.0'))  # 0.0 = auto
+        # Distance threshold — auto-detect cosine vs L2 metric
+        env_threshold = float(os.getenv('RAG_MAX_DISTANCE', '0.0'))
         if env_threshold > 0:
-            max_distance = env_threshold
+            max_dist = env_threshold
         elif distances and max(distances) > 10:
-            # L2 metric detected — use a permissive threshold based on the
-            # actual score distribution (keep best half of retrieved docs).
-            median_dist = sorted(distances)[len(distances) // 2]
-            max_distance = median_dist * 1.2  # keep anything not worse than 20% above median
-            log.info(f"[RAG] L2 metric detected (max_dist={max(distances):.1f}); "
-                     f"auto-threshold set to {max_distance:.1f}")
+            median_d = sorted(distances)[len(distances) // 2]
+            max_dist = median_d * 1.2
+            log.info(f"[RAG] L2 metric detected; auto-threshold={max_dist:.1f}")
         else:
-            # Cosine metric — keep chunks with >= 50% similarity (distance <= 0.5).
-            # 0.75 was too loose: it kept chunks with only 25% similarity.
-            max_distance = 0.50
+            max_dist = 0.55   # cosine: keep ≥45% similar chunks
 
-        paired = list(zip(docs, distances)) if distances else [(d, None) for d in docs]
-        filtered_docs = [doc for doc, dist in paired if dist is None or dist <= max_distance]
+        paired   = list(zip(docs, distances)) if distances else [(d, 0.0) for d in docs]
+        filtered = [(doc, dist) for doc, dist in paired if dist <= max_dist]
 
-        # Always fall back to top-k if filtering removed all results.
-        if not filtered_docs and docs:
-            filtered_docs = docs[:fallback_top_k]
-            log.warning(
-                f"[RAG] Distance filter removed all chunks (threshold={max_distance:.3f}); "
-                f"falling back to top-{fallback_top_k} retrieved chunk(s)"
-            )
+        if not filtered and docs:
+            # All chunks were filtered out — fall back to top candidates
+            filtered = paired[:max(1, int(os.getenv('RAG_FALLBACK_TOP_K', '5')))]
+            log.warning(f"[RAG] Distance filter removed all — using top fallback chunks")
 
         log.info(
-            f"[RAG] Retrieved {len(docs)} chunk(s), kept {len(filtered_docs)} "
-            f"after distance filter <= {max_distance:.3f} for query: {query!r}"
+            f"[RAG] Vector: retrieved {len(docs)}, kept {len(filtered)} "
+            f"(max_dist={max_dist:.2f}) | top distances: {[round(d,3) for _,d in filtered[:4]]}"
         )
-        if distances:
-            log.info(f"[RAG] Top distances: {[round(d,3) for d in distances[:4]]}")
-        if filtered_docs:
-            log.debug(f"[RAG] First kept chunk preview: {filtered_docs[0][:200]!r}")
+        vector_results = [(doc, dist) for doc, dist in filtered]  # (text, distance)
 
-        if filtered_docs:
-            # Cap context: top-5 is enough; more chunks = more noise for a 8B LLM.
-            filtered_docs = filtered_docs[:5]
-            log.info(f"[RAG] Final context chunks: {len(filtered_docs)}")
-        return '\n\n'.join(filtered_docs)
+        # ── 2. BM25 keyword search ────────────────────────────
+        bm25_enabled = os.getenv('RAG_BM25_ENABLED', 'true').lower() != 'false'
+        if bm25_enabled:
+            bm25_results = _bm25_search(business_id, query, top_k=CANDIDATES)
+            if not bm25_results:
+                log.info("[RAG] BM25 index missing or no matches — using pure vector results")
+        else:
+            bm25_results = []
+            log.info("[RAG] BM25 disabled via RAG_BM25_ENABLED=false")
+
+        # ── 3. RRF fusion ─────────────────────────────────────
+        if bm25_results:
+            final_chunks = _rrf_merge(vector_results, bm25_results, top_k=TOP_K)
+            log.info(f"[RAG] Hybrid RRF final chunks: {len(final_chunks)}")
+        else:
+            # Pure vector fallback (BM25 disabled or index missing)
+            final_chunks = [doc for doc, _ in vector_results[:TOP_K]]
+            log.info(f"[RAG] Pure vector final chunks: {len(final_chunks)}")
+
+        if final_chunks:
+            log.debug(f"[RAG] First chunk preview: {final_chunks[0][:200]!r}")
+
+        return '\n\n'.join(final_chunks)
+
     except Exception as exc:
         log.error(f"[RAG] Query failed for {business_id}: {exc}")
         return ''

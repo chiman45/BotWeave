@@ -4709,3 +4709,67 @@ PermissionError: [WinError 32] The process cannot access the file because it is 
 2026-04-10 10:06:40,118 [INFO] 127.0.0.1 - - [10/Apr/2026 10:06:40] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
 2026-04-10 10:10:17,212 [INFO] t=2026-04-10T10:10:17+0530 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
 2026-04-10 10:10:17,212 [INFO] t=2026-04-10T10:10:17+0530 lvl=info msg="session closing" obj=tunnels.session err=nil
+2026-04-11 04:14:27,711 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.40:5000
+2026-04-11 04:14:27,712 [INFO] [33mPress CTRL+C to quit[0m
+2026-04-11 04:22:47,173 [ERROR] t=2026-04-11T04:22:47+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=6da3d66abe63 err="read tcp 172.16.163.40:40196->3.108.187.139:443: wsarecv: An established connection was aborted by the software in your host machine."
+2026-04-11 04:22:47,272 [ERROR] t=2026-04-11T04:22:47+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-04-11 04:22:48,428 [INFO] t=2026-04-11T04:22:48+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-11 04:22:48,429 [INFO] t=2026-04-11T04:22:48+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-11 04:22:54,849 [ERROR] t=2026-04-11T04:22:54+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=6da3d66abe63 err="read tcp 192.168.137.46:34994->3.108.208.206:443: wsarecv: An established connection was aborted by the software in your host machine."
+2026-04-11 04:22:54,857 [ERROR] t=2026-04-11T04:22:54+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-04-11 04:22:55,357 [ERROR] t=2026-04-11T04:22:55+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-04-11 04:22:56,358 [ERROR] t=2026-04-11T04:22:56+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-04-11 04:22:59,739 [INFO] t=2026-04-11T04:22:59+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-11 04:22:59,739 [INFO] t=2026-04-11T04:22:59+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-11 04:23:04,969 [ERROR] t=2026-04-11T04:23:04+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=1211e1e34b5c clientid=f1ef4539714560728b16e00eed2d7d16
+2026-04-11 04:23:12,833 [ERROR] t=2026-04-11T04:23:12+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=ecfebaf46c57 clientid=f1ef4539714560728b16e00eed2d7d16
+2026-04-11 04:28:06,972 [ERROR] t=2026-04-11T04:28:06+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=6da3d66abe63 err="read tcp 10.183.134.193:3873->3.108.187.139:443: wsarecv: An established connection was aborted by the software in your host machine."
+2026-04-11 04:28:07,003 [ERROR] t=2026-04-11T04:28:07+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-04-11 04:28:07,503 [ERROR] t=2026-04-11T04:28:07+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-04-11 04:28:08,504 [ERROR] t=2026-04-11T04:28:08+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: no such host"
+2026-04-11 04:28:20,505 [ERROR] t=2026-04-11T04:28:20+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: i/o timeout"
+2026-04-11 04:28:24,269 [ERROR] t=2026-04-11T04:28:24+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=ad7877c65c43 clientid=f1ef4539714560728b16e00eed2d7d16
+2026-04-11 04:28:34,506 [ERROR] t=2026-04-11T04:28:34+0530 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="failed to dial ngrok server with address \"connect.ngrok-agent.com:443\": dial tcp: lookup connect.ngrok-agent.com: i/o timeout"
+2026-04-11 04:28:43,151 [INFO] t=2026-04-11T04:28:43+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-11 04:28:43,151 [INFO] t=2026-04-11T04:28:43+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-11 04:29:26,997 [ERROR] t=2026-04-11T04:29:26+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=6da3d66abe63 err="read tcp 192.168.137.46:23288->13.127.105.236:443: wsarecv: An established connection was aborted by the software in your host machine."
+2026-04-11 04:29:28,576 [INFO] t=2026-04-11T04:29:28+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-11 04:29:28,577 [INFO] t=2026-04-11T04:29:28+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-11 04:29:47,796 [ERROR] t=2026-04-11T04:29:47+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=b0c31f833ff2 clientid=f1ef4539714560728b16e00eed2d7d16
+2026-04-11 09:32:54,111 [ERROR] t=2026-04-11T09:32:54+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=6da3d66abe63 err="read EOF from remote peer"
+2026-04-11 09:32:54,193 [ERROR] t=2026-04-11T09:32:54+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=17a2bb9afb73 clientid=f1ef4539714560728b16e00eed2d7d16
+2026-04-11 09:32:55,375 [INFO] t=2026-04-11T09:32:55+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-11 09:32:55,377 [INFO] t=2026-04-11T09:32:55+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-11 10:53:44,810 [ERROR] t=2026-04-11T10:53:44+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=309da77f5d31 clientid=f1ef4539714560728b16e00eed2d7d16
+2026-04-11 10:53:44,820 [ERROR] t=2026-04-11T10:53:44+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=6da3d66abe63 err="session closed"
+2026-04-11 10:53:46,630 [INFO] t=2026-04-11T10:53:46+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-11 10:53:46,630 [INFO] t=2026-04-11T10:53:46+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-11 10:53:47,049 [INFO] t=2026-04-11T10:53:47+0530 lvl=info msg="update available" obj=updater
+2026-04-11 12:17:32,417 [ERROR] t=2026-04-11T12:17:32+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=6da3d66abe63 err="read EOF from remote peer"
+2026-04-11 12:17:32,439 [ERROR] t=2026-04-11T12:17:32+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=ab7deb6725f4 clientid=f1ef4539714560728b16e00eed2d7d16
+2026-04-11 12:17:35,403 [INFO] t=2026-04-11T12:17:35+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-11 12:17:35,403 [INFO] t=2026-04-11T12:17:35+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-11 12:22:25,636 [ERROR] t=2026-04-11T12:22:25+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=6da3d66abe63 err="read tcp 172.16.163.40:52400->13.233.205.122:443: wsarecv: An established connection was aborted by the software in your host machine."
+2026-04-11 12:22:25,671 [ERROR] t=2026-04-11T12:22:25+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=517b516bcc72 clientid=f1ef4539714560728b16e00eed2d7d16
+2026-04-11 12:22:28,463 [INFO] t=2026-04-11T12:22:28+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-11 12:22:28,463 [INFO] t=2026-04-11T12:22:28+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-11 17:17:03,255 [ERROR] t=2026-04-11T17:17:03+0530 lvl=eror msg="session closed, starting reconnect loop" obj=tunnels.session obj=csess id=6da3d66abe63 err="read EOF from remote peer"
+2026-04-11 17:17:03,372 [ERROR] t=2026-04-11T17:17:03+0530 lvl=eror msg="heartbeat timeout, terminating session" obj=tunnels.session obj=csess id=5e1aeed4ef2c clientid=f1ef4539714560728b16e00eed2d7d16
+2026-04-11 17:17:06,466 [INFO] t=2026-04-11T17:17:06+0530 lvl=info msg="client session established" obj=tunnels.session
+2026-04-11 17:17:06,467 [INFO] t=2026-04-11T17:17:06+0530 lvl=info msg="tunnel session started" obj=tunnels.session
+2026-04-11 17:17:08,046 [INFO] t=2026-04-11T17:17:08+0530 lvl=info msg="update available" obj=updater
+2026-04-11 18:58:23,675 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.163.40:5000
+2026-04-11 18:58:23,676 [INFO] [33mPress CTRL+C to quit[0m
+2026-04-11 19:38:26,078 [INFO] t=2026-04-11T19:38:26+0530 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
+2026-04-11 19:38:26,082 [INFO] t=2026-04-11T19:38:26+0530 lvl=info msg="session closing" obj=tunnels.session err=nil
+2026-04-11 19:38:26,083 [INFO] t=2026-04-11T19:38:26+0530 lvl=info msg="accept failed" obj=tunnels.session obj=csess id=f072397a4540 err="reconnecting session closed"
+2026-04-11 19:38:26,083 [INFO] t=2026-04-11T19:38:26+0530 lvl=info msg="failed to accept connection: Listener closed" obj=tunnels.session clientid=5f6d343056cdecef8c573afb710e7ff7
+2026-04-11 19:38:26,084 [WARNING] t=2026-04-11T19:38:26+0530 lvl=warn msg="Stopping forwarder" name=http-5000-e10d174b-a670-4130-af2e-0faab6689869 acceptErr="failed to accept connection: Listener closed"
+2026-04-11 19:38:26,086 [WARNING] t=2026-04-11T19:38:26+0530 lvl=warn msg="Error restarting forwarder" name=http-5000-e10d174b-a670-4130-af2e-0faab6689869 err="failed to start tunnel: session closed"
+2026-04-11 19:38:26,088 [INFO] t=2026-04-11T19:38:26+0530 lvl=info msg="no more state changes" obj=tunnels.session

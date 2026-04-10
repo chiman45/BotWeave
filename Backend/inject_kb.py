@@ -210,6 +210,31 @@ def write_to_chromadb(bot_id, chunks, embeddings, sources):
     print(f"Done: Written {len(chunks)} chunks to ChromaDB for bot {bot_id}")
 
 
+def build_bm25_index(bot_id, chunks):
+    """
+    Build a BM25Okapi index from all chunk texts and save it alongside the vector store.
+    Overwrites any existing index for this bot_id.
+    Saved as: vector_stores/{bot_id}/bm25_index.pkl
+    """
+    import pickle
+    from rank_bm25 import BM25Okapi
+
+    def _tokenize(text):
+        return re.findall(r'\w+', text.lower())
+
+    print(f"Building BM25 index from {len(chunks)} chunks...")
+    corpus  = [_tokenize(c) for c in chunks]
+    bm25    = BM25Okapi(corpus)
+    payload = {'bm25': bm25, 'chunks': chunks}
+
+    store_path = os.path.join(VECTOR_STORE_ROOT, bot_id)
+    os.makedirs(store_path, exist_ok=True)
+    index_path = os.path.join(store_path, 'bm25_index.pkl')
+    with open(index_path, 'wb') as f:
+        pickle.dump(payload, f)
+    print(f"BM25 index saved to {index_path}")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--bot-id', required=True, help='Bot businessId')
@@ -254,6 +279,10 @@ def main():
 
     # Write to ChromaDB
     write_to_chromadb(args.bot_id, chunks, embeddings, sources)
+
+    # Build BM25 index (must run AFTER ChromaDB write succeeds)
+    build_bm25_index(args.bot_id, chunks)
+
     print("\nDone! Knowledge base updated.")
 
 
