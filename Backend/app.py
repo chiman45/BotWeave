@@ -553,6 +553,62 @@ def _handle_mandi_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str
 _VECTOR_STORE_ROOT = os.path.join(os.path.dirname(__file__), 'vector_stores')
 _KB_COLLECTION = 'knowledge_base'
 
+# ── IIIT-NR Quick-reference links ────────────────────────────
+_IIIT_LINKS = [
+    (['dean', 'academic', 'dean academic'],                             'Dean Academics',                       'https://www.iiitnr.ac.in/node/3003'),
+    (['dean research', 'research', 'innovation', 'dean innovation'],    'Dean Research & Innovation',           'https://www.iiitnr.ac.in/node/1246'),
+    (['board', 'board member', 'governing body'],                       'Board Members',                        'https://www.iiitnr.ac.in/content/board'),
+    (['annual report', 'yearly report', 'annual'],                      'Yearly Reports',                       'https://www.iiitnr.ac.in/content/yearly-reports'),
+    (['btech curriculum', 'b.tech curriculum', 'ug curriculum'],        'B.Tech Curriculum',                    'https://www.iiitnr.ac.in/content/btech-curriculum'),
+    (['mtech curriculum', 'm.tech curriculum', 'pg curriculum'],        'M.Tech Curriculum',                    'https://www.iiitnr.ac.in/content/mtech-0'),
+    (['phd', 'ph.d', 'doctorate', 'doctoral'],                          'PhD Program',                          'https://www.iiitnr.ac.in/content/phd'),
+    (['syllabus', 'subject', 'course content'],                         'Syllabus',                             'https://www.iiitnr.ac.in/content/syllabus'),
+    (['academic calendar', 'calendar', 'schedule', 'semester date'],    'Academic Calendar',                    'https://www.iiitnr.ac.in/content/academic-calendar-archive'),
+    (['faculty', 'professor', 'teacher', 'staff', 'lecturer'],          'Faculty Details',                      'https://www.iiitnr.ac.in/faculty'),
+    (['past faculty', 'former faculty', 'previous faculty'],            'Past Faculty',                         'https://www.iiitnr.ac.in/past-faculty'),
+    (['adjunct faculty', 'visiting faculty', 'adjunct'],                'Adjunct Faculty',                      'https://www.iiitnr.ac.in/content/adjunct-faculty'),
+    (['emeritus', 'emeritus visit'],                                    'Emeritus Visits',                      'https://www.iiitnr.ac.in/content/emeritus-visits'),
+    (['coe', 'next generation network', 'center of excellence'],        'CoE Next Generation Network',          'https://www.iiitnr.ac.in/content/coe-next-generation-network'),
+    (['tbie', 'incubation', 'entrepreneurship', 'startup', 'ecell'],   'IIIT-NR TBIE / Incubation',            'https://sites.google.com/iiitnr.edu.in/iiit-nrtbie'),
+    (['patent', 'intellectual property'],                               'Patents',                              'https://www.iiitnr.ac.in/content/patents'),
+    (['lab', 'laboratory', 'lab detail'],                               'Lab Details',                          'https://www.iiitnr.ac.in/content/lab-details'),
+    (['workshop', 'iwatm'],                                             'Workshops',                            'https://www.iiitnr.ac.in/content/iwatm21'),
+    (['conference', 'ssnm'],                                            'Conference',                           'https://ims.iiitnr.edu.in/SSNM/'),
+    (['ombudsperson', 'complaint', 'grievance'],                        'Ombudsperson',                         'https://www.iiitnr.ac.in/content/ombudsperson-contact-details'),
+    (['sac', 'student activity', 'student club', 'activity center'],   'Student Activity Center (SAC)',         'https://sac.iiitnr.ac.in/'),
+    (['ieee', 'ieee student'],                                          'IEEE Student Branch',                  'https://ieeesb.iiitnr.ac.in/'),
+    (['ecell', 'e-cell', 'entrepreneurship cell'],                      'E-Cell',                               'https://ecell.iiitnr.ac.in/'),
+    (['facilit', 'infrastructure', 'campus facilit'],                   'Facilities',                           'https://www.iiitnr.ac.in/content/facilities'),
+    (['it facilit', 'it infrastructure', 'internet', 'wifi', 'network infrastructure'], 'IT Infrastructure',   'https://www.iiitnr.ac.in/content/it-infrastructure'),
+    (['library', 'book', 'journal', 'reading'],                        'Library',                              'https://www.iiitnr.ac.in/content/library-glance'),
+    (['student achievement', 'achievement', 'award', 'result'],        'Student Achievements',                 'https://www.iiitnr.ac.in/content/archive-2019'),
+    (['anti ragging', 'ragging', 'anti-ragging'],                      'Anti-Ragging Committee',               'https://www.iiitnr.ac.in/content/anti-ragging-committee'),
+    (['internship', 'outreach', 'training program', 'summer intern'],  'Internship / Outreach Program',        'https://www.iiitnr.ac.in/content/outreach-2025'),
+    (['vocational', 'vocational training'],                             'Vocational Training Programme',        'https://www.iiitnr.ac.in/content/vocational-training-programme'),
+    (['placement statistic', 'placement stat', 'placement data'],      'Placement Statistics 2021-25',         'https://www.iiitnr.ac.in/content/placement-statistics-2021-25'),
+    (['companies', 'recruiter', 'company visited', 'hiring company'],  'Companies Visited for Placement',      'https://www.iiitnr.ac.in/content/companies-visited-2021-25'),
+    (['remuneration', 'salary', 'package', 'ctc'],                     'Remuneration Offered 2021-25',         'https://www.iiitnr.ac.in/content/remuneration-offered-2021-25'),
+    (['industry academia', 'advisory committee', 'industry collaboration'], 'Industry-Academia Advisory Committee', 'https://www.iiitnr.ac.in/content/industry-academia-collaboration-cum-advisory-committee'),
+    (['placement', 'training and placement', 'tpo', 'placement cell'], 'Training & Placement',                 'https://www.iiitnr.ac.in/content/training-and-placement'),
+    (['tender', 'procurement', 'bid'],                                  'Tenders',                              'https://www.iiitnr.ac.in/tenders'),
+    (['guest house', 'accommodation', 'stay', 'hostel guest'],         'Guest House',                          'https://www.iiitnr.ac.in/content/guest-house-accommodation'),
+    (['btech admission', 'b.tech admission', 'ug admission', 'jee'],   'B.Tech Admission 2025',                'https://www.iiitnr.ac.in/content/b-tech-admission-2025'),
+    (['mtech cmit', 'cmit fellowship', 'dsai'],                        'M.Tech CMIT Fellowship',               'https://www.iiitnr.ac.in/content/mtech-dsai-cmit-fellowship'),
+    (['mtech admission', 'm.tech admission', 'pg admission', 'gate'],  'M.Tech Admission 2025',                'https://www.iiitnr.ac.in/content/mtech-admission-2025'),
+    (['phd admission', 'ph.d admission', 'doctoral admission'],        'PhD Admission Spring 2026',            'https://www.iiitnr.ac.in/content/phd-admission-spring-semester-2026'),
+]
+
+def _get_relevant_links(query: str) -> str:
+    """Return a formatted list of relevant IIIT-NR links for the given query."""
+    q = query.lower()
+    matched = []
+    for keywords, label, url in _IIIT_LINKS:
+        if any(kw in q for kw in keywords):
+            matched.append(f"- {label}: {url}")
+    if not matched:
+        return ''
+    return "--- RELEVANT LINKS ---\n" + '\n'.join(matched) + "\n--- END LINKS ---\n\n"
+
 
 def _get_ollama_embedding(text: str) -> list:
     """Get a single embedding vector from a local Ollama embedding model."""
@@ -633,8 +689,9 @@ def _rag_query(business_id: str, query: str) -> str:
             log.info(f"[RAG] L2 metric detected (max_dist={max(distances):.1f}); "
                      f"auto-threshold set to {max_distance:.1f}")
         else:
-            # Cosine metric — use a strict similarity threshold.
-            max_distance = 0.75  # cosine distance: 0=same, 1=orthogonal, 2=opposite
+            # Cosine metric — keep chunks with >= 50% similarity (distance <= 0.5).
+            # 0.75 was too loose: it kept chunks with only 25% similarity.
+            max_distance = 0.50
 
         paired = list(zip(docs, distances)) if distances else [(d, None) for d in docs]
         filtered_docs = [doc for doc, dist in paired if dist is None or dist <= max_distance]
@@ -656,36 +713,10 @@ def _rag_query(business_id: str, query: str) -> str:
         if filtered_docs:
             log.debug(f"[RAG] First kept chunk preview: {filtered_docs[0][:200]!r}")
 
-        # Hybrid recall boost: add keyword-matched chunks for intent-heavy queries
-        # like "list faculty", "fees", "admission", etc.
-        query_terms = [
-            t for t in re.findall(r"[a-zA-Z]{4,}", query.lower())
-            if t not in {
-                'about', 'please', 'would', 'could', 'tell', 'give', 'list',
-                'what', 'when', 'where', 'which', 'from', 'with', 'that',
-                'college', 'institute', 'iiit', 'naya', 'raipur'
-            }
-        ]
-        if query_terms:
-            for term in query_terms[:4]:
-                try:
-                    kw = collection.get(
-                        where_document={'$contains': term},
-                        limit=2,
-                        include=['documents']
-                    )
-                    kw_docs = kw.get('documents', []) if kw else []
-                    for d in kw_docs:
-                        if d and d not in filtered_docs:
-                            filtered_docs.append(d)
-                except Exception:
-                    # Some Chroma versions may not support where_document consistently.
-                    break
-
         if filtered_docs:
-            # Cap context size to avoid prompt bloat while keeping breadth.
-            filtered_docs = filtered_docs[:8]
-            log.info(f"[RAG] Final context chunks after hybrid boost: {len(filtered_docs)}")
+            # Cap context: top-5 is enough; more chunks = more noise for a 8B LLM.
+            filtered_docs = filtered_docs[:5]
+            log.info(f"[RAG] Final context chunks: {len(filtered_docs)}")
         return '\n\n'.join(filtered_docs)
     except Exception as exc:
         log.error(f"[RAG] Query failed for {business_id}: {exc}")
@@ -700,14 +731,6 @@ def _is_faculty_list_query(text: str) -> bool:
         any(k in q for k in ('list', 'members', 'member', 'names', 'name'))
     )
 
-
-def _extract_source_url(context: str) -> str:
-    """Extract first source URL from RAG context, if present."""
-    m = re.search(r"Source URL:\s*(https?://\S+)", context)
-    if m:
-        return m.group(1).rstrip('.,)')
-    m = re.search(r"https?://\S+", context)
-    return m.group(0).rstrip('.,)') if m else ''
 
 
 def _extract_faculty_names(context: str, max_names: int = 25) -> List[str]:
@@ -729,57 +752,149 @@ def _extract_faculty_names(context: str, max_names: int = 25) -> List[str]:
     return names
 
 
-_OUTREACH_KEYWORDS = {
-    # internship / training / placement intent
-    'internship', 'internships', 'intern', 'interns',
-    'placement', 'placements', 'placed',
-    'training', 'trainee', 'trainees',
-    'outreach', 'industrial training', 'industry training',
-    'summer training', 'winter training', 'summer internship', 'winter internship',
-    'job opportunity', 'job opportunities', 'opportunity', 'opportunities',
-    'apprenticeship', 'apprenticeships',
-    'how to apply', 'apply for', 'application process',
-    'collaborate', 'collaboration', 'partner', 'partnership',
-    'hire', 'hiring', 'recruit', 'recruitment', 'campus recruitment',
-    'on-campus', 'off-campus',
-    'tnp', 't&p', 'training and placement', 'placement cell',
-    'company visit', 'company visits', 'campus drive',
+
+
+# ── Multilingual support ─────────────────────────────────────────────────────
+
+# Unicode script ranges → (lang_code, lang_name)
+_INDIAN_SCRIPT_RANGES = [
+    (0x0900, 0x097F, 'hi',  'Hindi'),        # Devanagari  (Hindi / Marathi / Sanskrit)
+    (0x0980, 0x09FF, 'bn',  'Bengali'),
+    (0x0A00, 0x0A7F, 'pa',  'Punjabi'),
+    (0x0A80, 0x0AFF, 'gu',  'Gujarati'),
+    (0x0B00, 0x0B7F, 'or',  'Odia'),
+    (0x0B80, 0x0BFF, 'ta',  'Tamil'),
+    (0x0C00, 0x0C7F, 'te',  'Telugu'),
+    (0x0C80, 0x0CFF, 'kn',  'Kannada'),
+    (0x0D00, 0x0D7F, 'ml',  'Malayalam'),
+    (0x0600, 0x06FF, 'ur',  'Urdu'),         # Arabic script (Urdu)
+]
+
+# Romanised-Hindi / Hinglish keywords that identify the language
+_HINGLISH_TRIGGERS = {
+    'kya', 'hai', 'hain', 'mujhe', 'mera', 'meri', 'mere', 'aap', 'tum',
+    'kaise', 'kaisa', 'kahan', 'kitne', 'kitna', 'chahiye', 'batao',
+    'bata', 'samjhao', 'karo', 'karo', 'accha', 'theek', 'sahi',
+    'nahi', 'nahin', 'kyun', 'kyunki', 'lekin', 'aur', 'yeh', 'woh',
 }
 
-_OUTREACH_URL = 'https://www.iiitnr.ac.in/content/outreach-2025'
+def _detect_language(text: str) -> tuple:
+    """
+    Returns (lang_code, lang_name).
+    Priority: Indian Unicode script → Hinglish heuristic → langdetect → English.
+    """
+    # 1. Script-based detection — instant and accurate for typed Indian scripts
+    for ch in text:
+        cp = ord(ch)
+        for lo, hi, code, name in _INDIAN_SCRIPT_RANGES:
+            if lo <= cp <= hi:
+                return code, name
+
+    # 2. Hinglish heuristic
+    words = set(re.findall(r'[a-zA-Z]+', text.lower()))
+    if len(words & _HINGLISH_TRIGGERS) >= 1:
+        return 'hi_roman', 'Hindi (Roman)'
+
+    # 3. langdetect as optional fallback for other romanised languages
+    try:
+        from langdetect import detect
+        _LANGDETECT_MAP = {
+            'hi': ('hi', 'Hindi'), 'bn': ('bn', 'Bengali'),
+            'ta': ('ta', 'Tamil'), 'te': ('te', 'Telugu'),
+            'kn': ('kn', 'Kannada'), 'ml': ('ml', 'Malayalam'),
+            'gu': ('gu', 'Gujarati'), 'mr': ('mr', 'Marathi'),
+            'pa': ('pa', 'Punjabi'), 'ur': ('ur', 'Urdu'),
+            'or': ('or', 'Odia'),
+        }
+        code = detect(text)
+        if code in _LANGDETECT_MAP:
+            return _LANGDETECT_MAP[code]
+    except Exception:
+        pass
+
+    return 'en', 'English'
 
 
-def _is_outreach_query(text: str) -> bool:
-    """Return True if the message is asking about internships, placements, or outreach."""
-    lower = text.lower()
-    # Direct keyword match
-    for kw in _OUTREACH_KEYWORDS:
-        if kw in lower:
-            return True
-    return False
+# Pre-translated greeting messages (instant, no LLM needed)
+_GREETING_MSGS = {
+    'hi':       "नमस्ते! 👋 मैं IIIT नया रायपुर के बारे में आपके किसी भी सवाल में मदद करने के लिए यहाँ हूँ। बस पूछिए!",
+    'hi_roman': "Namaste! 👋 Main IIIT Naya Raipur ke baare mein aapke kisi bhi sawaal mein madad karne ke liye yahan hoon. Bas poochiye!",
+    'mr':       "नमस्कार! 👋 मी IIIT नया रायपूर बद्दल तुमच्या कोणत्याही प्रश्नांसाठी येथे आहे. विचारा!",
+    'bn':       "হ্যালো! 👋 আমি IIIT নয়া রায়পুর সম্পর্কে আপনার যেকোনো প্রশ্নে সাহায্য করতে এখানে আছি। জিজ্ঞেস করুন!",
+    'ta':       "வணக்கம்! 👋 நான் IIIT நயா ரைபூர் பற்றிய உங்கள் கேள்விகளுக்கு உதவ இங்கே இருக்கிறேன். கேளுங்கள்!",
+    'te':       "నమస్కారం! 👋 నేను IIIT నయా రైపూర్ గురించి మీ ఏ ప్రశ్నలకైనా సహాయం చేయడానికి ఇక్కడ ఉన్నాను. అడగండి!",
+    'kn':       "ನಮಸ್ಕಾರ! 👋 ನಾನು IIIT ನಯಾ ರಾಯಪುರ್ ಬಗ್ಗೆ ನಿಮ್ಮ ಯಾವುದೇ ಪ್ರಶ್ನೆಗಳಿಗೆ ಸಹಾಯ ಮಾಡಲು ಇಲ್ಲಿದ್ದೇನೆ. ಕೇಳಿ!",
+    'ml':       "നമസ്കാരം! 👋 IIIT നയാ റായ്‌പൂർ സംബന്ധിച്ച നിങ്ങളുടെ ഏത് ചോദ്യങ്ങൾക്കും ഞാൻ ഇവിടെ ഉണ്ട്. ചോദിക്കൂ!",
+    'gu':       "નમસ્તે! 👋 હું IIIT નયા રાયપુર વિશે તમારા કોઈ પણ સવાલ માટે અહીં છું. પૂછો!",
+    'pa':       "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! 👋 ਮੈਂ IIIT ਨਯਾ ਰਾਏਪੁਰ ਬਾਰੇ ਤੁਹਾਡੇ ਕਿਸੇ ਵੀ ਸਵਾਲ ਵਿੱਚ ਮਦਦ ਕਰਨ ਲਈ ਇੱਥੇ ਹਾਂ। ਪੁੱਛੋ!",
+    'ur':       "السلام علیکم! 👋 میں IIIT نیا رائے پور کے بارے میں آپ کے کسی بھی سوال میں مدد کے لیے یہاں ہوں۔ پوچھیں!",
+    'or':       "ନମସ୍କାର! 👋 ମୁଁ IIIT ନୟା ରାୟପୁର ବିଷୟରେ ଆପଣଙ୍କ ଯେକୌଣସି ପ୍ରଶ୍ନରେ ସାହାଯ୍ୟ କରିବାକୁ ଏଠାରେ ଅଛି। ପଚାରନ୍ତୁ!",
+    'en':       "Hi 👋 I'm here to help you with any questions about IIIT Naya Raipur. Just ask!",
+}
+
+# Pre-translated fallback messages (no context found)
+_FALLBACK_MSGS = {
+    'hi':       "माफ़ कीजिए, मेरे पास अभी इस बारे में जानकारी नहीं है। सटीक जानकारी के लिए सीधे IIIT नया रायपुर से संपर्क करें।",
+    'hi_roman': "Sorry, abhi mere paas is baare mein jaankari nahi hai. Sahi jaankari ke liye seedha IIIT Naya Raipur se sampark karein.",
+    'mr':       "माफ करा, सध्या माझ्याकडे त्याबद्दल माहिती नाही. अचूक माहितीसाठी थेट IIIT नया रायपूरशी संपर्क साधा.",
+    'bn':       "দুঃখিত, এখন আমার কাছে এ বিষয়ে তথ্য নেই। সঠিক তথ্যের জন্য সরাসরি IIIT নয়া রায়পুরে যোগাযোগ করুন।",
+    'ta':       "மன்னிக்கவும், இப்போது அதற்கான விவரங்கள் என்னிடம் இல்லை। சரியான தகவலுக்கு IIIT நயா ரைபூரை நேரடியாக தொடர்பு கொள்ளுங்கள்.",
+    'te':       "క్షమించండి, ఇప్పుడు నా దగ్గర దాని గురించి వివరాలు లేవు. సరైన సమాచారం కోసం నేరుగా IIIT నయా రైపూర్‌ను సంప్రదించండి.",
+    'kn':       "ಕ್ಷಮಿಸಿ, ಇದರ ಬಗ್ಗೆ ಈಗ ನನ್ನ ಬಳಿ ಮಾಹಿತಿ ಇಲ್ಲ. ನಿಖರ ಮಾಹಿತಿಗಾಗಿ ನೇರವಾಗಿ IIIT ನಯಾ ರಾಯಪುರ್ ಅನ್ನು ಸಂಪರ್ಕಿಸಿ.",
+    'ml':       "ക്ഷമിക്കണം, ഇപ്പോൾ എന്റെ കൈയ്യിൽ അതിനെ കുറിച്ചുള്ള വിവരങ്ങൾ ഇല്ല. കൃത്യമായ വിവരത്തിന് IIIT നയാ റായ്‌പൂരുമായി നേരിട്ട് ബന്ധപ്പെടുക.",
+    'gu':       "માફ કરો, અત્યારે મારી પાસે આ વિશે માહિતી નથી. સચોટ માહિતી માટે IIIT નયા રાયપુરને સીધો સંપર્ક કરો.",
+    'pa':       "ਮਾਫ਼ ਕਰਨਾ, ਹੁਣ ਮੇਰੇ ਕੋਲ ਇਸ ਬਾਰੇ ਜਾਣਕਾਰੀ ਨਹੀਂ ਹੈ। ਸਹੀ ਜਾਣਕਾਰੀ ਲਈ ਸਿੱਧੇ IIIT ਨਯਾ ਰਾਏਪੁਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
+    'ur':       "معاف کیجیے، ابھی میرے پاس اس بارے میں معلومات نہیں ہے۔ درست معلومات کے لیے براہ راست IIIT نیا رائے پور سے رابطہ کریں۔",
+    'en':       "Sorry, I don't have details on that right now. Please contact IIIT Naya Raipur directly for accurate information.",
+}
+
+# "Relevant Links" header in each language
+_LINKS_HEADER = {
+    'hi': '*संबंधित लिंक:*', 'hi_roman': '*Relevant Links:*',
+    'mr': '*संबंधित लिंक:*', 'bn': '*সম্পর্কিত লিংক:*',
+    'ta': '*தொடர்புடைய இணைப்புகள்:*', 'te': '*సంబంధిత లింకులు:*',
+    'kn': '*ಸಂಬಂಧಿತ ಲಿಂಕ್‌ಗಳು:*', 'ml': '*ബന്ധപ്പെട്ട ലിങ്കുകൾ:*',
+    'gu': '*સંબંધિત લિંક્સ:*', 'pa': '*ਸੰਬੰਧਿਤ ਲਿੰਕ:*',
+    'ur': '*متعلقہ لنک:*', 'or': '*ସଂପ୍ରକ୍ତ ଲିଙ୍କ:*',
+    'en': '*Relevant Links:*',
+}
+
+_GREETING_TRIGGERS = {
+    'hi', 'hello', 'hey', 'hii', 'helo', 'heya', 'howdy', 'sup', 'hola',
+    'good morning', 'good afternoon', 'good evening', 'good night',
+    'namaste', 'namaskar', 'jai hind', 'hello there', 'hi there',
+    'start', 'help', 'menu',
+    # Hindi greetings typed in Devanagari
+    'नमस्ते', 'नमस्कार', 'हेलो', 'हाय',
+    # Other Indian language greetings
+    'வணக்கம்', 'నమస్కారం', 'ನಮಸ್ಕಾರ', 'നമസ്കാരം',
+    'নমস্কার', 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ', 'નમસ્તે', 'ନମସ୍କାର',
+}
+
+def _is_greeting(text: str) -> bool:
+    t = text.strip().lower().rstrip('!.,?')
+    return t in _GREETING_TRIGGERS or (len(t) <= 10 and any(g in t for g in ('hi', 'hello', 'hey')))
 
 
 def _handle_ai_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str:
     """
-    Handle a message using the Gemini API (gemini-2.0-flash).
+    Handle a message using local Ollama LLM with full multilingual support.
     Automatically injects RAG context when aiRagEnabled = True.
     """
     import requests as _req
 
+    # ── Detect language first (used throughout) ───────────────
+    lang_code, lang_name = _detect_language(incoming_msg)
+    log.info(f"[AI] Detected language: {lang_name} ({lang_code})")
+
+    # ── Greet warmly without involving LLM or RAG ─────────────
+    if _is_greeting(incoming_msg):
+        return _GREETING_MSGS.get(lang_code, _GREETING_MSGS['en'])
+
     business_id = bot['businessId']
     rag_enabled = bool(bot.get('aiRagEnabled', False))
 
-    # ── Outreach / Internship keyword redirect ─────────────────
-    if _is_outreach_query(incoming_msg):
-        return (
-            "For internship and outreach/placement opportunities at IIIT Naya Raipur, "
-            "please visit the official Outreach 2025 page:\n\n"
-            f"{_OUTREACH_URL}\n\n"
-            "You can find details about how to apply, collaboration programs, and "
-            "training/placement drives there."
-        )
-
-    # ── Conversation history (last 8 turns, oldest first) ──
+    # ── Conversation history (last 8 turns, oldest first) ──────
     history_docs = list(
         conversations_col.find(
             {'businessId': business_id, 'phoneNumber': customer_phone},
@@ -792,160 +907,140 @@ def _handle_ai_flow(bot: Dict, customer_phone: str, incoming_msg: str) -> str:
         for m in history_docs
     )
 
-    # ── RAG context ────────────────────────────────────────
+    # ── RAG context ────────────────────────────────────────────
     rag_context = ''
     if rag_enabled:
         rag_context = _rag_query(business_id, incoming_msg)
         log.info(f"[AI] RAG context length: {len(rag_context)} chars")
 
-    # Deterministic answer path for faculty-list queries when context exists.
-    # This avoids LLM fallback responses for a structured, list-style intent.
+    # ── Deterministic faculty-list path ───────────────────────
     if rag_enabled and rag_context and _is_faculty_list_query(incoming_msg):
-        names = _extract_faculty_names(rag_context)
-        source_url = _extract_source_url(rag_context) or 'https://www.iiitnr.ac.in/faculty'
+        chunks = rag_context.split('\n\n')
+        main_chunks = [
+            c for c in chunks
+            if 'iiitnr.ac.in/faculty' in c
+            and 'adjunct-faculty' not in c
+            and 'past-faculty' not in c
+            and 'emeritus' not in c.lower()
+        ]
+        context_for_names = '\n\n'.join(main_chunks) if main_chunks else rag_context
+        names = _extract_faculty_names(context_for_names)
+        source_url = 'https://www.iiitnr.ac.in/faculty'
         if names:
             lines = '\n'.join(f"- {n}" for n in names[:20])
             return (
-                "Here are faculty members available in the knowledge base:\n\n"
+                "Here are the faculty members at IIIT Naya Raipur:\n\n"
                 f"{lines}\n\n"
-                f"Official Link: {source_url}"
+                f"For the full list, visit: {source_url}"
             )
-        return (
-            "I found faculty-related information but could not reliably extract names from the indexed text.\n"
-            f"Please check the official faculty page: {source_url}"
-        )
+        return f"You can find the complete faculty list on the official page:\n{source_url}"
 
-    # ── Build system prompt ────────────────────────────────
+    # ── Build language-aware system prompt ────────────────────
+    # Explicit language instruction beats "reply in same language" for local LLMs
+    lang_instruction = (
+        f"IMPORTANT: You MUST reply in {lang_name}. "
+        if lang_code != 'en'
+        else "Reply in English. "
+    )
+    if lang_code == 'hi_roman':
+        lang_instruction = "IMPORTANT: The user is writing in Hinglish (Roman Hindi). Reply in the same Roman Hindi style. "
+
     business_name = bot.get('businessName', 'this business')
     if bot.get('aiSystemPrompt'):
-        # User-defined system prompt — append RAG instruction if RAG is on
         system_prompt = bot['aiSystemPrompt']
         if rag_enabled:
             system_prompt += (
-                "\n\nIMPORTANT: You have been provided a knowledge base context below. "
-                "Answer ONLY from that context. Do NOT use your general training knowledge. "
-                "Do NOT invent facts, links, numbers, or names that are not in the context. "
-                "If the answer is not in the context, say exactly: "
-                "'I don't have that information in my knowledge base. Please contact us directly.'"
+                f"\n\n{lang_instruction}"
+                "IMPORTANT: You have been provided reference information below. "
+                "Answer ONLY from that information. Do NOT use your general training knowledge. "
+                "Do NOT invent facts, links, numbers, or names not in the provided information. "
+                "If the answer is not there, say you don't have that information and suggest contacting IIIT Naya Raipur directly."
             )
+        else:
+            system_prompt += f"\n\n{lang_instruction}"
     elif rag_enabled:
-        # RAG bot with no custom prompt — strict retrieval-only mode
         system_prompt = (
-            f"You are a helpful assistant for {business_name}. "
-            "Answer ONLY using the knowledge base context provided below. "
+            f"You are a friendly and helpful assistant for {business_name}. "
+            f"{lang_instruction}"
+            "Answer ONLY using the reference information provided below. "
             "Do NOT use your general training knowledge. "
-            "Do NOT invent facts, prices, links, phone numbers, or names that are not in the context. "
-            "Reply in the same language the user writes in. "
-            "If the answer is not in the context, say exactly: "
-            "'I don't have that information in my knowledge base. Please contact us directly.'"
+            "Do NOT invent facts, prices, links, phone numbers, or names not in the provided information. "
+            "Keep your tone warm and conversational. "
+            "If the answer is not in the provided information, say you don't have that information "
+            "and suggest contacting IIIT Naya Raipur directly."
         )
     else:
         system_prompt = (
             f"You are a helpful assistant for *{business_name}*. "
-            "Answer clearly and concisely. Reply in the same language the user writes in."
+            f"{lang_instruction}"
+            "Answer clearly and concisely."
         )
 
-    # ── Full prompt ────────────────────────────────────────
+    # ── Full prompt ────────────────────────────────────────────
+    links_header = _LINKS_HEADER.get(lang_code, _LINKS_HEADER['en'])
+
     if rag_enabled and rag_context:
-        context_block = f"--- KNOWLEDGE BASE CONTEXT ---\n{rag_context}\n--- END CONTEXT ---\n\n"
+        context_block = f"--- REFERENCE INFORMATION ---\n{rag_context}\n--- END ---\n\n"
     elif rag_enabled and not rag_context:
-        # RAG enabled but no context found — do NOT let the model hallucinate.
-        # Return a safe fallback immediately without calling Ollama.
-        fallback = (
-            bot.get('fallbackMessage') or
-            "I couldn't find relevant information about that in my knowledge base. "
-            "Please contact us directly for assistance."
-        )
-        log.warning(f"[AI] RAG enabled but no context found for query: {incoming_msg[:80]!r} — returning fallback")
+        # No context found — return pre-translated fallback + relevant links
+        matched_links = _get_relevant_links(incoming_msg)
+        link_lines = [l for l in matched_links.splitlines() if l.startswith('- ')] if matched_links else []
+        fallback = bot.get('fallbackMessage') or _FALLBACK_MSGS.get(lang_code, _FALLBACK_MSGS['en'])
+        if link_lines:
+            fallback += f"\n\n{links_header}\n" + '\n'.join(link_lines)
+        log.warning(f"[AI] No RAG context for query: {incoming_msg[:80]!r}")
         return fallback
     else:
         context_block = ''
 
-
-    import time as _time
-
-    # ── Helper: call Grok (xAI) via Responses API ──────────────
-    def _try_grok() -> str | None:
-        api_key = os.getenv('GROK_API_KEY', '')
-        if not api_key:
-            return None
-        grok_model = os.getenv('GROK_MODEL', 'grok-4.20-reasoning')
-        user_input = f"{context_block}{history_str}User: {incoming_msg}"
-        log.info(f"[AI] Sending prompt to Grok ({grok_model}, rag={rag_enabled})")
-        for attempt in range(3):
-            try:
-                resp = _req.post(
-                    'https://api.x.ai/v1/responses',
-                    headers={'Authorization': f'Bearer {api_key}', 'Content-Type': 'application/json'},
-                    json={
-                        'model': grok_model,
-                        'instructions': system_prompt,
-                        'input': user_input,
-                    },
-                    timeout=60,
-                )
-                if resp.status_code == 429:
-                    wait = 2 ** attempt
-                    log.warning(f"[AI] Grok 429, retrying in {wait}s")
-                    _time.sleep(wait)
-                    continue
-                resp.raise_for_status()
-                data = resp.json()
-                # Responses API: output[0].content[0].text
-                reply = (
-                    data.get('output', [{}])[0]
-                        .get('content', [{}])[0]
-                        .get('text', '')
-                        .strip()
-                )
-                log.info(f"[AI] Grok reply: {reply[:200]!r}")
-                return reply or None
-            except Exception as exc:
-                log.warning(f"[AI] Grok attempt {attempt+1} failed: {exc}")
-                if attempt < 2:
-                    _time.sleep(2 ** attempt)
-        return None
-
-    # ── Helper: call Ollama (local) as fallback ─────────────────
-    def _try_ollama() -> str | None:
-        base_url    = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434')
-        chat_model  = os.getenv('OLLAMA_CHAT_MODEL', 'llama3')
-        log.info(f"[AI] Falling back to Ollama ({chat_model})")
-        try:
-            resp = _req.post(
-                f'{base_url}/api/chat',
-                json={
-                    'model': chat_model,
-                    'messages': [
-                        {'role': 'system',    'content': system_prompt},
-                        {'role': 'user',      'content': f"{context_block}{history_str}User: {incoming_msg}"},
-                    ],
-                    'stream': False,
-                    'options': {'temperature': 0.4, 'num_predict': 1024},
-                },
-                timeout=60,
-            )
-            resp.raise_for_status()
-            reply = resp.json().get('message', {}).get('content', '').strip()
-            log.info(f"[AI] Ollama reply: {reply[:200]!r}")
-            return reply or None
-        except Exception as exc:
-            log.error(f"[AI] Ollama fallback failed: {exc}")
-            return None
-
-    reply = _try_grok() or _try_ollama()
-    if reply:
+    # ── Call Ollama ────────────────────────────────────────────
+    base_url   = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434')
+    chat_model = os.getenv('OLLAMA_CHAT_MODEL', 'llama3')
+    log.info(f"[AI] Ollama ({chat_model}) | lang={lang_name} | rag={rag_enabled}")
+    try:
+        resp = _req.post(
+            f'{base_url}/api/chat',
+            json={
+                'model': chat_model,
+                'messages': [
+                    {'role': 'system', 'content': system_prompt},
+                    {'role': 'user',   'content': f"{context_block}{history_str}User: {incoming_msg}"},
+                ],
+                'stream': False,
+                'options': {'temperature': 0.4, 'num_predict': 1024},
+            },
+            timeout=120,
+        )
+        resp.raise_for_status()
+        reply = resp.json().get('message', {}).get('content', '').strip()
+        log.info(f"[AI] Ollama reply: {reply[:200]!r}")
+        if not reply:
+            return _FALLBACK_MSGS.get(lang_code, _FALLBACK_MSGS['en'])
+        # Append relevant links with language-appropriate header
+        matched_links = _get_relevant_links(incoming_msg)
+        if matched_links:
+            link_lines = [l for l in matched_links.splitlines() if l.startswith('- ')]
+            if link_lines:
+                reply += f"\n\n{links_header}\n" + '\n'.join(link_lines)
         return reply
-    log.error("[AI] Both Grok and Ollama failed")
-    return "⚠️ I'm having trouble connecting to the AI service right now. Please try again in a moment."
+    except Exception as exc:
+        log.error(f"[AI] Ollama error: {exc}")
+        return "⚠️ I'm having trouble connecting right now. Please try again in a moment."
 
 
 # ── ROUTE: AI — List available models ────────────────────────
 @app.route('/api/ai/models', methods=['GET'])
 def list_ai_models():
-    """Return available model names."""
-    models = ['grok-3-mini', 'grok-3', 'grok-2']
-    return jsonify({'models': models, 'provider': 'grok'})
+    """Return available local Ollama model names."""
+    base_url = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434')
+    try:
+        import requests as _req
+        r = _req.get(f'{base_url}/api/tags', timeout=5)
+        r.raise_for_status()
+        models = [m['name'] for m in r.json().get('models', [])]
+    except Exception:
+        models = [os.getenv('OLLAMA_CHAT_MODEL', 'llama3')]
+    return jsonify({'models': models, 'provider': 'ollama'})
 
 
 # ── In-memory KB job progress store ──────────────────────────
@@ -1167,6 +1262,11 @@ def whatsapp_webhook():
 
     customer_phone = from_number.replace('whatsapp:', '')
 
+    # Ignore Twilio status callbacks / self-pings (From == our own number)
+    if from_number == TWILIO_WHATSAPP_NUMBER or customer_phone == TWILIO_WHATSAPP_NUMBER.replace('whatsapp:', ''):
+        log.debug(f"[WEBHOOK] Ignoring self-callback from {from_number}")
+        return '', 204
+
     log.info(f"[WEBHOOK] Incoming from {customer_phone}: {incoming_msg!r}")
 
     bot = _find_bot_for_customer(customer_phone)
@@ -1190,38 +1290,56 @@ def whatsapp_webhook():
         media_url = request.values.get('MediaUrl0', '')
         log.info(f"[WEBHOOK] Media received: {media_url}")
 
-    # ── Credit check ────────────────────────────────────────────
-    resp = MessagingResponse()
+    # ── Credit check (sync, fast) ────────────────────────────────
     if user_id:
         credits = _get_or_init_credits(user_id)
         if credits <= 0:
-            no_credit_msg = (
-                "⚠️ Your BotSetu message credits are exhausted. "
-                "Please top up at https://botsetu.com/payment to continue."
-            )
-            resp.message(no_credit_msg)
             log.warning(f"[CREDITS] User {user_id} has no credits — blocking reply for bot {business_id}")
-            return str(resp), 200, {'Content-Type': 'text/xml'}
+            def _send_no_credit():
+                try:
+                    twilio_client.messages.create(
+                        from_=TWILIO_WHATSAPP_NUMBER,
+                        to=from_number,
+                        body=(
+                            "⚠️ Your BotSetu message credits are exhausted. "
+                            "Please top up at https://botsetu.com/payment to continue."
+                        ),
+                    )
+                except Exception as e:
+                    log.error(f"[WEBHOOK] Failed to send no-credit msg: {e}")
+            import threading
+            threading.Thread(target=_send_no_credit, daemon=True).start()
+            return '', 204
 
-    # Build and send reply – route based on botType and useCaseType
-    bot_type = bot.get('botType', 'normal')
-    if bot_type == 'ai':
-        reply = _handle_ai_flow(bot, customer_phone, incoming_msg)
-    elif bot.get('useCaseType') == 'mandi_booking':
-        reply = _handle_mandi_flow(bot, customer_phone, incoming_msg)
-    else:
-        reply = _build_reply(bot, incoming_msg)
+    # ── Ack Twilio immediately, process in background ────────────
+    def _process_and_send():
+        bot_type = bot.get('botType', 'normal')
+        if bot_type == 'ai':
+            reply = _handle_ai_flow(bot, customer_phone, incoming_msg)
+        elif bot.get('useCaseType') == 'mandi_booking':
+            reply = _handle_mandi_flow(bot, customer_phone, incoming_msg)
+        else:
+            reply = _build_reply(bot, incoming_msg)
 
-    if reply:
-        resp.message(reply)
-        _log_message(business_id, user_id, customer_phone, reply, 'bot')
-        if user_id:
-            _deduct_credit(user_id)
-        log.info(f"[WEBHOOK] Auto-reply sent to {customer_phone}: {reply!r}")
-    else:
-        log.info(f"[WEBHOOK] autoReply disabled for bot {business_id} — no reply sent")
+        if reply:
+            try:
+                twilio_client.messages.create(
+                    from_=TWILIO_WHATSAPP_NUMBER,
+                    to=from_number,
+                    body=reply,
+                )
+                _log_message(business_id, user_id, customer_phone, reply, 'bot')
+                if user_id:
+                    _deduct_credit(user_id)
+                log.info(f"[WEBHOOK] Auto-reply sent to {customer_phone}: {reply!r}")
+            except Exception as e:
+                log.error(f"[WEBHOOK] Failed to send reply via Twilio: {e}")
+        else:
+            log.info(f"[WEBHOOK] autoReply disabled for bot {business_id} — no reply sent")
 
-    return str(resp), 200, {'Content-Type': 'text/xml'}
+    import threading
+    threading.Thread(target=_process_and_send, daemon=True).start()
+    return '', 204
 
 
 # ═════════════════════════════════════════════════════════════
