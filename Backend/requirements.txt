@@ -7,7 +7,7 @@ gunicorn>=21.0.0
 pyngrok>=7.0.0
 requests>=2.31.0
 
-# ── AI / LLM (optional — only needed for AI bots)
+
 # Only chromadb is needed; Ollama is called via its REST API (uses 'requests' above)
 chromadb>=0.5.0
 
