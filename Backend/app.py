@@ -1418,15 +1418,21 @@ def whatsapp_webhook():
 
         if reply:
             try:
-                twilio_client.messages.create(
+                if len(reply) > 1600:
+                    reply = reply[:1597] + '…'
+                msg = twilio_client.messages.create(
                     from_=TWILIO_WHATSAPP_NUMBER,
                     to=from_number,
                     body=reply,
                 )
-                _log_message(business_id, user_id, customer_phone, reply, 'bot')
-                if user_id:
-                    _deduct_credit(user_id)
-                log.info(f"[WEBHOOK] Auto-reply sent to {customer_phone}: {reply!r}")
+                log.info(f"[WEBHOOK] Outbound message SID={msg.sid} status={msg.status} to={customer_phone}")
+                if msg.status in ('failed', 'undelivered'):
+                    log.error(f"[WEBHOOK] Twilio rejected outbound message: error_code={msg.error_code} error_message={msg.error_message}")
+                else:
+                    _log_message(business_id, user_id, customer_phone, reply, 'bot')
+                    if user_id:
+                        _deduct_credit(user_id)
+                    log.info(f"[WEBHOOK] Auto-reply sent to {customer_phone}: {reply!r}")
             except Exception as e:
                 log.error(f"[WEBHOOK] Failed to send reply via Twilio: {e}")
         else:
@@ -1932,6 +1938,17 @@ def get_ivr_number():
     return jsonify({
         'phoneNumber':    TWILIO_PHONE_NUMBER,
         'voiceWebhookUrl': voice_webhook,
+    })
+
+
+@app.route('/api/bot/sandbox-info', methods=['GET'])
+def get_sandbox_info():
+    """Return WhatsApp sandbox number and join keyword for QR/link generation."""
+    raw_number = TWILIO_WHATSAPP_NUMBER.replace('whatsapp:', '').lstrip('+')
+    join_text  = os.getenv('TWILIO_SANDBOX_KEYWORD', '').strip().strip('"')
+    return jsonify({
+        'whatsappNumber': raw_number,
+        'joinText':       join_text,
     })
 
 

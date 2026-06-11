@@ -20,7 +20,6 @@ For real approved Twilio numbers it sets the webhook via API.
 import os
 import sys
 import time
-import webbrowser
 import subprocess
 from dotenv import load_dotenv
 
@@ -212,8 +211,7 @@ def main():
             print(f"  Webhook URL:\n\n      {G}{B}{webhook_url}{RST}\n")
             console_url = ("https://console.twilio.com/us1/develop/messaging/"
                            "try-it-out/whatsapp-learn")
-            info(f"Opening Twilio sandbox settings: {console_url}")
-            webbrowser.open(console_url)
+            info(f"Twilio sandbox settings: {console_url}")
             print(f"\n  In the console, set:")
             print(f"  {DIM}  WHEN A MESSAGE COMES IN  →  {webhook_url}  (HTTP POST){RST}\n")
 

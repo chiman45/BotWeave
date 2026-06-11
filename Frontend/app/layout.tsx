@@ -1,5 +1,6 @@
 import React from "react"
 import type { Metadata } from 'next'
+import '../bones/registry'
 import { Analytics } from '@vercel/analytics/next'
 import {
   ClerkProvider,
