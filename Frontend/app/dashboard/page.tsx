@@ -475,9 +475,9 @@ export default function DashboardPage() {
 
   return (
     <>
-    <div className="min-h-screen bg-black text-white flex overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-white flex overflow-x-hidden">
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-black border-r border-white/10 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 glass-sidebar transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="flex items-center justify-between h-16 px-6 border-b border-white/10">
@@ -557,7 +557,7 @@ export default function DashboardPage() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen min-w-0 overflow-x-hidden">
         {/* Header */}
-        <div className="border-b border-white/10 bg-black/50 backdrop-blur-sm sticky top-0 z-30">
+        <div className="glass-nav sticky top-0 z-30">
           <div className="px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center gap-3">

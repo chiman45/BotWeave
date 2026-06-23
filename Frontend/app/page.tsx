@@ -48,10 +48,10 @@ export default function LandingPage() {
   const borderClass = isDarkMode ? 'border-white/10' : 'border-black/10'
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-black text-white' : 'bg-white text-black'}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-transparent text-white' : 'bg-white/80 text-black backdrop-blur-sm'}`}>
       {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 border-b backdrop-blur-sm transition-colors duration-300 ${
-        isDarkMode ? 'border-white/10 bg-black/50' : 'border-black/10 bg-white/50'
+      <nav className={`fixed top-0 w-full z-50 border-b transition-colors duration-300 ${
+        isDarkMode ? 'glass-nav' : 'backdrop-blur-2xl bg-white/40 border-black/10'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">

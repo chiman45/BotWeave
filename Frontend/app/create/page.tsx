@@ -306,7 +306,7 @@ export default function CreateBotPage() {
 
   return (
     <>
-    <div className="min-h-screen bg-black text-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-transparent text-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto border border-white/20 rounded-2xl p-8 shadow-[0_0_50px_rgba(255,255,255,0.15)] bg-black/50 backdrop-blur-sm">
         {/* Header */}
         <div className="mb-8">

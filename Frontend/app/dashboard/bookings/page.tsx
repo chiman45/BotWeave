@@ -80,7 +80,7 @@ function BookingsPageContent() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white" style={{ fontFamily: 'var(--font-bitcount)' }}>
+    <div className="min-h-screen bg-transparent text-white" style={{ fontFamily: 'var(--font-bitcount)' }}>
       {/* Header */}
       <div className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -214,7 +214,7 @@ function BookingsPageContent() {
 
 export default function BookingsPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center">Loading bookings...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-transparent text-white flex items-center justify-center">Loading bookings...</div>}>
       <BookingsPageContent />
     </Suspense>
   )

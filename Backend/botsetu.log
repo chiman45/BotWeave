@@ -6726,3 +6726,165 @@ PermissionError: [WinError 32] The process cannot access the file because it is 
 2026-06-14 20:07:53,913 [INFO] 127.0.0.1 - - [14/Jun/2026 20:07:53] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
 2026-06-14 20:07:54,554 [INFO] 127.0.0.1 - - [14/Jun/2026 20:07:54] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
 2026-06-14 20:07:54,609 [INFO] 127.0.0.1 - - [14/Jun/2026 20:07:54] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:23:08,038 [INFO] 🚀  BotSetu backend starting on port 5000
+2026-06-14 20:23:08,039 [INFO] 📱  Twilio WhatsApp number : whatsapp:+14155238886
+2026-06-14 20:23:08,039 [INFO] 🗄️   MongoDB               : mongodb://localhost:27017/
+2026-06-14 20:23:08,050 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.29.59:5000
+2026-06-14 20:23:08,050 [INFO] [33mPress CTRL+C to quit[0m
+2026-06-14 20:24:04,417 [INFO] [WEBHOOK] Incoming from +918770441755: 'Helli'
+2026-06-14 20:24:04,422 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:04] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:04,537 [INFO] -- BEGIN Twilio API Request --
+2026-06-14 20:24:04,537 [INFO] POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-06-14 20:24:04,537 [INFO] Headers:
+2026-06-14 20:24:04,537 [INFO] Content-Type : application/x-www-form-urlencoded
+2026-06-14 20:24:04,537 [INFO] Accept : application/json
+2026-06-14 20:24:04,538 [INFO] User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-06-14 20:24:04,538 [INFO] X-Twilio-Client : python-9.10.2
+2026-06-14 20:24:04,538 [INFO] Accept-Charset : utf-8
+2026-06-14 20:24:04,538 [INFO] -- END Twilio API Request --
+2026-06-14 20:24:05,202 [INFO] Response Status Code: 201
+2026-06-14 20:24:05,203 [INFO] Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1423', 'Connection': 'keep-alive', 'Date': 'Sun, 14 Jun 2026 14:54:05 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ510d6208985f64edb444cc59a0522914', 'Twilio-Request-Duration': '0.161', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 09fefbf1803f8aea6ae58460425fa49c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'Ji-vlIOz7asq41AWkt6VytCd80ihQDl-OU_NimC8wh6_BdHX0MVkug==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-06-14 20:24:05,203 [INFO] [WEBHOOK] Outbound message SID=SM510d6208985f64edb444cc59a0522914 status=queued to=+918770441755
+2026-06-14 20:24:05,205 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: '🌐 *Welcome / स्वागत / ਸੁਆਗਤ / આવકાર / স্বাগতম / స్వాగతం*\n\nPlease choose your language / कृपया भाषा चुनें:\n\n1️⃣  English\n2️⃣  हिंदी (Hindi)\n3️⃣  ਪੰਜਾਬੀ (Punjabi)\n4️⃣  ગુજરાતી (Gujarati)\n5️⃣  मराठी (Marathi)\n\nReply with 1, 2, 3, 4, or 5:'
+2026-06-14 20:24:06,400 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:06] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:08,503 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:08] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:08,504 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:08] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:20,058 [INFO] [WEBHOOK] Incoming from +918770441755: '1'
+2026-06-14 20:24:20,061 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:20] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:20,062 [INFO] -- BEGIN Twilio API Request --
+2026-06-14 20:24:20,062 [INFO] POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-06-14 20:24:20,063 [INFO] Headers:
+2026-06-14 20:24:20,063 [INFO] Content-Type : application/x-www-form-urlencoded
+2026-06-14 20:24:20,063 [INFO] Accept : application/json
+2026-06-14 20:24:20,063 [INFO] User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-06-14 20:24:20,063 [INFO] X-Twilio-Client : python-9.10.2
+2026-06-14 20:24:20,063 [INFO] Accept-Charset : utf-8
+2026-06-14 20:24:20,064 [INFO] -- END Twilio API Request --
+2026-06-14 20:24:20,428 [INFO] Response Status Code: 201
+2026-06-14 20:24:20,429 [INFO] Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1002', 'Connection': 'keep-alive', 'Date': 'Sun, 14 Jun 2026 14:54:20 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ3bb5869d70343c6a541ffcfe0b1fc3e6', 'Twilio-Request-Duration': '0.136', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 09fefbf1803f8aea6ae58460425fa49c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'weMpzM6DBzZuqHq9rYNympv9vUU7VvQAaVJcvoGt7R3bN3tKZtKs-w==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-06-14 20:24:20,429 [INFO] [WEBHOOK] Outbound message SID=SM3bb5869d70343c6a541ffcfe0b1fc3e6 status=queued to=+918770441755
+2026-06-14 20:24:20,431 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: "✅ You selected: *English*\n\nLet's begin the booking.\n\n🌾 *Welcome to 🌾 Mandi Booking (Farmer Flow)!*\n\nI'll help you book a mandi slot in a few quick steps.\n\nPlease enter your *Full Name*:"
+2026-06-14 20:24:22,270 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:22] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:24,140 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:24] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:24,169 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:24] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:34,031 [INFO] [WEBHOOK] Incoming from +918770441755: 'Shivendra'
+2026-06-14 20:24:34,035 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:34] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:34,036 [INFO] -- BEGIN Twilio API Request --
+2026-06-14 20:24:34,036 [INFO] POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-06-14 20:24:34,036 [INFO] Headers:
+2026-06-14 20:24:34,036 [INFO] Content-Type : application/x-www-form-urlencoded
+2026-06-14 20:24:34,036 [INFO] Accept : application/json
+2026-06-14 20:24:34,036 [INFO] User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-06-14 20:24:34,036 [INFO] X-Twilio-Client : python-9.10.2
+2026-06-14 20:24:34,036 [INFO] Accept-Charset : utf-8
+2026-06-14 20:24:34,037 [INFO] -- END Twilio API Request --
+2026-06-14 20:24:34,380 [INFO] Response Status Code: 201
+2026-06-14 20:24:34,381 [INFO] Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '850', 'Connection': 'keep-alive', 'Date': 'Sun, 14 Jun 2026 14:54:34 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQed5f594ce82db23981f149b286a10932', 'Twilio-Request-Duration': '0.129', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 09fefbf1803f8aea6ae58460425fa49c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'B-JhHn6Gm2g75O_Uw626XiGw3HO_s7s8506tg-mk-83cpVOR9qkRmw==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-06-14 20:24:34,381 [INFO] [WEBHOOK] Outbound message SID=SMed5f594ce82db23981f149b286a10932 status=queued to=+918770441755
+2026-06-14 20:24:34,383 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Hello *Shivendra*! 👋\n\nPlease enter your *Village Name*:'
+2026-06-14 20:24:37,379 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:37] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:37,782 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:37] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:37,783 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:37] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:43,698 [INFO] [WEBHOOK] Incoming from +918770441755: 'Kotera'
+2026-06-14 20:24:43,702 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:43] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:43,703 [INFO] -- BEGIN Twilio API Request --
+2026-06-14 20:24:43,703 [INFO] POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-06-14 20:24:43,703 [INFO] Headers:
+2026-06-14 20:24:43,703 [INFO] Content-Type : application/x-www-form-urlencoded
+2026-06-14 20:24:43,704 [INFO] Accept : application/json
+2026-06-14 20:24:43,704 [INFO] User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-06-14 20:24:43,704 [INFO] X-Twilio-Client : python-9.10.2
+2026-06-14 20:24:43,704 [INFO] Accept-Charset : utf-8
+2026-06-14 20:24:43,704 [INFO] -- END Twilio API Request --
+2026-06-14 20:24:44,069 [INFO] Response Status Code: 201
+2026-06-14 20:24:44,069 [INFO] Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '978', 'Connection': 'keep-alive', 'Date': 'Sun, 14 Jun 2026 14:54:44 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ8d90b2845db844ebd267edb1d2f04ddd', 'Twilio-Request-Duration': '0.150', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 09fefbf1803f8aea6ae58460425fa49c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'Lo2iE231PwGCgRuM4L2fBqQNv-UqWvYUNrlbOzJ8Y__RWQOxzuuUDw==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-06-14 20:24:44,070 [INFO] [WEBHOOK] Outbound message SID=SM8d90b2845db844ebd267edb1d2f04ddd status=queued to=+918770441755
+2026-06-14 20:24:44,072 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Select your *Crop Type*:\n\n1️⃣ Paddy\n2️⃣ Wheat\n3️⃣ Maize\n4️⃣ Soybean\n5️⃣ Cotton\n6️⃣ Other\n\nReply with the *number* or crop name:'
+2026-06-14 20:24:47,256 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:47] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:47,455 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:47] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:47,459 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:47] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:58,665 [INFO] [WEBHOOK] Incoming from +918770441755: '1'
+2026-06-14 20:24:58,668 [INFO] 127.0.0.1 - - [14/Jun/2026 20:24:58] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:24:58,669 [INFO] -- BEGIN Twilio API Request --
+2026-06-14 20:24:58,669 [INFO] POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-06-14 20:24:58,669 [INFO] Headers:
+2026-06-14 20:24:58,669 [INFO] Content-Type : application/x-www-form-urlencoded
+2026-06-14 20:24:58,669 [INFO] Accept : application/json
+2026-06-14 20:24:58,670 [INFO] User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-06-14 20:24:58,670 [INFO] X-Twilio-Client : python-9.10.2
+2026-06-14 20:24:58,670 [INFO] Accept-Charset : utf-8
+2026-06-14 20:24:58,670 [INFO] -- END Twilio API Request --
+2026-06-14 20:24:59,008 [INFO] Response Status Code: 201
+2026-06-14 20:24:59,008 [INFO] Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '857', 'Connection': 'keep-alive', 'Date': 'Sun, 14 Jun 2026 14:54:59 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ0833e42eb51d80624e1dad2b815a1cf7', 'Twilio-Request-Duration': '0.123', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 09fefbf1803f8aea6ae58460425fa49c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': '2PLpur9CJhOCb-vzlll8iRTrJVmpTT6G0vuFb0UfTAOM18ll11zmKQ==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-06-14 20:24:59,008 [INFO] [WEBHOOK] Outbound message SID=SM0833e42eb51d80624e1dad2b815a1cf7 status=queued to=+918770441755
+2026-06-14 20:24:59,010 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Crop: *Paddy* ✅\n\nEnter *Quantity* in quintals (or send *0* to skip):'
+2026-06-14 20:25:00,708 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:00] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:02,350 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:02] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:02,365 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:02] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:08,941 [INFO] [WEBHOOK] Incoming from +918770441755: '20'
+2026-06-14 20:25:08,945 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:08] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:08,946 [INFO] -- BEGIN Twilio API Request --
+2026-06-14 20:25:08,946 [INFO] POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-06-14 20:25:08,946 [INFO] Headers:
+2026-06-14 20:25:08,946 [INFO] Content-Type : application/x-www-form-urlencoded
+2026-06-14 20:25:08,946 [INFO] Accept : application/json
+2026-06-14 20:25:08,947 [INFO] User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-06-14 20:25:08,947 [INFO] X-Twilio-Client : python-9.10.2
+2026-06-14 20:25:08,947 [INFO] Accept-Charset : utf-8
+2026-06-14 20:25:08,947 [INFO] -- END Twilio API Request --
+2026-06-14 20:25:09,251 [INFO] Response Status Code: 201
+2026-06-14 20:25:09,252 [INFO] Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1007', 'Connection': 'keep-alive', 'Date': 'Sun, 14 Jun 2026 14:55:09 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ8fa1b51c16f8736f7903551ab5951a76', 'Twilio-Request-Duration': '0.089', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 09fefbf1803f8aea6ae58460425fa49c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'suA9knY6TydFNAi_1pqO85EcODn-8XtWlU6vuMMzcdItOiQ5ApF8pg==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-06-14 20:25:09,252 [INFO] [WEBHOOK] Outbound message SID=SM8fa1b51c16f8736f7903551ab5951a76 status=queued to=+918770441755
+2026-06-14 20:25:09,254 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Select your *nearest Mandi*:\n\n1️⃣ balod – shankar nagar\n2️⃣ durg – Station Road\n3️⃣ raipur  – pandri mandir\n4️⃣ bhilai – supela market\n\nReply with the number:'
+2026-06-14 20:25:12,056 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:12] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:12,688 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:12] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:12,693 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:12] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:26,851 [INFO] [WEBHOOK] Incoming from +918770441755: '1'
+2026-06-14 20:25:26,855 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:26] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:26,862 [INFO] -- BEGIN Twilio API Request --
+2026-06-14 20:25:26,862 [INFO] POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-06-14 20:25:26,862 [INFO] Headers:
+2026-06-14 20:25:26,862 [INFO] Content-Type : application/x-www-form-urlencoded
+2026-06-14 20:25:26,862 [INFO] Accept : application/json
+2026-06-14 20:25:26,863 [INFO] User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-06-14 20:25:26,863 [INFO] X-Twilio-Client : python-9.10.2
+2026-06-14 20:25:26,863 [INFO] Accept-Charset : utf-8
+2026-06-14 20:25:26,863 [INFO] -- END Twilio API Request --
+2026-06-14 20:25:27,200 [INFO] Response Status Code: 201
+2026-06-14 20:25:27,200 [INFO] Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1001', 'Connection': 'keep-alive', 'Date': 'Sun, 14 Jun 2026 14:55:27 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ8a15d39e15929bb770d83d314decb77a', 'Twilio-Request-Duration': '0.122', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 09fefbf1803f8aea6ae58460425fa49c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': '_SBZaFY2Qrnu9pF6UErnAbBaaMSTK1Nh-SdHa6kUNs05ChiPmtPJIA==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-06-14 20:25:27,200 [INFO] [WEBHOOK] Outbound message SID=SM8a15d39e15929bb770d83d314decb77a status=queued to=+918770441755
+2026-06-14 20:25:27,202 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: 'Available slots at *balod*:\n\n1️⃣ 9:00 AM – 10:00 AM\n2️⃣ 10:00 AM – 11:00 AM\n3️⃣ 11:00 AM – 12:00 PM\n4️⃣ 2:00 PM – 3:00 PM\n\nReply with the *slot number*:'
+2026-06-14 20:25:28,635 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:28] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:30,673 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:30] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:30,701 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:30] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:36,022 [INFO] [WEBHOOK] Incoming from +918770441755: '1'
+2026-06-14 20:25:36,025 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:36] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:36,028 [INFO] -- BEGIN Twilio API Request --
+2026-06-14 20:25:36,028 [INFO] POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-06-14 20:25:36,028 [INFO] Headers:
+2026-06-14 20:25:36,028 [INFO] Content-Type : application/x-www-form-urlencoded
+2026-06-14 20:25:36,028 [INFO] Accept : application/json
+2026-06-14 20:25:36,029 [INFO] User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-06-14 20:25:36,029 [INFO] X-Twilio-Client : python-9.10.2
+2026-06-14 20:25:36,029 [INFO] Accept-Charset : utf-8
+2026-06-14 20:25:36,029 [INFO] -- END Twilio API Request --
+2026-06-14 20:25:36,417 [INFO] Response Status Code: 201
+2026-06-14 20:25:36,417 [INFO] Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1184', 'Connection': 'keep-alive', 'Date': 'Sun, 14 Jun 2026 14:55:36 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ476c6dd65accc0d93ebdc2f58458801a', 'Twilio-Request-Duration': '0.129', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 09fefbf1803f8aea6ae58460425fa49c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'foy3-YmKFUhZfXBIFl0WSBRjDOvZabjkXVYYvQ44doStEr5KW6pMUg==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-06-14 20:25:36,418 [INFO] [WEBHOOK] Outbound message SID=SM476c6dd65accc0d93ebdc2f58458801a status=queued to=+918770441755
+2026-06-14 20:25:36,420 [INFO] [WEBHOOK] Auto-reply sent to +918770441755: '✅ *Booking Confirmed!*\n\n🎫 Token: *TK-20260614-002*\n👤 Name: Shivendra\n🌿 Crop: Paddy (20 qtl)\n🏪 Mandi: balod\n📍 Location: shankar nagar,near hanuman mandir\n⏰ Slot: 9:00 AM – 10:00 AM\n📅 Date: 2026-06-14\n\nPlease arrive *on time* with your produce. Thank you! 🙏\n\n_Send any message to make a new booking._'
+2026-06-14 20:25:39,518 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:39] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:39,731 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:39] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:25:39,761 [INFO] 127.0.0.1 - - [14/Jun/2026 20:25:39] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-06-14 20:28:36,092 [INFO] 127.0.0.1 - - [14/Jun/2026 20:28:36] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-06-14 20:28:36,356 [INFO] 127.0.0.1 - - [14/Jun/2026 20:28:36] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-06-14 20:28:52,225 [INFO] [DEACTIVATE] Bot business_1773199506982_gqss0d1r2 deactivated
+2026-06-14 20:28:52,226 [INFO] 127.0.0.1 - - [14/Jun/2026 20:28:52] "POST /api/bot/deactivate HTTP/1.1" 200 -
+2026-06-14 20:28:56,392 [INFO] [ACTIVATE] Bot business_1775528316422_imqyi6ygs activated → +14155238886
+2026-06-14 20:28:56,393 [INFO] 127.0.0.1 - - [14/Jun/2026 20:28:56] "POST /api/bot/activate HTTP/1.1" 200 -
+2026-06-14 20:37:42,723 [INFO] 127.0.0.1 - - [14/Jun/2026 20:37:42] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-06-14 20:37:42,980 [INFO] 127.0.0.1 - - [14/Jun/2026 20:37:42] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-06-14 20:37:54,008 [INFO] 127.0.0.1 - - [14/Jun/2026 20:37:54] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-06-14 20:37:54,324 [INFO] 127.0.0.1 - - [14/Jun/2026 20:37:54] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
