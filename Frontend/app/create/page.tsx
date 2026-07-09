@@ -1,20 +1,37 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUser, UserButton } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, ArrowRight, Check, CheckCircle } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, CheckCircle, Bot, Phone, Zap, Brain, FileText, Layers, Sparkles, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 
+interface DbTemplate {
+  id: string
+  name: string
+  icon: string
+  category: string
+  useCases: string[]
+  intelligenceMode: string
+  useCaseType: string
+  aiModel: string
+  aiSystemPrompt: string
+  aiRagEnabled: boolean
+  welcomeMessage: string
+  fallbackMessage: string
+  keywords: { keyword: string; response: string }[]
+  flow: { label: string; type: string; branches?: { label: string; next: string | null }[] }[]
+}
+
 const steps = [
-  { id: 1, name: 'Business Info', icon: '🧾' },
-  { id: 2, name: 'Bot Config', icon: '🤖' },
-  { id: 3, name: 'WhatsApp Setup', icon: '📞' },
-  { id: 4, name: 'Templates', icon: '📝' },
-  { id: 5, name: 'Conversation', icon: '💬' },
-  { id: 6, name: 'Billing', icon: '💰' },
+  { id: 1, name: 'Create Bot' },
+  { id: 2, name: 'Intelligence' },
+  { id: 3, name: 'Connect' },
 ]
+
+type IntelligenceMode = 'workflow' | 'ai' | 'kb' | 'template'
+type Channel = 'whatsapp' | 'ivr'
 
 export default function CreateBotPage() {
   const router = useRouter()
@@ -23,54 +40,23 @@ export default function CreateBotPage() {
   const [currentStep, setCurrentStep] = useState(1)
   const [showSuccess, setShowSuccess] = useState(false)
   const [createdBusinessId, setCreatedBusinessId] = useState<string | null>(null)
-  const [kbUploading, setKbUploading] = useState(false)
-  const [kbUploadProgress, setKbUploadProgress] = useState<number | null>(null)
-  const [kbUploadedFiles, setKbUploadedFiles] = useState<{ name: string; chunks: number }[]>([])
+
+  // ── New flow state ────────────────────────────────────────────
+  const [channel, setChannel] = useState<Channel>('whatsapp')
+  const [intelligenceMode, setIntelligenceMode] = useState<IntelligenceMode>('workflow')
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
 
   const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
 
+  // ── Form data ─────────────────────────────────────────────────
   const [formData, setFormData] = useState({
-    // Business Info
-    businessName: '',
-    category: '',
-    city: '',
-    country: '',
-    defaultLanguage: '',
-    businessHours: '',
-    
-    // Bot Config
     botName: '',
-    botType: 'normal' as 'normal' | 'ai',
     useCaseType: '',
-    autoReply: false,
-    humanHandoff: false,
-    
-    // WhatsApp Setup
-    phoneNumber: '',
-    bspName: '',
-    wabaId: '',
-    phoneNumberId: '',
-    verificationStatus: 'pending',
-    
-    // Templates
-    templateName: '',
-    templateText: '',
-    templateCategory: '',
-    approvalStatus: 'pending',
-    
-    // Conversation
-    conversationState: 'active',
-    lastUserMessageTime: '',
-    assignedFlow: '',
-    
-    // Billing
-    planType: '',
-    messageBalance: 0,
-    messageLimit: 0,
-    // Auto-reply
     welcomeMessage: '',
     fallbackMessage: '',
     humanHandoffMessage: '',
+    humanHandoff: false,
+    phoneNumber: '',
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -81,10 +67,9 @@ export default function CreateBotPage() {
     }))
   }
 
-  // ── AI Bot config state ──────────────────────────────────────────
+  // ── AI config ─────────────────────────────────────────────────
   const [aiModel, setAiModel] = useState('gemini-2.0-flash')
   const [aiSystemPrompt, setAiSystemPrompt] = useState('')
-  const [aiRagEnabled, setAiRagEnabled] = useState(false)
   const [ollamaModels, setOllamaModels] = useState<string[]>([])
   const [ollamaOnline, setOllamaOnline] = useState<boolean | null>(null)
 
@@ -94,1117 +79,801 @@ export default function CreateBotPage() {
       const data = await res.json()
       setOllamaOnline(data.ollamaRunning)
       if (data.models?.length) setOllamaModels(data.models)
-    } catch {
-      setOllamaOnline(false)
-    }
+    } catch { setOllamaOnline(false) }
   }
-  // ────────────────────────────────────────────────────────────
 
-  // ── IVR Flow config state ──────────────────────────────────
+  // ── KB upload ─────────────────────────────────────────────────
+  const [kbUploading, setKbUploading] = useState(false)
+  const [kbUploadProgress, setKbUploadProgress] = useState<number | null>(null)
+  const [kbUploadedFiles, setKbUploadedFiles] = useState<{ name: string; chunks: number }[]>([])
+
+  // ── IVR state ─────────────────────────────────────────────────
   interface IvrOption { label: string; nextNodeId: string }
   interface IvrNode { id: string; message: string; options: IvrOption[]; isEndNode: boolean }
 
-  const makeNodeId = () => `node_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`
-
+  const makeNodeId = () => `node_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`
   const [ivrNodes, setIvrNodes] = useState<IvrNode[]>([
     { id: 'node_root', message: '', options: [], isEndNode: false },
   ])
 
   const addIvrChildNode = (parentId: string) => {
     const newId = makeNodeId()
-    const newNode: IvrNode = { id: newId, message: '', options: [], isEndNode: true }
     setIvrNodes(prev => [
-      ...prev.map(n =>
-        n.id === parentId
-          ? { ...n, isEndNode: false, options: [...n.options, { label: '', nextNodeId: newId }] }
-          : n
-      ),
-      newNode,
-    ])
-  }
-
-  const removeIvrNode = (nodeId: string) => {
-    if (nodeId === 'node_root') return
-    setIvrNodes(prev => {
-      const updated = prev
-        .filter(n => n.id !== nodeId)
-        .map(n => ({
-          ...n,
-          options: n.options.filter(o => o.nextNodeId !== nodeId),
-        }))
-      // Mark parent as isEndNode if it now has 0 options
-      return updated.map(n => ({ ...n, isEndNode: n.options.length === 0 && n.id !== 'node_root' }))
-    })
-  }
-
-  const updateIvrNode = (nodeId: string, field: 'message' | 'isEndNode', value: string | boolean) =>
-    setIvrNodes(prev => prev.map(n => n.id === nodeId ? { ...n, [field]: value } : n))
-
-  const updateIvrOption = (nodeId: string, optIdx: number, field: 'label', value: string) =>
-    setIvrNodes(prev => prev.map(n =>
-      n.id === nodeId
-        ? { ...n, options: n.options.map((o, i) => i === optIdx ? { ...o, [field]: value } : o) }
-        : n
-    ))
-
-  const addIvrOption = (nodeId: string) => {
-    const newId = makeNodeId()
-    setIvrNodes(prev => [
-      ...prev.map(n =>
-        n.id === nodeId
-          ? { ...n, isEndNode: false, options: [...n.options, { label: '', nextNodeId: newId }] }
-          : n
-      ),
+      ...prev.map(n => n.id === parentId ? { ...n, isEndNode: false, options: [...n.options, { label: '', nextNodeId: newId }] } : n),
       { id: newId, message: '', options: [], isEndNode: true },
     ])
   }
-
-  const removeIvrOption = (nodeId: string, optIdx: number) => {
+  const removeIvrNode = (nodeId: string) => {
+    if (nodeId === 'node_root') return
     setIvrNodes(prev => {
-      const parent = prev.find(n => n.id === nodeId)
-      const targetNodeId = parent?.options[optIdx]?.nextNodeId
-      const filtered = prev
-        .filter(n => n.id !== targetNodeId)
-        .map(n => {
-          if (n.id !== nodeId) return n
-          const nextOptions = n.options.filter((_, idx) => idx !== optIdx)
-          return { ...n, options: nextOptions, isEndNode: nextOptions.length === 0 && n.id !== 'node_root' }
-        })
-
-      return filtered.map(n => ({
-        ...n,
-        options: n.options.filter(o => o.nextNodeId !== targetNodeId),
-      }))
+      const updated = prev.filter(n => n.id !== nodeId).map(n => ({ ...n, options: n.options.filter(o => o.nextNodeId !== nodeId) }))
+      return updated.map(n => ({ ...n, isEndNode: n.options.length === 0 && n.id !== 'node_root' }))
     })
   }
-
+  const updateIvrNode = (nodeId: string, field: 'message' | 'isEndNode', value: string | boolean) =>
+    setIvrNodes(prev => prev.map(n => n.id === nodeId ? { ...n, [field]: value } : n))
+  const updateIvrOption = (nodeId: string, optIdx: number, value: string) =>
+    setIvrNodes(prev => prev.map(n => n.id === nodeId ? { ...n, options: n.options.map((o, i) => i === optIdx ? { ...o, label: value } : o) } : n))
   const nodeById = (id: string) => ivrNodes.find(n => n.id === id)
-  // ─────────────────────────────────────────────────────────
 
-  // ── Mandi Booking config state ────────────────────────────
+  // ── Mandi booking ─────────────────────────────────────────────
   const [mandiList, setMandiList] = useState([{ name: '', location: '', address: '' }])
-  const [slotTimes, setSlotTimes] = useState([
-    '9:00 AM – 10:00 AM',
-    '10:00 AM – 11:00 AM',
-    '11:00 AM – 12:00 PM',
-    '2:00 PM – 3:00 PM',
-  ])
+  const [slotTimes, setSlotTimes] = useState(['9:00 AM – 10:00 AM', '10:00 AM – 11:00 AM', '11:00 AM – 12:00 PM', '2:00 PM – 3:00 PM'])
   const [maxPerSlot, setMaxPerSlot] = useState(10)
+  const addMandi = () => setMandiList(p => [...p, { name: '', location: '', address: '' }])
+  const removeMandi = (i: number) => setMandiList(p => p.filter((_, idx) => idx !== i))
+  const updateMandi = (i: number, f: 'name' | 'location' | 'address', v: string) => setMandiList(p => p.map((m, idx) => idx === i ? { ...m, [f]: v } : m))
+  const addSlot = () => setSlotTimes(p => [...p, ''])
+  const removeSlot = (i: number) => setSlotTimes(p => p.filter((_, idx) => idx !== i))
+  const updateSlot = (i: number, v: string) => setSlotTimes(p => p.map((s, idx) => idx === i ? v : s))
 
-  const addMandi = () => setMandiList(prev => [...prev, { name: '', location: '', address: '' }])
-  const removeMandi = (i: number) => setMandiList(prev => prev.filter((_, idx) => idx !== i))
-  const updateMandi = (i: number, field: 'name' | 'location' | 'address', value: string) =>
-    setMandiList(prev => prev.map((m, idx) => idx === i ? { ...m, [field]: value } : m))
+  // ── Keyword pairs ─────────────────────────────────────────────
+  const [keywordPairs, setKeywordPairs] = useState<{ keyword: string; response: string }[]>([{ keyword: '', response: '' }])
+  const addKeyword = () => setKeywordPairs(p => [...p, { keyword: '', response: '' }])
+  const removeKeyword = (i: number) => setKeywordPairs(p => p.filter((_, idx) => idx !== i))
+  const updateKeyword = (i: number, f: 'keyword' | 'response', v: string) => setKeywordPairs(p => p.map((k, idx) => idx === i ? { ...k, [f]: v } : k))
 
-  const addSlot = () => setSlotTimes(prev => [...prev, ''])
-  const removeSlot = (i: number) => setSlotTimes(prev => prev.filter((_, idx) => idx !== i))
-  const updateSlot = (i: number, value: string) =>
-    setSlotTimes(prev => prev.map((s, idx) => idx === i ? value : s))
-  // ─────────────────────────────────────────────────────────
+  // ── DB templates + AI generation ──────────────────────────────
+  const [dbTemplates, setDbTemplates] = useState<DbTemplate[]>([])
+  const [templatesLoading, setTemplatesLoading] = useState(false)
+  const [aiPrompt, setAiPrompt] = useState('')
+  const [aiGenerating, setAiGenerating] = useState(false)
+  const [aiGenError, setAiGenError] = useState('')
 
-  // (IVR state defined above)
+  useEffect(() => {
+    if (intelligenceMode !== 'template') return
+    setTemplatesLoading(true)
+    fetch('/api/templates')
+      .then(r => r.json())
+      .then(d => setDbTemplates(d.templates ?? []))
+      .catch(() => {})
+      .finally(() => setTemplatesLoading(false))
+  }, [intelligenceMode])
 
-  const [keywordPairs, setKeywordPairs] = useState<{ keyword: string; response: string }[]>([
-    { keyword: '', response: '' }
-  ])
-  const addKeywordPair = () => setKeywordPairs(prev => [...prev, { keyword: '', response: '' }])
-  const removeKeywordPair = (index: number) => setKeywordPairs(prev => prev.filter((_, i) => i !== index))
-  const updateKeywordPair = (index: number, field: 'keyword' | 'response', value: string) => {
-    setKeywordPairs(prev => prev.map((pair, i) => i === index ? { ...pair, [field]: value } : pair))
+  // ── Apply template ─────────────────────────────────────────────
+  const applyTemplate = (tpl: DbTemplate) => {
+    setSelectedTemplate(tpl.id)
+    setIntelligenceMode(tpl.intelligenceMode as 'workflow' | 'ai' | 'kb' | 'template')
+    setFormData(prev => ({
+      ...prev,
+      useCaseType: tpl.useCaseType,
+      welcomeMessage: tpl.welcomeMessage,
+      fallbackMessage: tpl.fallbackMessage,
+    }))
+    if (tpl.aiModel) setAiModel(tpl.aiModel)
+    if (tpl.aiSystemPrompt) setAiSystemPrompt(tpl.aiSystemPrompt)
+    setKeywordPairs(tpl.keywords.length ? tpl.keywords : [{ keyword: '', response: '' }])
   }
 
-  const validateStep = (step: number): boolean => {
-    switch (step) {
-      case 1:
-        return !!(formData.businessName && formData.category && formData.city && 
-                 formData.country && formData.defaultLanguage && formData.businessHours)
-      case 2:
-        return !!(formData.botName && (formData.botType === 'ai' || formData.useCaseType))
-      case 3:
-        return true // WhatsApp number is assigned automatically on activation
-      case 4:
-        return true // Optional step
-      case 5:
-        return true // Optional step
-      case 6:
-        return !!(formData.planType)
-      default:
-        return false
+  const handleGenerateTemplate = async () => {
+    if (!aiPrompt.trim()) return
+    setAiGenerating(true)
+    setAiGenError('')
+    try {
+      const res = await fetch('/api/ai/generate-template', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: aiPrompt }),
+      })
+      const data = await res.json()
+      if (!res.ok) { setAiGenError(data.error || 'Generation failed'); return }
+      applyTemplate({ ...data, id: `generated_${Date.now()}`, category: 'generated' } as DbTemplate)
+    } catch {
+      setAiGenError('Could not reach backend. Is Flask running?')
+    } finally {
+      setAiGenerating(false)
     }
+  }
+
+  // ── Validation ────────────────────────────────────────────────
+  const validateStep = (step: number) => {
+    if (step === 1) return !!(formData.botName.trim() && (channel === 'ivr' || formData.useCaseType))
+    return true
   }
 
   const handleNext = () => {
-    if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, steps.length))
-    } else {
-      alert('Please fill in all required fields before continuing.')
-    }
-  }
-
-  const handlePrevious = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1))
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
     if (!validateStep(currentStep)) {
       alert('Please fill in all required fields.')
       return
     }
+    // When switching to AI/KB, fetch models
+    if (currentStep === 1 && (intelligenceMode === 'ai' || intelligenceMode === 'kb')) fetchOllamaModels()
+    setCurrentStep(p => Math.min(p + 1, 3))
+  }
 
+  // ── Submit ────────────────────────────────────────────────────
+  const handleSubmit = async () => {
     setLoading(true)
+    const derivedBotType = (intelligenceMode === 'ai' || intelligenceMode === 'kb') ? 'ai' : 'normal'
+    const derivedUseCaseType = channel === 'ivr' ? 'ivr' : formData.useCaseType
 
     try {
-      const response = await fetch('/api/bot', {
+      const res = await fetch('/api/bot', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...formData,
+          botName: formData.botName,
+          businessName: formData.botName,
+          category: 'other',
+          city: '',
+          country: '',
+          defaultLanguage: 'en',
+          businessHours: '9 AM – 6 PM',
+          botType: derivedBotType,
+          useCaseType: derivedUseCaseType,
+          autoReply: true,
+          humanHandoff: formData.humanHandoff,
+          humanHandoffMessage: formData.humanHandoffMessage,
+          welcomeMessage: formData.welcomeMessage,
+          fallbackMessage: formData.fallbackMessage,
+          phoneNumber: formData.phoneNumber,
+          planType: 'starter',
+          messageLimit: 500,
+          messageBalance: 500,
           keywordResponses: keywordPairs.reduce((acc: Record<string, string>, { keyword, response }) => {
             if (keyword.trim()) acc[keyword.trim().toLowerCase()] = response.trim()
             return acc
           }, {}),
-          ...(formData.useCaseType === 'mandi_booking' && {
+          ...(derivedUseCaseType === 'mandi_booking' && {
             mandis: mandiList.filter(m => m.name.trim()),
             slots: slotTimes.filter(s => s.trim()),
             maxBookingsPerSlot: maxPerSlot,
-            autoReply: true,
           }),
-          ...(formData.useCaseType === 'ivr' && {
+          ...(derivedUseCaseType === 'ivr' && {
             ivrNodes: ivrNodes.filter(n => n.message.trim()),
-            autoReply: true,
           }),
-          ...(formData.botType === 'ai' && {
+          ...(derivedBotType === 'ai' && {
             aiModel,
             aiSystemPrompt,
-            aiRagEnabled,
-            autoReply: true,
+            aiRagEnabled: intelligenceMode === 'kb',
           }),
           ownerUserId: user?.id,
           createdAt: new Date().toISOString(),
         }),
       })
-
-      if (response.ok) {
-        const data = await response.json()
+      if (res.ok) {
+        const data = await res.json()
         setCreatedBusinessId(data.businessId || null)
         setShowSuccess(true)
       } else {
-        const error = await response.json()
-        alert(`Error: ${error.message}`)
+        const err = await res.json()
+        alert(`Error: ${err.message}`)
       }
-    } catch (error) {
-      console.error('Error creating bot:', error)
+    } catch {
       alert('Failed to create bot. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
+  // ── Shared input/textarea classes ─────────────────────────────
+  const inputCls = 'w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors'
+  const textareaCls = `${inputCls} resize-none`
+
   return (
     <>
-    <div className="min-h-screen bg-transparent text-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto border border-white/20 rounded-2xl p-8 shadow-[0_0_50px_rgba(255,255,255,0.15)] bg-black/50 backdrop-blur-sm">
+    <div className="min-h-screen bg-transparent text-white py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+
         {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <Link href="/dashboard" className="inline-flex items-center text-white/50 hover:text-white text-sm gap-1.5 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Dashboard
+          </Link>
+          <UserButton />
+        </div>
+
+        {/* Title */}
         <div className="mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <Link href="/" className="inline-flex items-center text-white/60 hover:text-white">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
-            </Link>
-            <UserButton />
-          </div>
-          <h1 className="text-4xl font-bitcount mb-2">Create Your Bot</h1>
-          <p className="text-white/60">Complete the steps to set up your WhatsApp bot</p>
+          <h1 className="text-3xl font-light mb-1">Create a Bot</h1>
+          <p className="text-white/40 text-sm">Bot live in under 60 seconds</p>
         </div>
 
-        {/* Progress Timeline */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between">
-            {steps.map((step, index) => (
-              <div key={step.id} className="flex-1 flex items-center">
-                {/* Step Circle */}
-                <div className="flex flex-col items-center relative">
-                  <div
-                    className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all ${
-                      currentStep > step.id
-                        ? 'bg-green-500 border-green-500'
-                        : currentStep === step.id
-                        ? 'bg-white border-white'
-                        : 'bg-white/5 border-white/20'
-                    }`}
-                  >
-                    {currentStep > step.id ? (
-                      <Check className="w-6 h-6 text-white" />
-                    ) : (
-                      <span className={`text-xl ${currentStep === step.id ? 'text-black' : 'text-white/60'}`}>
-                        {step.icon}
-                      </span>
-                    )}
-                  </div>
-                  <div className="mt-2 text-center">
-                    <p
-                      className={`text-xs font-medium ${
-                        currentStep >= step.id ? 'text-white' : 'text-white/40'
-                      }`}
-                    >
-                      {step.name}
-                    </p>
-                  </div>
+        {/* Step Progress */}
+        <div className="flex items-center gap-2 mb-10">
+          {steps.map((step, i) => (
+            <div key={step.id} className="flex items-center gap-2 flex-1">
+              <div className="flex items-center gap-2">
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium border transition-all ${
+                  currentStep > step.id ? 'bg-green-500 border-green-500 text-white' :
+                  currentStep === step.id ? 'bg-white border-white text-black' :
+                  'bg-white/5 border-white/20 text-white/40'
+                }`}>
+                  {currentStep > step.id ? <Check className="w-3.5 h-3.5" /> : step.id}
                 </div>
-
-                {/* Connector Line */}
-                {index < steps.length - 1 && (
-                  <div
-                    className={`flex-1 h-0.5 mx-2 transition-all ${
-                      currentStep > step.id ? 'bg-green-500' : 'bg-white/20'
-                    }`}
-                  />
-                )}
+                <span className={`text-sm hidden sm:block ${currentStep >= step.id ? 'text-white' : 'text-white/30'}`}>{step.name}</span>
               </div>
-            ))}
-          </div>
+              {i < steps.length - 1 && (
+                <div className={`flex-1 h-px transition-all ${currentStep > step.id ? 'bg-green-500' : 'bg-white/10'}`} />
+              )}
+            </div>
+          ))}
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-8 border border-white/20 rounded-2xl p-8 shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-          {/* Step 1: Business Info */}
-          {currentStep === 1 && (
-            <div className="space-y-6 animate-fadeIn">
-              <h2 className="text-2xl font-bitcount border-b border-white/10 pb-2">🧾 Business Info</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Business Name *</label>
-                  <input
-                    type="text"
-                    name="businessName"
-                    value={formData.businessName}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Category *</label>
-                  <select
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
+        {/* ── STEP 1: Create Bot ────────────────────────────── */}
+        {currentStep === 1 && (
+          <div className="space-y-6 animate-fadeIn">
+            <div>
+              <h2 className="text-xl font-light mb-1">Name your bot</h2>
+              <p className="text-white/40 text-sm">This is what customers will interact with</p>
+            </div>
+
+            {/* Bot Name */}
+            <div>
+              <label className="block text-sm text-white/60 mb-2">Bot Name *</label>
+              <input
+                type="text"
+                name="botName"
+                value={formData.botName}
+                onChange={handleChange}
+                placeholder="e.g. BPCL Support, Shop Assistant"
+                className={inputCls}
+                autoFocus
+              />
+            </div>
+
+            {/* Channel */}
+            <div>
+              <label className="block text-sm text-white/60 mb-3">Channel *</label>
+              <div className="grid grid-cols-2 gap-3">
+                {([
+                  { id: 'whatsapp', label: 'WhatsApp', icon: <Bot className="w-5 h-5" />, desc: 'Chat-based messaging bot' },
+                  { id: 'ivr', label: 'IVR', icon: <Phone className="w-5 h-5" />, desc: 'Phone call menu system' },
+                ] as const).map(ch => (
+                  <button
+                    key={ch.id}
+                    type="button"
+                    onClick={() => {
+                      setChannel(ch.id)
+                      if (ch.id === 'ivr') setFormData(p => ({ ...p, useCaseType: 'ivr' }))
+                    }}
+                    className={`p-4 rounded-xl border-2 text-left transition-all ${
+                      channel === ch.id
+                        ? 'border-white bg-white/10'
+                        : 'border-white/15 bg-white/3 hover:border-white/30'
+                    }`}
                   >
-                    <option value="">Select Category</option>
-                    <option value="shop">Shop</option>
-                    <option value="clinic">Clinic</option>
-                    <option value="tour">Tour</option>
-                    <option value="restaurant">Restaurant</option>
-                    <option value="salon">Salon</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">City *</label>
-                  <input
-                    type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Country *</label>
-                  <input
-                    type="text"
-                    name="country"
-                    value={formData.country}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Default Language *</label>
-                  <input
-                    type="text"
-                    name="defaultLanguage"
-                    value={formData.defaultLanguage}
-                    onChange={handleChange}
-                    required
-                    placeholder="e.g., English, Hindi"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Business Hours *</label>
-                  <input
-                    type="text"
-                    name="businessHours"
-                    value={formData.businessHours}
-                    onChange={handleChange}
-                    required
-                    placeholder="e.g., 9 AM - 6 PM"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                </div>
+                    <div className={`mb-2 ${channel === ch.id ? 'text-white' : 'text-white/50'}`}>{ch.icon}</div>
+                    <div className="font-medium text-sm">{ch.label}</div>
+                    <div className="text-xs text-white/40 mt-0.5">{ch.desc}</div>
+                  </button>
+                ))}
               </div>
             </div>
-          )}
 
-          {/* Step 2: Bot Config */}
-          {currentStep === 2 && (
-            <div className="space-y-6 animate-fadeIn">
-              <h2 className="text-2xl font-bitcount border-b border-white/10 pb-2">🤖 Bot Config</h2>
-
-              {/* ── Bot Type Toggle ─────────────────────────────── */}
+            {/* Use Case (WhatsApp only) */}
+            {channel === 'whatsapp' && (
               <div>
-                <p className="text-sm text-white/50 mb-3">Bot Type *</p>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, botType: 'normal' }))}
-                    className={`p-4 rounded-xl border-2 transition-all text-left ${
-                      formData.botType !== 'ai'
-                        ? 'border-white bg-white/10'
-                        : 'border-white/20 bg-white/5 hover:border-white/40'
-                    }`}
-                  >
-                    <div className="text-base font-medium mb-1">⚡ Normal Bot</div>
-                    <div className="text-xs text-white/50">Keyword rules, FAQ, mandi booking flow</div>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { setFormData(prev => ({ ...prev, botType: 'ai' })); fetchOllamaModels() }}
-                    className={`p-4 rounded-xl border-2 transition-all text-left ${
-                      formData.botType === 'ai'
-                        ? 'border-cyan-400 bg-cyan-500/10'
-                        : 'border-white/20 bg-white/5 hover:border-white/40'
-                    }`}
-                  >
-                    <div className="text-base font-medium mb-1">🧠 AI Bot</div>
-                    <div className="text-xs text-white/50">Local Ollama LLM · RAG knowledge base</div>
-                  </button>
-                </div>
-              </div>
-
-              {/* ── Bot Name (always visible) ───────────────────── */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Bot Name *</label>
-                  <input
-                    type="text"
-                    name="botName"
-                    value={formData.botName}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                </div>
-                {formData.botType !== 'ai' && (
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Use-case Type *</label>
-                  <select
-                    name="useCaseType"
-                    value={formData.useCaseType}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  >
-                    <option value="">Select Type</option>
-                    <option value="booking">Booking</option>
-                    <option value="faq">FAQ</option>
-                    <option value="orders">Orders</option>
-                    <option value="leads">Leads</option>
-                    <option value="mandi_booking">🌾 Mandi Booking (Farmer Flow)</option>
-                    <option value="ivr">📞 IVR Call Bot (Phone Menu)</option>
-                  </select>
-                </div>
-                )}
-                {formData.botType !== 'ai' && (
-                <div className="flex items-center gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
-                  <input
-                    type="checkbox"
-                    name="autoReply"
-                    checked={formData.autoReply}
-                    onChange={handleChange}
-                    className="w-5 h-5 accent-white"
-                  />
-                  <label className="text-sm text-white/80">Enable Auto-reply</label>
-                </div>
-                )}
-                {formData.botType !== 'ai' && (
-                <div className="flex items-center gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
-                  <input
-                    type="checkbox"
-                    name="humanHandoff"
-                    checked={formData.humanHandoff}
-                    onChange={handleChange}
-                    className="w-5 h-5 accent-white"
-                  />
-                  <label className="text-sm text-white/80">Enable Human Handoff</label>
-                </div>
-                )}
-              </div>
-
-              {/* ══ AI BOT CONFIG ═══════════════════════════════════ */}
-              {formData.botType === 'ai' && (
-                <div className="space-y-5 p-5 bg-cyan-500/5 border border-cyan-500/20 rounded-xl">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">🧠</span>
-                    <h3 className="text-sm font-medium text-cyan-400">AI Bot Configuration</h3>
-                    {ollamaOnline === true && <span className="ml-auto text-xs text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full">● Ollama online</span>}
-                  </div>
-
-                  {/* Model */}
-                  <div>
-                    <label className="block text-sm text-white/60 mb-2">AI Model *</label>
-                    <select
-                      value={aiModel}
-                      onChange={e => setAiModel(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30"
+                <label className="block text-sm text-white/60 mb-3">What should this bot do? *</label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {[
+                    { id: 'faq', label: 'Customer Support', icon: '🎧' },
+                    { id: 'leads', label: 'Lead Generation', icon: '🎯' },
+                    { id: 'booking', label: 'Appointment Booking', icon: '📅' },
+                    { id: 'orders', label: 'Order Tracking', icon: '📦' },
+                    { id: 'mandi_booking', label: 'Mandi Booking', icon: '🌾' },
+                    { id: 'custom', label: 'Custom', icon: '⚙️' },
+                  ].map(uc => (
+                    <button
+                      key={uc.id}
+                      type="button"
+                      onClick={() => setFormData(p => ({ ...p, useCaseType: uc.id }))}
+                      className={`p-3 rounded-xl border text-left transition-all ${
+                        formData.useCaseType === uc.id
+                          ? 'border-white/50 bg-white/10 text-white'
+                          : 'border-white/10 bg-white/3 text-white/60 hover:border-white/25 hover:text-white'
+                      }`}
                     >
-                      <optgroup label="Gemini (Cloud)">
-                        <option value="gemini-2.0-flash">gemini-2.0-flash (recommended)</option>
-                        <option value="gemini-1.5-flash">gemini-1.5-flash</option>
-                        <option value="gemini-1.5-pro">gemini-1.5-pro</option>
-                      </optgroup>
-                      {ollamaModels.length > 0 && (
-                        <optgroup label="Local (Ollama)">
-                          {ollamaModels.map(m => <option key={m} value={m}>{m}</option>)}
-                        </optgroup>
-                      )}
-                    </select>
-                    <p className="text-xs text-white/40 mt-1">Gemini models use the cloud API. Local models require Ollama running.</p>
-                  </div>
+                      <div className="text-base mb-1">{uc.icon}</div>
+                      <div className="text-xs font-medium">{uc.label}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
-                  {/* System Prompt */}
-                  <div>
-                    <label className="block text-sm text-white/60 mb-2">System Prompt</label>
-                    <textarea
-                      rows={4}
-                      value={aiSystemPrompt}
-                      onChange={e => setAiSystemPrompt(e.target.value)}
-                      placeholder={`You are a helpful assistant for ${formData.businessName || 'this business'}. Answer clearly and concisely. Reply in the same language the user writes in.`}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-white/30 resize-none"
-                    />
-                    <p className="text-xs text-white/40 mt-1">Defines how the AI behaves. Leave blank for a sensible default.</p>
-                  </div>
+            {channel === 'ivr' && (
+              <div className="p-4 bg-orange-500/5 border border-orange-500/20 rounded-xl text-sm text-orange-300/80">
+                📞 IVR creates a phone menu system. You&apos;ll build the call tree in the next step.
+              </div>
+            )}
+          </div>
+        )}
 
-                  {/* RAG */}
-                  <div className="p-4 bg-purple-500/5 border border-purple-500/20 rounded-lg space-y-3">
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="checkbox"
-                        id="ragEnabled"
-                        checked={aiRagEnabled}
-                        onChange={e => setAiRagEnabled(e.target.checked)}
-                        className="w-4 h-4 accent-purple-400"
-                      />
-                      <label htmlFor="ragEnabled" className="text-sm text-purple-300 font-medium cursor-pointer">
-                        Enable RAG (Knowledge Base)
-                      </label>
+        {/* ── STEP 2: Intelligence ─────────────────────────── */}
+        {currentStep === 2 && (
+          <div className="space-y-6 animate-fadeIn">
+            <div>
+              <h2 className="text-xl font-light mb-1">How should your bot answer?</h2>
+              <p className="text-white/40 text-sm">Choose the intelligence behind your bot</p>
+            </div>
+
+            {/* Intelligence mode selector */}
+            {channel === 'whatsapp' ? (
+              <div className="grid grid-cols-2 gap-3">
+                {([
+                  { id: 'workflow', label: 'Workflow Builder', icon: <Layers className="w-5 h-5" />, desc: 'Keywords, rules, auto-replies', color: 'green' },
+                  { id: 'ai', label: 'AI Assistant', icon: <Brain className="w-5 h-5" />, desc: 'LLM-powered free responses', color: 'cyan' },
+                  { id: 'kb', label: 'Knowledge Base', icon: <FileText className="w-5 h-5" />, desc: 'Answers from your documents', color: 'purple' },
+                  { id: 'template', label: 'Prebuilt Template', icon: <Zap className="w-5 h-5" />, desc: 'Start from a ready-made bot', color: 'yellow' },
+                ] as const).map(mode => {
+                  const active = intelligenceMode === mode.id
+                  const colorMap = { green: 'border-green-500/50 bg-green-500/10 text-green-400', cyan: 'border-cyan-500/50 bg-cyan-500/10 text-cyan-400', purple: 'border-purple-500/50 bg-purple-500/10 text-purple-400', yellow: 'border-yellow-500/50 bg-yellow-500/10 text-yellow-400' }
+                  return (
+                    <button
+                      key={mode.id}
+                      type="button"
+                      onClick={() => {
+                        setIntelligenceMode(mode.id)
+                        if (mode.id === 'ai' || mode.id === 'kb') fetchOllamaModels()
+                      }}
+                      className={`p-4 rounded-xl border-2 text-left transition-all ${
+                        active ? colorMap[mode.color] : 'border-white/15 bg-white/3 hover:border-white/25'
+                      }`}
+                    >
+                      <div className={`mb-2 ${active ? '' : 'text-white/40'}`}>{mode.icon}</div>
+                      <div className="font-medium text-sm">{mode.label}</div>
+                      <div className="text-xs text-white/40 mt-0.5">{mode.desc}</div>
+                    </button>
+                  )
+                })}
+              </div>
+            ) : (
+              <div className="p-4 bg-orange-500/5 border border-orange-500/20 rounded-xl">
+                <div className="flex items-center gap-2 mb-1">
+                  <Phone className="w-4 h-4 text-orange-400" />
+                  <span className="text-sm font-medium text-orange-400">IVR Menu Builder</span>
+                </div>
+                <p className="text-xs text-white/40">Build a multi-level phone menu. Callers press number keys to navigate.</p>
+              </div>
+            )}
+
+            {/* ── Workflow config ───────────────────────────── */}
+            {(intelligenceMode === 'workflow' || channel === 'ivr') && (
+              <div className="space-y-4">
+
+                {/* IVR Builder (IVR channel only) */}
+                {channel === 'ivr' && (
+                  <div className="space-y-3 p-5 bg-orange-500/5 border border-orange-500/20 rounded-xl">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-orange-400">IVR Call Tree</span>
+                      <span className="text-xs text-white/30">{ivrNodes.length} node{ivrNodes.length !== 1 ? 's' : ''}</span>
                     </div>
-                    <p className="text-xs text-white/40">
-                      The bot will search your uploaded documents before answering.
-                    </p>
-                    {aiRagEnabled && (
-                      <p className="text-xs text-purple-300/60 bg-purple-500/10 px-3 py-2 rounded-lg">
-                        📁 You&apos;ll be able to upload your knowledge base documents immediately after the bot is created.
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
-              {/* ═══════════════════════════════════════════════════ */}
-
-              {formData.autoReply && (
-                <div className="space-y-4 p-4 bg-green-500/5 border border-green-500/20 rounded-lg">
-                  <h3 className="text-sm font-medium text-green-400">🤖 Auto-Reply Messages</h3>
-                  <div>
-                    <label className="block text-sm text-white/60 mb-2">Welcome Message</label>
-                    <textarea
-                      name="welcomeMessage"
-                      value={formData.welcomeMessage}
-                      onChange={handleChange}
-                      rows={3}
-                      placeholder="Hi! 👋 Welcome to [Your Business]. How can I help you today?"
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors resize-none"
-                    />
-                    <p className="text-xs text-white/40 mt-1">Sent when user says "hi", "hello", "hey"</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm text-white/60 mb-2">Fallback Message</label>
-                    <textarea
-                      name="fallbackMessage"
-                      value={formData.fallbackMessage}
-                      onChange={handleChange}
-                      rows={3}
-                      placeholder="Sorry, I didn't understand that. Type 'help' for assistance."
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors resize-none"
-                    />
-                    <p className="text-xs text-white/40 mt-1">Sent when no keyword matches</p>
-                  </div>
-                </div>
-              )}
-
-              {formData.humanHandoff && (
-                <div className="p-4 bg-blue-500/5 border border-blue-500/20 rounded-lg">
-                  <h3 className="text-sm font-medium text-blue-400 mb-3">👤 Human Handoff Message</h3>
-                  <textarea
-                    name="humanHandoffMessage"
-                    value={formData.humanHandoffMessage}
-                    onChange={handleChange}
-                    rows={2}
-                    placeholder="Connecting you to a human agent. Please hold on..."
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors resize-none"
-                  />
-                  <p className="text-xs text-white/40 mt-1">Sent when user says "human", "agent", "help me"</p>
-                </div>
-              )}
-
-              {/* ══ IVR FLOW BUILDER ═══════════════════════════════════ */}
-              {formData.useCaseType === 'ivr' && (
-                <div className="space-y-4 p-5 bg-orange-500/5 border border-orange-500/20 rounded-xl">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">📞</span>
-                    <h3 className="text-sm font-medium text-orange-400">IVR Menu Builder</h3>
-                    <span className="ml-auto text-xs text-white/30">{ivrNodes.length} node{ivrNodes.length !== 1 ? 's' : ''}</span>
-                  </div>
-                  <p className="text-xs text-white/40">Build a multi-level WhatsApp menu. Customers navigate by replying with numbers.</p>
-
-                  <div className="space-y-3">
-                    {ivrNodes.map((node) => {
-                      const parentNode = ivrNodes.find(n => n.options.some(o => o.nextNodeId === node.id))
-                      const optionIndex = parentNode?.options.findIndex(o => o.nextNodeId === node.id)
-
-                      return (
-                        <div
-                          key={node.id}
-                          className={`rounded-xl border p-4 space-y-3 ${
-                            node.id === 'node_root'
-                              ? 'border-orange-500/40 bg-orange-500/10'
-                              : 'border-white/10 bg-white/5'
-                          }`}
-                        >
-                          {/* Node header */}
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-mono text-orange-400/70">
-                              {node.id === 'node_root' ? '🌳 Root' : `↳ Option ${(optionIndex ?? 0) + 1} of ${parentNode?.id === 'node_root' ? 'Root' : parentNode?.id.slice(-8)}`}
-                            </span>
-                            <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${
-                              node.isEndNode
-                                ? 'bg-orange-500/15 text-orange-300 border border-orange-500/30'
-                                : 'bg-green-500/15 text-green-300 border border-green-500/30'
-                            }`}>
-                              {node.isEndNode ? 'Leaf (no sub-options)' : `${node.options.length} sub-option${node.options.length !== 1 ? 's' : ''}`}
-                            </span>
-                            {node.id !== 'node_root' && (
-                              <button
-                                type="button"
-                                onClick={() => removeIvrNode(node.id)}
-                                className="text-red-400/50 hover:text-red-400 transition-colors text-lg leading-none ml-1"
-                                title="Remove this node"
-                              >
-                                ×
-                              </button>
-                            )}
-                          </div>
-
-                          {/* Option label (shown only for non-root) */}
-                          {node.id !== 'node_root' && parentNode && (
-                            <div>
-                              <label className="block text-xs text-white/40 mb-1">Menu option label (what the parent shows)</label>
+                    <div className="space-y-3">
+                      {ivrNodes.map(node => {
+                        const parent = ivrNodes.find(n => n.options.some(o => o.nextNodeId === node.id))
+                        const optIdx = parent?.options.findIndex(o => o.nextNodeId === node.id)
+                        return (
+                          <div key={node.id} className={`rounded-xl border p-4 space-y-3 ${node.id === 'node_root' ? 'border-orange-500/40 bg-orange-500/10' : 'border-white/10 bg-white/5'}`}>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-orange-400/70 font-mono">
+                                {node.id === 'node_root' ? '🌳 Root menu' : `↳ Option ${(optIdx ?? 0) + 1}`}
+                              </span>
+                              <span className={`ml-auto text-xs px-2 py-0.5 rounded-full border ${node.isEndNode ? 'bg-orange-500/15 text-orange-300 border-orange-500/30' : 'bg-green-500/15 text-green-300 border-green-500/30'}`}>
+                                {node.isEndNode ? 'End' : `${node.options.length} sub-options`}
+                              </span>
+                              {node.id !== 'node_root' && (
+                                <button type="button" onClick={() => removeIvrNode(node.id)} className="text-red-400/50 hover:text-red-400 text-lg leading-none">×</button>
+                              )}
+                            </div>
+                            {node.id !== 'node_root' && parent && (
                               <input
                                 type="text"
-                                value={parentNode.options[optionIndex!]?.label ?? ''}
-                                onChange={e => updateIvrOption(parentNode.id, optionIndex!, 'label', e.target.value)}
-                                placeholder={`e.g. Sales, Support, Hours…`}
+                                value={parent.options[optIdx!]?.label ?? ''}
+                                onChange={e => updateIvrOption(parent.id, optIdx!, e.target.value)}
+                                placeholder="Option label (e.g. Sales, Support)"
                                 className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-orange-500/40"
                               />
-                            </div>
-                          )}
-
-                          {/* Node message */}
-                          <div>
-                            <label className="block text-xs text-white/40 mb-1">
-                              {node.id === 'node_root' ? 'Root menu message (shown first)' : 'Response message'}
-                            </label>
+                            )}
                             <textarea
                               rows={3}
                               value={node.message}
                               onChange={e => updateIvrNode(node.id, 'message', e.target.value)}
-                              placeholder={
-                                node.id === 'node_root'
-                                  ? 'Welcome! Please choose:\n1️⃣ Sales\n2️⃣ Support\n3️⃣ Hours'
-                                  : 'Our sales team will call you back. Email: sales@example.com'
-                              }
-                              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-orange-500/40 resize-none"
+                              placeholder={node.id === 'node_root' ? 'Welcome! Please choose:\n1️⃣ Sales\n2️⃣ Support\n3️⃣ Hours' : 'Our sales team will call you back shortly.'}
+                              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-orange-400/40 resize-none"
                             />
-                            <p className="text-xs text-white/30 mt-1">The numbered list is <em>auto-appended</em> by the bot — just write the intro line here.</p>
-                          </div>
-
-                          {/* Options listed */}
-                          {node.options.length > 0 && (
-                            <div className="space-y-1">
-                              {node.options.map((opt, oi) => (
-                                <div key={oi} className="flex items-center gap-2 text-xs text-white/40">
-                                  <span className="w-5 h-5 flex items-center justify-center rounded-full bg-orange-500/20 text-orange-300 shrink-0">{oi + 1}</span>
-                                  <span className="truncate">{opt.label || <em className="opacity-50">unlabelled</em>}</span>
-                                  <span className="font-mono text-white/20 ml-auto shrink-0">{nodeById(opt.nextNodeId)?.isEndNode ? '🔚' : '▶'}</span>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-
-                          {/* Add sub-option button */}
-                          {!node.isEndNode || node.id === 'node_root' ? (
-                            <button
-                              type="button"
-                              onClick={() => addIvrChildNode(node.id)}
-                              className="text-xs text-orange-400/70 hover:text-orange-400 border border-orange-500/20 hover:border-orange-500/40 px-3 py-1.5 rounded-md transition-colors w-full"
-                            >
-                              + Add Sub-option to this node
+                            {node.options.length > 0 && (
+                              <div className="space-y-1">
+                                {node.options.map((opt, oi) => (
+                                  <div key={oi} className="flex items-center gap-2 text-xs text-white/40">
+                                    <span className="w-5 h-5 flex items-center justify-center rounded-full bg-orange-500/20 text-orange-300 shrink-0">{oi + 1}</span>
+                                    <span className="truncate">{opt.label || <em className="opacity-50">unlabelled</em>}</span>
+                                    <span className="font-mono text-white/20 ml-auto">{nodeById(opt.nextNodeId)?.isEndNode ? '🔚' : '▶'}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                            <button type="button" onClick={() => addIvrChildNode(node.id)} className="text-xs text-orange-400/70 hover:text-orange-400 border border-orange-500/20 hover:border-orange-500/40 px-3 py-1.5 rounded-md w-full transition-colors">
+                              + Add Sub-option
                             </button>
-                          ) : null}
-                        </div>
-                      )
-                    })}
-                  </div>
-                  <p className="text-xs text-white/30">💡 Tip: keep each level to ≤ 9 options so customers can reply with a single digit.</p>
-                </div>
-              )}
-              {/* ═══════════════════════════════════════════════════ */}
-
-              {/* ── Mandi Booking Configuration ──────────────────────── */}
-              {formData.useCaseType === 'mandi_booking' && (
-                <div className="space-y-6 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">🌾</span>
-                    <h3 className="text-sm font-medium text-yellow-400">Mandi Booking Configuration</h3>
-                  </div>
-                  <p className="text-xs text-white/40">The bot will guide farmers step-by-step: name → village → crop → quantity → mandi → slot → confirmation token.</p>
-
-                  {/* Mandis */}
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm text-white/70">Mandis / Markets</label>
-                      <button type="button" onClick={addMandi}
-                        className="text-xs text-yellow-400/70 hover:text-yellow-400 border border-yellow-500/20 hover:border-yellow-500/40 px-3 py-1 rounded-md transition-colors">
-                        + Add Mandi
-                      </button>
+                          </div>
+                        )
+                      })}
                     </div>
-                    {mandiList.map((m, i) => (
-                      <div key={i} className="grid grid-cols-3 gap-2 items-center">
-                        <input type="text" value={m.name} onChange={e => updateMandi(i, 'name', e.target.value)}
-                          placeholder="Mandi Name *"
-                          className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
-                        <input type="text" value={m.location} onChange={e => updateMandi(i, 'location', e.target.value)}
-                          placeholder="Location / Area"
-                          className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
-                        <div className="flex gap-2 items-center">
-                          <input type="text" value={m.address} onChange={e => updateMandi(i, 'address', e.target.value)}
-                            placeholder="Full Address"
-                            className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
-                          {mandiList.length > 1 && (
-                            <button type="button" onClick={() => removeMandi(i)}
-                              className="text-red-400/60 hover:text-red-400 px-2 text-lg leading-none transition-colors">×</button>
-                          )}
-                        </div>
+                    <p className="text-xs text-white/30">💡 Keep each level to ≤9 options so callers can press a single key.</p>
+                  </div>
+                )}
+
+                {/* Mandi Booking config */}
+                {formData.useCaseType === 'mandi_booking' && channel === 'whatsapp' && (
+                  <div className="space-y-4 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-xl">
+                    <div className="flex items-center gap-2">
+                      <span>🌾</span>
+                      <h3 className="text-sm font-medium text-yellow-400">Mandi Booking Configuration</h3>
+                    </div>
+                    <p className="text-xs text-white/40">The bot guides farmers: name → village → crop → quantity → mandi → slot → token.</p>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <label className="text-sm text-white/70">Mandis / Markets</label>
+                        <button type="button" onClick={addMandi} className="text-xs text-yellow-400/70 hover:text-yellow-400 border border-yellow-500/20 px-3 py-1 rounded-md transition-colors">+ Add Mandi</button>
                       </div>
-                    ))}
-                  </div>
-
-                  {/* Slots */}
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm text-white/70">Daily Time Slots</label>
-                      <button type="button" onClick={addSlot}
-                        className="text-xs text-yellow-400/70 hover:text-yellow-400 border border-yellow-500/20 hover:border-yellow-500/40 px-3 py-1 rounded-md transition-colors">
-                        + Add Slot
-                      </button>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      {slotTimes.map((s, i) => (
-                        <div key={i} className="flex gap-2 items-center">
-                          <input type="text" value={s} onChange={e => updateSlot(i, e.target.value)}
-                            placeholder="e.g. 9:00 AM – 10:00 AM"
-                            className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
-                          {slotTimes.length > 1 && (
-                            <button type="button" onClick={() => removeSlot(i)}
-                              className="text-red-400/60 hover:text-red-400 px-2 text-lg leading-none transition-colors">×</button>
-                          )}
+                      {mandiList.map((m, i) => (
+                        <div key={i} className="grid grid-cols-3 gap-2 items-center">
+                          <input type="text" value={m.name} onChange={e => updateMandi(i, 'name', e.target.value)} placeholder="Mandi Name *" className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
+                          <input type="text" value={m.location} onChange={e => updateMandi(i, 'location', e.target.value)} placeholder="Location" className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
+                          <div className="flex gap-2">
+                            <input type="text" value={m.address} onChange={e => updateMandi(i, 'address', e.target.value)} placeholder="Address" className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
+                            {mandiList.length > 1 && <button type="button" onClick={() => removeMandi(i)} className="text-red-400/60 hover:text-red-400 text-lg px-1 transition-colors">×</button>}
+                          </div>
                         </div>
                       ))}
                     </div>
-                  </div>
-
-                  {/* Max per slot */}
-                  <div>
-                    <label className="block text-sm text-white/70 mb-2">Max Bookings per Slot</label>
-                    <input type="number" min={1} max={100} value={maxPerSlot}
-                      onChange={e => setMaxPerSlot(Number(e.target.value))}
-                      className="w-32 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
-                    <p className="text-xs text-white/40 mt-1">Once a slot is full, it won't be shown to new farmers</p>
-                  </div>
-                </div>
-              )}
-              {/* ─────────────────────────────────────────────────────── */}
-
-              {/* ══ IVR BUILDER ═══════════════════════════════════════ */}
-              {formData.useCaseType === 'ivr' && (
-                <div className="space-y-4 p-5 bg-orange-500/5 border border-orange-500/20 rounded-xl">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg">📞</span>
-                      <h3 className="text-sm font-medium text-orange-400">IVR Flow Builder</h3>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <label className="text-sm text-white/70">Daily Time Slots</label>
+                        <button type="button" onClick={addSlot} className="text-xs text-yellow-400/70 hover:text-yellow-400 border border-yellow-500/20 px-3 py-1 rounded-md transition-colors">+ Add Slot</button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {slotTimes.map((s, i) => (
+                          <div key={i} className="flex gap-2">
+                            <input type="text" value={s} onChange={e => updateSlot(i, e.target.value)} placeholder="9:00 AM – 10:00 AM" className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
+                            {slotTimes.length > 1 && <button type="button" onClick={() => removeSlot(i)} className="text-red-400/60 hover:text-red-400 text-lg px-1 transition-colors">×</button>}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm text-white/70 block mb-2">Max Bookings per Slot</label>
+                      <input type="number" min={1} max={100} value={maxPerSlot} onChange={e => setMaxPerSlot(Number(e.target.value))} className="w-28 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none" />
                     </div>
                   </div>
-                  <p className="text-xs text-white/40">Build a multi-level menu tree. Each node is a message the bot sends. Add numbered options to navigate between nodes.</p>
+                )}
 
+                {/* Keyword pairs (WhatsApp workflow) */}
+                {channel === 'whatsapp' && (
                   <div className="space-y-3">
-                    {ivrNodes.map((node) => (
-                      <div key={node.id} className={`p-4 rounded-xl border ${
-                        node.id === 'node_root'
-                          ? 'bg-orange-500/10 border-orange-500/30'
-                          : 'bg-white/5 border-white/10'
-                      }`}>
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs font-mono text-orange-300/70">
-                            {node.id === 'node_root' ? '🌳 Root Node' : `📄 ${node.id}`}
-                          </span>
-                          <div className="flex items-center gap-2">
-                            <label className="flex items-center gap-1.5 text-xs text-white/50 cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={node.isEndNode}
-                                onChange={e => updateIvrNode(node.id, 'isEndNode', e.target.checked)}
-                                className="w-3 h-3 accent-orange-400"
-                                disabled={node.id === 'node_root'}
-                              />
-                              End node
-                            </label>
-                            {node.id !== 'node_root' && (
-                              <button
-                                type="button"
-                                onClick={() => removeIvrNode(node.id)}
-                                className="text-red-400/50 hover:text-red-400 text-xs px-1.5 py-0.5 border border-red-500/20 rounded transition-colors"
-                              >✕ Remove</button>
-                            )}
-                          </div>
-                        </div>
-                        <textarea
-                          rows={3}
-                          value={node.message}
-                          onChange={e => updateIvrNode(node.id, 'message', e.target.value)}
-                          placeholder={node.id === 'node_root'
-                            ? 'Welcome! Press 1 for Sales, 2 for Support, 3 for Hours'
-                            : 'Enter the message for this node…'}
-                          className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-orange-400/40 resize-none mb-3"
-                        />
-                        {!node.isEndNode && (
-                          <div className="space-y-2">
-                            {node.options.map((opt, optIdx) => (
-                              <div key={optIdx} className="flex gap-2 items-center">
-                                <span className="text-xs text-orange-300/60 w-5 shrink-0">{optIdx + 1}.</span>
-                                <input
-                                  type="text"
-                                  value={opt.label}
-                                  onChange={e => updateIvrOption(node.id, optIdx, 'label', e.target.value)}
-                                  placeholder="Option label (e.g. Sales)"
-                                  className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-white text-xs focus:outline-none focus:border-orange-400/40"
-                                />
-                                <span className="text-xs text-white/30">→</span>
-                                <span className="text-xs font-mono text-orange-300/50 shrink-0">
-                                  {opt.nextNodeId}
-                                </span>
-                                <button
-                                  type="button"
-                                  onClick={() => removeIvrOption(node.id, optIdx)}
-                                  className="text-red-400/50 hover:text-red-400 text-base leading-none transition-colors"
-                                >×</button>
-                              </div>
-                            ))}
-                            <button
-                              type="button"
-                              onClick={() => addIvrOption(node.id)}
-                              className="text-xs text-orange-400/70 hover:text-orange-400 border border-orange-500/20 hover:border-orange-500/40 px-3 py-1 rounded-md transition-colors"
-                            >
-                              + Add Option
-                            </button>
-                          </div>
-                        )}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-sm font-medium text-white/80">Keyword Responses</h3>
+                        <p className="text-xs text-white/40">Auto-reply when a message contains these words</p>
+                      </div>
+                      <button type="button" onClick={addKeyword} className="text-xs text-white/60 hover:text-white border border-white/20 hover:border-white/40 px-3 py-1 rounded-md transition-colors">+ Add</button>
+                    </div>
+                    {keywordPairs.map((pair, i) => (
+                      <div key={i} className="flex gap-2 items-center">
+                        <input type="text" value={pair.keyword} onChange={e => updateKeyword(i, 'keyword', e.target.value)} placeholder="Keyword" className="w-1/3 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
+                        <input type="text" value={pair.response} onChange={e => updateKeyword(i, 'response', e.target.value)} placeholder="Reply" className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30" />
+                        {keywordPairs.length > 1 && <button type="button" onClick={() => removeKeyword(i)} className="text-red-400/60 hover:text-red-400 text-lg px-1 transition-colors">×</button>}
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
-              {/* ═══════════════════════════════════════════════════════ */}
+                )}
 
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium text-white/80">🔑 Keyword Responses</h3>
-                  <button
-                    type="button"
-                    onClick={addKeywordPair}
-                    className="text-xs text-white/60 hover:text-white border border-white/20 hover:border-white/40 px-3 py-1 rounded-md transition-colors"
-                  >
-                    + Add Keyword
-                  </button>
+                {/* Welcome / Fallback */}
+                {channel === 'whatsapp' && (
+                  <div className="space-y-4 pt-2">
+                    <div>
+                      <label className="block text-sm text-white/60 mb-2">Welcome Message</label>
+                      <textarea name="welcomeMessage" value={formData.welcomeMessage} onChange={handleChange} rows={3} placeholder={`Hi! 👋 Welcome to ${formData.botName || 'our business'}. How can I help you?`} className={textareaCls} />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-white/60 mb-2">Fallback Message</label>
+                      <textarea name="fallbackMessage" value={formData.fallbackMessage} onChange={handleChange} rows={2} placeholder="Sorry, I didn't understand. Type 'help' for assistance." className={textareaCls} />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ── AI config ─────────────────────────────────── */}
+            {(intelligenceMode === 'ai' || intelligenceMode === 'kb') && channel === 'whatsapp' && (
+              <div className="space-y-4 p-5 bg-cyan-500/5 border border-cyan-500/20 rounded-xl">
+                <div className="flex items-center gap-2">
+                  <Brain className="w-4 h-4 text-cyan-400" />
+                  <h3 className="text-sm font-medium text-cyan-400">
+                    {intelligenceMode === 'kb' ? 'Knowledge Base + AI' : 'AI Configuration'}
+                  </h3>
+                  {ollamaOnline === true && <span className="ml-auto text-xs text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full">● Ollama online</span>}
                 </div>
-                <p className="text-xs text-white/40">Define automatic replies for specific keywords (optional)</p>
-                {keywordPairs.map((pair, index) => (
-                  <div key={index} className="flex gap-2 items-center">
-                    <input
-                      type="text"
-                      value={pair.keyword}
-                      onChange={e => updateKeywordPair(index, 'keyword', e.target.value)}
-                      placeholder="Keyword (e.g. price)"
-                      className="w-1/3 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30"
-                    />
-                    <input
-                      type="text"
-                      value={pair.response}
-                      onChange={e => updateKeywordPair(index, 'response', e.target.value)}
-                      placeholder="Reply for this keyword"
-                      className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-white/30"
-                    />
-                    {keywordPairs.length > 1 && (
+                <div>
+                  <label className="block text-sm text-white/60 mb-2">AI Model</label>
+                  <select value={aiModel} onChange={e => setAiModel(e.target.value)} className={inputCls}>
+                    <optgroup label="Gemini (Cloud)">
+                      <option value="gemini-2.0-flash">gemini-2.0-flash (recommended)</option>
+                      <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+                      <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+                    </optgroup>
+                    {ollamaModels.length > 0 && (
+                      <optgroup label="Local (Ollama)">
+                        {ollamaModels.map(m => <option key={m} value={m}>{m}</option>)}
+                      </optgroup>
+                    )}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm text-white/60 mb-2">System Prompt <span className="text-white/30">(optional)</span></label>
+                  <textarea
+                    rows={4}
+                    value={aiSystemPrompt}
+                    onChange={e => setAiSystemPrompt(e.target.value)}
+                    placeholder={`You are a helpful assistant for ${formData.botName || 'this business'}. Reply clearly and in the same language the user writes in.`}
+                    className={textareaCls}
+                  />
+                </div>
+                {intelligenceMode === 'kb' && (
+                  <div className="p-3 bg-purple-500/10 border border-purple-500/20 rounded-lg text-xs text-purple-300">
+                    📁 You&apos;ll upload your documents right after the bot is created — PDFs, TXT, CSV, JSON all supported.
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ── Template picker ───────────────────────────── */}
+            {intelligenceMode === 'template' && channel === 'whatsapp' && (
+              <div className="space-y-4">
+
+                {/* DB templates */}
+                {templatesLoading ? (
+                  <div className="flex items-center gap-2 text-white/40 text-sm py-4">
+                    <Loader2 className="w-4 h-4 animate-spin" /> Loading templates…
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {dbTemplates.map(tpl => (
                       <button
+                        key={tpl.id}
                         type="button"
-                        onClick={() => removeKeywordPair(index)}
-                        className="text-red-400/60 hover:text-red-400 px-2 transition-colors text-lg leading-none"
+                        onClick={() => applyTemplate(tpl)}
+                        className={`w-full p-4 rounded-xl border text-left transition-all ${
+                          selectedTemplate === tpl.id
+                            ? 'border-yellow-500/50 bg-yellow-500/10'
+                            : 'border-white/10 bg-white/5 hover:border-white/25'
+                        }`}
                       >
-                        ×
+                        <div className="flex items-start gap-3">
+                          <span className="text-2xl shrink-0">{tpl.icon}</span>
+                          <div className="min-w-0 flex-1">
+                            <div className="font-medium text-sm">{tpl.name}</div>
+                            <div className="text-xs text-white/40 mt-0.5 truncate">{tpl.useCases.join(', ')}</div>
+                            <div className="flex gap-2 mt-1.5 flex-wrap">
+                              {tpl.keywords.length > 0 && (
+                                <span className="text-xs text-white/25 bg-white/5 px-2 py-0.5 rounded-full">{tpl.keywords.length} keywords</span>
+                              )}
+                              <span className="text-xs text-white/25 bg-white/5 px-2 py-0.5 rounded-full capitalize">{tpl.intelligenceMode}</span>
+                            </div>
+                            {/* Mini flow preview */}
+                            {tpl.flow.length > 0 && (
+                              <div className="flex items-center gap-1 mt-2 flex-wrap">
+                                {tpl.flow.slice(0, 5).map((step, si) => (
+                                  <span key={si} className="flex items-center gap-1 text-white/20 text-xs">
+                                    {si > 0 && <span>→</span>}
+                                    <span className="bg-white/5 px-1.5 py-0.5 rounded">{step.label}</span>
+                                  </span>
+                                ))}
+                                {tpl.flow.length > 5 && <span className="text-white/20 text-xs">+{tpl.flow.length - 5} more</span>}
+                              </div>
+                            )}
+                          </div>
+                          {selectedTemplate === tpl.id && <Check className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />}
+                        </div>
                       </button>
+                    ))}
+                  </div>
+                )}
+
+                {selectedTemplate && !selectedTemplate.startsWith('generated_') && (
+                  <div className="p-3 bg-green-500/5 border border-green-500/20 rounded-lg text-xs text-green-400">
+                    ✓ Template applied — intelligence mode, keywords and messages pre-filled.
+                  </div>
+                )}
+
+                {/* Build with AI */}
+                <div className="border border-dashed border-white/20 rounded-xl p-5 space-y-3 mt-2">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-purple-400" />
+                    <span className="text-sm font-medium text-purple-400">Build with AI</span>
+                    <span className="text-xs text-white/30 bg-white/5 px-2 py-0.5 rounded-full ml-auto">Needs Ollama</span>
+                  </div>
+                  <p className="text-xs text-white/40">Describe the bot you want and the local LLM will generate a complete template — greeting, workflow, keywords and flow.</p>
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-2 gap-2 text-xs text-white/30">
+                      {[
+                        '"I need a hospital appointment bot."',
+                        '"I need a GST support bot."',
+                        '"I need a scholarship inquiry bot."',
+                        '"I need an AI HR assistant."',
+                      ].map(ex => (
+                        <button
+                          key={ex}
+                          type="button"
+                          onClick={() => setAiPrompt(ex.replace(/"/g, ''))}
+                          className="text-left p-2 bg-white/3 hover:bg-white/8 border border-white/8 rounded-lg transition-colors truncate"
+                        >
+                          {ex}
+                        </button>
+                      ))}
+                    </div>
+                    <textarea
+                      rows={2}
+                      value={aiPrompt}
+                      onChange={e => setAiPrompt(e.target.value)}
+                      placeholder="Describe the bot you want…"
+                      className="w-full bg-white/5 border border-white/15 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/40 resize-none"
+                    />
+                    {aiGenError && <p className="text-xs text-red-400">{aiGenError}</p>}
+                    <button
+                      type="button"
+                      disabled={!aiPrompt.trim() || aiGenerating}
+                      onClick={handleGenerateTemplate}
+                      className="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 rounded-lg transition-colors"
+                    >
+                      {aiGenerating ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating…</> : <><Sparkles className="w-4 h-4" /> Generate Bot</>}
+                    </button>
+                    {selectedTemplate?.startsWith('generated_') && (
+                      <div className="p-3 bg-purple-500/5 border border-purple-500/20 rounded-lg text-xs text-purple-300">
+                        ✓ AI-generated template applied! Review the settings below before continuing.
+                      </div>
                     )}
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
+        )}
 
-          {/* Step 3: WhatsApp Setup */}
-          {currentStep === 3 && (
-            <div className="space-y-6 animate-fadeIn">
-              <h2 className="text-2xl font-bitcount border-b border-white/10 pb-2">📞 WhatsApp Setup</h2>
-              <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-                <p className="text-sm text-blue-300">
-                  <strong>💡 How it works:</strong> BotSetu uses a shared Twilio WhatsApp number.
-                  You don&apos;t need a WABA ID or Phone Number ID. Simply complete the wizard,
-                  then click <strong>Activate</strong> in the Dashboard — your WhatsApp bot number is assigned instantly.
-                </p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Business Contact Number</label>
-                  <input
-                    type="tel"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                    placeholder="+1234567890 (optional)"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                  <p className="text-xs text-white/40 mt-1">Your business contact number for reference only</p>
-                </div>
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">BSP Provider</label>
-                  <select
-                    name="bspName"
-                    value={formData.bspName}
-                    onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  >
-                    <option value="twilio">Twilio (Default)</option>
-                    <option value="infobip">Infobip</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Step 4: Templates */}
-          {currentStep === 4 && (
-            <div className="space-y-6 animate-fadeIn">
-              <h2 className="text-2xl font-bitcount border-b border-white/10 pb-2">📝 Templates</h2>
-              <p className="text-white/60 text-sm">Configure message templates for your bot (optional)</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Template Name</label>
-                  <input
-                    type="text"
-                    name="templateName"
-                    value={formData.templateName}
-                    onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Template Category</label>
-                  <select
-                    name="templateCategory"
-                    value={formData.templateCategory}
-                    onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  >
-                    <option value="">Select Category</option>
-                    <option value="utility">Utility</option>
-                    <option value="marketing">Marketing</option>
-                  </select>
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm text-white/60 mb-2">Template Text</label>
-                  <textarea
-                    name="templateText"
-                    value={formData.templateText}
-                    onChange={handleChange}
-                    rows={4}
-                    placeholder="Use {{1}}, {{2}} for placeholders"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Step 5: Conversation */}
-          {currentStep === 5 && (
-            <div className="space-y-6 animate-fadeIn">
-              <h2 className="text-2xl font-bitcount border-b border-white/10 pb-2">💬 Conversation</h2>
-              <p className="text-white/60 text-sm">Configure conversation flow settings (optional)</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Assigned Flow</label>
-                  <input
-                    type="text"
-                    name="assignedFlow"
-                    value={formData.assignedFlow}
-                    onChange={handleChange}
-                    placeholder="e.g., booking_flow"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Step 6: Billing */}
-          {currentStep === 6 && (
-            <div className="space-y-6 animate-fadeIn">
-              <h2 className="text-2xl font-bitcount border-b border-white/10 pb-2">💰 Billing</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Plan Type *</label>
-                  <select
-                    name="planType"
-                    value={formData.planType}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  >
-                    <option value="">Select Plan</option>
-                    <option value="free">Free</option>
-                    <option value="starter">Starter</option>
-                    <option value="pro">Pro</option>
-                    <option value="enterprise">Enterprise</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm text-white/60 mb-2">Message Limit</label>
-                  <input
-                    type="number"
-                    name="messageLimit"
-                    value={formData.messageLimit}
-                    onChange={handleChange}
-                    placeholder="1000"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Navigation Buttons */}
-          <div className="flex justify-between items-center pt-6 border-t border-white/10">
+        {/* ── STEP 3: Connect ──────────────────────────────── */}
+        {currentStep === 3 && (
+          <div className="space-y-6 animate-fadeIn">
             <div>
-              {currentStep > 1 && (
-                <Button
-                  type="button"
-                  onClick={handlePrevious}
-                  variant="ghost"
-                  className="text-white border border-white/20 hover:border-white/40 hover:bg-white/5"
-                >
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Previous
-                </Button>
-              )}
+              <h2 className="text-xl font-light mb-1">
+                {channel === 'whatsapp' ? 'Connect WhatsApp' : 'Connect IVR'}
+              </h2>
+              <p className="text-white/40 text-sm">You can do this now or skip and connect later from the dashboard</p>
             </div>
-            
-            <div className="flex gap-3">
-              <Link href="/">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="text-white/60 hover:text-white hover:bg-white/5"
-                >
-                  Cancel
-                </Button>
-              </Link>
-              
-              {currentStep < steps.length ? (
-                <Button
-                  type="button"
-                  onClick={handleNext}
-                  className="bg-white text-black hover:bg-white/90 font-medium"
-                >
-                  Next
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              ) : (
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-green-500 text-white hover:bg-green-600 font-medium"
-                >
-                  {loading ? 'Creating...' : 'Create Bot'}
-                  <Check className="w-4 h-4 ml-2" />
-                </Button>
-              )}
+
+            {channel === 'whatsapp' && (
+              <div className="space-y-3">
+                {[
+                  { id: 'twilio', label: 'Connect via Twilio', desc: 'Use a shared sandbox number instantly — best for testing', badge: 'Recommended', badgeColor: 'text-green-400 bg-green-500/10' },
+                  { id: 'meta', label: 'Connect Meta Account', desc: 'Use your own WhatsApp Business number via Meta Cloud API', badge: 'Coming soon', badgeColor: 'text-white/30 bg-white/5' },
+                  { id: 'later', label: "I'll do this later", desc: 'Create the bot now, connect WhatsApp from the dashboard', badge: null, badgeColor: '' },
+                ].map(opt => (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    disabled={opt.id === 'meta'}
+                    onClick={() => setChannel(opt.id === 'later' ? channel : channel)}
+                    className={`w-full p-4 rounded-xl border text-left transition-all ${
+                      opt.id === 'meta' ? 'border-white/5 bg-white/3 opacity-40 cursor-not-allowed' :
+                      'border-white/15 bg-white/5 hover:border-white/30'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-medium text-sm">{opt.label}</div>
+                        <div className="text-xs text-white/40 mt-0.5">{opt.desc}</div>
+                      </div>
+                      {opt.badge && <span className={`text-xs px-2 py-0.5 rounded-full ${opt.badgeColor}`}>{opt.badge}</span>}
+                    </div>
+                  </button>
+                ))}
+
+                <div className="p-4 bg-blue-500/5 border border-blue-500/15 rounded-xl text-sm">
+                  <p className="text-blue-300 font-medium mb-1">💡 How Twilio Sandbox works</p>
+                  <p className="text-white/40 text-xs">After creating the bot, click <strong className="text-white/70">Activate</strong> in the dashboard — you&apos;ll get a shared WhatsApp number + webhook URL instantly. Paste the webhook URL in Twilio Console and you&apos;re live.</p>
+                </div>
+              </div>
+            )}
+
+            {channel === 'ivr' && (
+              <div className="space-y-4">
+                <div className="p-4 bg-orange-500/5 border border-orange-500/20 rounded-xl space-y-3">
+                  <p className="text-sm font-medium text-orange-400">📞 Voice Webhook Setup</p>
+                  <div className="text-xs text-white/50 space-y-1.5">
+                    <p>1. After bot creation, go to Dashboard → your bot → click the orange phone button</p>
+                    <p>2. Copy the voice webhook URL shown in the popup</p>
+                    <p>3. In Twilio Console → Phone Numbers → your IVR number → set <em>"A call comes in"</em> to that URL</p>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm text-white/60 mb-2">Your Twilio Phone Number <span className="text-white/30">(optional, for reference)</span></label>
+                  <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} placeholder="+1234567890" className={inputCls} />
+                </div>
+              </div>
+            )}
+
+            {/* Summary */}
+            <div className="p-4 bg-white/3 border border-white/10 rounded-xl space-y-2">
+              <p className="text-sm font-medium text-white/70 mb-3">Summary</p>
+              <div className="grid grid-cols-2 gap-y-2 text-xs">
+                <span className="text-white/40">Bot Name</span><span className="text-white">{formData.botName}</span>
+                <span className="text-white/40">Channel</span><span className="text-white capitalize">{channel}</span>
+                {channel === 'whatsapp' && <><span className="text-white/40">Use Case</span><span className="text-white capitalize">{formData.useCaseType}</span></>}
+                <span className="text-white/40">Intelligence</span>
+                <span className="text-white capitalize">
+                  {channel === 'ivr' ? 'IVR Workflow' : intelligenceMode === 'kb' ? 'Knowledge Base' : intelligenceMode === 'ai' ? 'AI Assistant' : intelligenceMode === 'template' ? 'Prebuilt Template' : 'Workflow Builder'}
+                </span>
+              </div>
             </div>
           </div>
-        </form>
+        )}
+
+        {/* ── Navigation ───────────────────────────────────── */}
+        <div className="flex justify-between items-center mt-10 pt-6 border-t border-white/10">
+          <div>
+            {currentStep > 1 && (
+              <Button type="button" onClick={() => setCurrentStep(p => p - 1)} variant="ghost" className="text-white border border-white/20 hover:border-white/40 hover:bg-white/5">
+                <ArrowLeft className="w-4 h-4 mr-2" /> Back
+              </Button>
+            )}
+          </div>
+          <div className="flex gap-3">
+            <Link href="/dashboard">
+              <Button type="button" variant="ghost" className="text-white/50 hover:text-white hover:bg-white/5">Cancel</Button>
+            </Link>
+            {currentStep < 3 ? (
+              <Button type="button" onClick={handleNext} className="bg-white text-black hover:bg-white/90 font-medium">
+                Next <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            ) : (
+              <Button type="button" onClick={handleSubmit} disabled={loading} className="bg-green-500 text-white hover:bg-green-600 font-medium px-6">
+                {loading ? 'Creating...' : 'Create Bot'} {!loading && <Check className="w-4 h-4 ml-2" />}
+              </Button>
+            )}
+          </div>
+        </div>
+
       </div>
     </div>
 
-    {/* ── Success Modal ── */}
+    {/* ── Success Modal ────────────────────────────────────── */}
     {showSuccess && (
-      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-100 flex items-center justify-center p-4">
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div className="bg-zinc-900 border border-white/20 rounded-2xl p-8 max-w-md w-full shadow-[0_0_60px_rgba(34,197,94,0.15)] text-center">
           <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle className="w-8 h-8 text-green-400" />
           </div>
-          <h2 className="text-2xl font-bitcount text-white mb-2">Bot Created!</h2>
-          <p className="text-white/50 text-sm mb-4">Your bot is saved. Follow the steps below to go live.</p>
+          <h2 className="text-2xl font-light text-white mb-2">Bot Created!</h2>
+          <p className="text-white/50 text-sm mb-6">Your bot is saved. Follow the steps below to go live.</p>
 
-          {/* ── RAG Knowledge Base Upload (shown right after creation when RAG enabled) ── */}
-          {aiRagEnabled && createdBusinessId && (
+          {/* KB upload */}
+          {intelligenceMode === 'kb' && createdBusinessId && (
             <div className="text-left mb-6 p-4 bg-purple-500/5 border border-purple-500/20 rounded-xl space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-purple-300 font-medium">📚 Upload Knowledge Base</span>
-                {kbUploadedFiles.length > 0 && (
-                  <span className="text-xs text-green-400">{kbUploadedFiles.length} file(s) uploaded</span>
-                )}
+                {kbUploadedFiles.length > 0 && <span className="text-xs text-green-400">{kbUploadedFiles.length} file(s) uploaded</span>}
               </div>
-              <p className="text-xs text-white/40">
-                Upload your business documents so the bot answers from them. Supports TXT, JSON, CSV, MD.
-                You can also add more files later from the dashboard.
-              </p>
-
+              <p className="text-xs text-white/40">Upload your documents (TXT, JSON, CSV, MD). You can add more later from the dashboard.</p>
               {kbUploadedFiles.length > 0 && (
                 <div className="space-y-1">
                   {kbUploadedFiles.map((f, i) => (
@@ -1215,86 +884,54 @@ export default function CreateBotPage() {
                   ))}
                 </div>
               )}
-
               <label className="block cursor-pointer">
-                <div className={`border border-dashed rounded-lg px-4 py-3 text-center text-sm transition-colors ${
-                  kbUploading
-                    ? 'border-purple-500/30 text-purple-400/50 cursor-wait'
-                    : 'border-purple-500/30 text-purple-300 hover:border-purple-400 hover:text-purple-200'
-                }`}>
+                <div className={`border border-dashed rounded-lg px-4 py-3 text-center text-sm transition-colors ${kbUploading ? 'border-purple-500/30 text-purple-400/50 cursor-wait' : 'border-purple-500/30 text-purple-300 hover:border-purple-400 hover:text-purple-200'}`}>
                   {kbUploading
-                    ? (kbUploadProgress !== null && kbUploadProgress < 100
-                        ? `⬆ Uploading… ${kbUploadProgress}%`
-                        : '⏳ Embedding chunks…')
+                    ? (kbUploadProgress !== null && kbUploadProgress < 100 ? `⬆ Uploading… ${kbUploadProgress}%` : '⏳ Embedding chunks…')
                     : '⬆ Click to upload a file (.txt / .json / .csv / .md)'}
                 </div>
-
-                {/* Progress bar */}
                 {kbUploading && (
                   <div className="mt-2 space-y-1">
                     <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                      {kbUploadProgress !== null && kbUploadProgress < 100 ? (
-                        <div className="h-full bg-purple-500 rounded-full transition-all duration-150" style={{ width: `${kbUploadProgress}%` }} />
-                      ) : (
-                        <div className="h-full w-full bg-purple-500/60 rounded-full animate-pulse" />
-                      )}
-                    </div>
-                    <p className="text-xs text-purple-300/60 text-center">
                       {kbUploadProgress !== null && kbUploadProgress < 100
-                        ? `Uploading file… ${kbUploadProgress}%`
-                        : 'File uploaded — embedding chunks into vector store…'}
-                    </p>
+                        ? <div className="h-full bg-purple-500 rounded-full transition-all" style={{ width: `${kbUploadProgress}%` }} />
+                        : <div className="h-full w-full bg-purple-500/60 rounded-full animate-pulse" />}
+                    </div>
                   </div>
                 )}
-
-                <input
-                  type="file"
-                  accept=".txt,.json,.csv,.md"
-                  className="hidden"
-                  disabled={kbUploading}
-                  onChange={e => {
-                    const file = e.target.files?.[0]
-                    if (!file || !createdBusinessId) return
-                    e.target.value = ''
-                    setKbUploading(true)
-                    setKbUploadProgress(0)
-                    const fd = new FormData()
-                    fd.append('file', file)
-                    const xhr = new XMLHttpRequest()
-                    xhr.upload.onprogress = (ev) => {
-                      if (ev.lengthComputable) setKbUploadProgress(Math.round((ev.loaded / ev.total) * 100))
-                    }
-                    xhr.upload.onload = () => setKbUploadProgress(100)
-                    xhr.onload = () => {
-                      try {
-                        const data = JSON.parse(xhr.responseText)
-                        if (xhr.status >= 200 && xhr.status < 300) {
-                          setKbUploadedFiles(prev => [...prev, { name: file.name, chunks: data.chunks ?? 0 }])
-                        } else {
-                          alert(`❌ ${data.error || 'Upload failed'}`)
-                        }
-                      } catch { alert('Upload failed — unexpected response') }
-                      setKbUploadProgress(null)
-                      setKbUploading(false)
-                    }
-                    xhr.onerror = () => {
-                      alert('Upload failed — is the Flask server running?')
-                      setKbUploadProgress(null)
-                      setKbUploading(false)
-                    }
-                    xhr.open('POST', `${BACKEND}/api/ai/kb/${createdBusinessId}`)
-                    xhr.send(fd)
-                  }}
-                />
+                <input type="file" accept=".txt,.json,.csv,.md" className="hidden" disabled={kbUploading} onChange={e => {
+                  const file = e.target.files?.[0]
+                  if (!file || !createdBusinessId) return
+                  e.target.value = ''
+                  setKbUploading(true)
+                  setKbUploadProgress(0)
+                  const fd = new FormData()
+                  fd.append('file', file)
+                  const xhr = new XMLHttpRequest()
+                  xhr.upload.onprogress = ev => { if (ev.lengthComputable) setKbUploadProgress(Math.round((ev.loaded / ev.total) * 100)) }
+                  xhr.upload.onload = () => setKbUploadProgress(100)
+                  xhr.onload = () => {
+                    try {
+                      const data = JSON.parse(xhr.responseText)
+                      if (xhr.status >= 200 && xhr.status < 300) setKbUploadedFiles(p => [...p, { name: file.name, chunks: data.chunks ?? 0 }])
+                      else alert(`❌ ${data.error || 'Upload failed'}`)
+                    } catch { alert('Upload failed — unexpected response') }
+                    setKbUploadProgress(null)
+                    setKbUploading(false)
+                  }
+                  xhr.onerror = () => { alert('Upload failed — is Flask running?'); setKbUploadProgress(null); setKbUploading(false) }
+                  xhr.open('POST', `${BACKEND}/api/ai/kb/${createdBusinessId}`)
+                  xhr.send(fd)
+                }} />
               </label>
             </div>
           )}
 
           <div className="text-left space-y-3 mb-7">
             {[
-              { step: '1', label: 'Go to Dashboard', desc: 'Your new bot will appear in the list' },
+              { step: '1', label: 'Go to Dashboard', desc: 'Your new bot appears in the list' },
               { step: '2', label: 'Click Activate', desc: 'Get your shared WhatsApp number instantly' },
-              { step: '3', label: 'Set Webhook in Twilio', desc: 'Paste the webhook URL shown in the activation popup' },
+              { step: '3', label: 'Set Webhook in Twilio', desc: 'Paste the webhook URL shown in the popup' },
               { step: '4', label: 'Test Your Bot', desc: 'Send a WhatsApp message and watch it auto-reply!' },
             ].map(({ step, label, desc }) => (
               <div key={step} className="flex gap-3 items-start">
@@ -1307,10 +944,7 @@ export default function CreateBotPage() {
             ))}
           </div>
 
-          <button
-            onClick={() => router.push('/dashboard')}
-            className="w-full bg-white text-black hover:bg-white/90 py-3 rounded-xl font-medium transition-colors"
-          >
+          <button onClick={() => router.push('/dashboard')} className="w-full bg-white text-black hover:bg-white/90 py-3 rounded-xl font-medium transition-colors">
             Go to Dashboard →
           </button>
         </div>
