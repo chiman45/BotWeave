@@ -272,8 +272,8 @@ export default function CreateBotPage() {
 
   return (
     <>
-    <div className="min-h-screen bg-transparent text-white py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-transparent text-white py-10 px-4 sm:px-6 lg:px-8 flex items-start justify-center">
+      <div className="w-full max-w-3xl border border-white/10 rounded-2xl shadow-[0_0_40px_rgba(255,255,255,0.06)] bg-white/[0.03] backdrop-blur-sm px-8 py-10">
 
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -284,8 +284,8 @@ export default function CreateBotPage() {
         </div>
 
         {/* Title */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-light mb-1">Create a Bot</h1>
+        <div className="mb-8 text-center">
+          <h1 className="font-black-ops text-4xl mb-2 tracking-wide">Create a Bot</h1>
           <p className="text-white/40 text-sm">Bot live in under 60 seconds</p>
         </div>
 

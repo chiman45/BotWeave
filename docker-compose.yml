@@ -1,7 +1,8 @@
 version: '3.8'
 
 services:
-  # MongoDB Database
+
+  # ── MongoDB ──────────────────────────────────────────────────────────────────
   mongodb:
     image: mongo:7.0
     container_name: botsetu-mongodb
@@ -20,8 +21,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s
 
-  # Backend Python Service
+  # ── Flask Backend ─────────────────────────────────────────────────────────────
   backend:
     build:
       context: .
@@ -31,19 +33,46 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
+    ports:
+      - "5000:5000"
     environment:
+      # MongoDB
       - MONGODB_URI=mongodb://mongodb:27017/
+      # Twilio — set these in a .env file at the project root
       - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
       - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_WHATSAPP_NUMBER=${TWILIO_WHATSAPP_NUMBER}
+      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+      - TWILIO_SANDBOX_KEYWORD=${TWILIO_SANDBOX_KEYWORD}
+      # Webhook — set to your ngrok/production URL after starting the tunnel
+      - WEBHOOK_URL=${WEBHOOK_URL}
+      # Ollama — runs on the host machine; host.docker.internal resolves to host IP
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      - OLLAMA_EMBED_MODEL=${OLLAMA_EMBED_MODEL:-nomic-embed-text}
+      - OLLAMA_CHAT_MODEL=${OLLAMA_CHAT_MODEL:-llama3}
+      # RAG tuning
+      - RAG_BM25_ENABLED=${RAG_BM25_ENABLED:-true}
+      - RAG_MAX_DISTANCE=${RAG_MAX_DISTANCE:-0.0}
+      - RAG_FALLBACK_TOP_K=${RAG_FALLBACK_TOP_K:-5}
+      # Gunicorn
+      - WEB_CONCURRENCY=${WEB_CONCURRENCY:-2}
+      - PORT=5000
     volumes:
-      - ./Backend:/app
+      # Persist ChromaDB vector stores across container restarts
+      - vector_stores:/app/vector_stores
     networks:
       - botsetu-network
-    stdin_open: true
-    tty: true
-    command: tail -f /dev/null  # Keep container running for manual script execution
+    extra_hosts:
+      # Lets the container reach Ollama running on the host
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
-  # Frontend Next.js Application
+  # ── Next.js Frontend ──────────────────────────────────────────────────────────
   frontend:
     build:
       context: .
@@ -51,21 +80,31 @@ services:
     container_name: botsetu-frontend
     restart: unless-stopped
     depends_on:
-      - mongodb
+      backend:
+        condition: service_healthy
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - MONGODB_URI=mongodb://mongodb:27017/
+      # Clerk auth
       - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
       - CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
+      - NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+      - NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+      - NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
+      - NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
+      # Backend URL — frontend API routes proxy to this
+      - NEXT_PUBLIC_BACKEND_URL=http://backend:5000
+      # MongoDB (Next.js API routes access DB directly)
+      - MONGODB_URI=mongodb://mongodb:27017/
     networks:
       - botsetu-network
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000', r => process.exit(r.statusCode < 500 ? 0 : 1))"]
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 30s
 
 networks:
   botsetu-network:
@@ -75,4 +114,6 @@ volumes:
   mongodb_data:
     driver: local
   mongodb_config:
+    driver: local
+  vector_stores:
     driver: local

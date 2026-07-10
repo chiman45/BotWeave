@@ -1,29 +1,35 @@
-# Backend Dockerfile - Python Scripts
+# ── Backend — Python Flask (gunicorn) ────────────────────────────────────────
 FROM python:3.11-slim
 
-# Set working directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Build tools required by chromadb / hnswlib native extensions
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements file
+# Install Python dependencies (cached layer — only rebuilds on requirements change)
 COPY Backend/requirements.txt .
-
-# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy backend files
+# Copy application source
 COPY Backend/ .
 
-# Create a non-root user
+# Directory for per-bot ChromaDB vector stores and BM25 indexes
+RUN mkdir -p vector_stores
+
+# Non-root user for security
 RUN useradd -m -u 1001 botuser && chown -R botuser:botuser /app
 USER botuser
 
-# Expose port for potential API server
 EXPOSE 5000
 
-# Default command (can be overridden in docker-compose)
-CMD ["python", "-u"]
+# Seed all DB collections (upsert — safe to re-run on restart),
+# then start gunicorn with the Flask app factory.
+CMD ["sh", "-c", "python seed_all.py && gunicorn 'app:create_app()' \
+    --bind 0.0.0.0:5000 \
+    --workers ${WEB_CONCURRENCY:-2} \
+    --timeout 120 \
+    --access-logfile - \
+    --error-logfile -"]

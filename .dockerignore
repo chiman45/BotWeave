@@ -1,22 +1,30 @@
-# Node modules
+# Node
 Frontend/node_modules
 Frontend/.next
-Frontend/.nuxt
 Frontend/out
 
-# Python cache
+# Python
 Backend/__pycache__
+Backend/**/__pycache__
 Backend/*.pyc
 Backend/*.pyo
 Backend/*.pyd
 Backend/.Python
 
-# Environment files
+# Vector stores (large — mounted as Docker volume instead)
+Backend/vector_stores
+
+# Logs
+*.log
+Backend/botsetu.log
+
+# Environment files — never bake credentials into the image
 .env
 .env.local
 .env.*.local
 Backend/.env
 Frontend/.env.local
+Frontend/.env
 
 # Git
 .git
@@ -34,13 +42,7 @@ Frontend/.env.local
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Testing
+# Test / coverage
 coverage
 .nyc_output
 
@@ -48,7 +50,7 @@ coverage
 dist
 build
 
-# Documentation
+# Docs
 *.md
 !README.md
 
