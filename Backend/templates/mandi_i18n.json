@@ -1,0 +1,97 @@
+[
+  {
+    "lang": "en",
+    "strings": {
+      "lang_ok":        "You selected: *English*\n\nLet's begin the booking.",
+      "welcome":        "*Welcome to {bname}!*\n\nI'll help you book a mandi slot in a few quick steps.\n\nPlease enter your *Full Name*:",
+      "ask_village":    "Hello *{name}*!\n\nPlease enter your *Village Name*:",
+      "ask_crop":       "Select your *Crop Type*:\n\n1. Paddy\n2. Wheat\n3. Maize\n4. Soybean\n5. Cotton\n6. Other\n\nReply with the *number* or crop name:",
+      "crop_ok":        "Crop: *{crop}*\n\nEnter *Quantity* in quintals (or send *0* to skip):",
+      "ask_mandi":      "Select your *nearest Mandi*:\n\n{mandi_list}\n\nReply with the number:",
+      "slots_header":   "Available slots at *{mandi}*:\n\n{slot_list}\n\nReply with the *slot number*:",
+      "no_slots":       "Sorry, all slots for *today* are fully booked. Please try again tomorrow!",
+      "confirmed":      "*Booking Confirmed!*\n\nToken: *{token}*\nName: {name}\nCrop: {crop} ({qty} qtl)\nMandi: {mandi}\nLocation: {loc}\nSlot: {slot}\nDate: {date}\n\nPlease arrive *on time* with your produce. Thank you!\n\n_Send any message to make a new booking._",
+      "bad_mandi":      "Please enter a number between *1* and *{n}*.",
+      "bad_mandi_type": "Please enter a *number* to select the mandi.",
+      "bad_slot":       "Please enter a number between *1* and *{n}*.",
+      "bad_slot_type":  "Please enter a *number* to choose a slot.",
+      "lang_invalid":   "Please choose a language by replying with:\n1 = English\n2 = Hindi\n3 = Punjabi\n4 = Gujarati\n5 = Marathi"
+    }
+  },
+  {
+    "lang": "hi",
+    "strings": {
+      "lang_ok":        "आपने चुना: *हिंदी*\n\nआइए बुकिंग शुरू करते हैं।",
+      "welcome":        "*{bname} में आपका स्वागत है!*\n\nमैं आपको मंडी स्लॉट बुक करने में मदद करूंगा।\n\nकृपया अपना *पूरा नाम* दर्ज करें:",
+      "ask_village":    "नमस्ते *{name}*!\n\nकृपया अपने *गाँव का नाम* दर्ज करें:",
+      "ask_crop":       "अपनी *फसल का प्रकार* चुनें:\n\n1. धान\n2. गेहूँ\n3. मक्का\n4. सोयाबीन\n5. कपास\n6. अन्य\n\n*नंबर* या फसल का नाम भेजें:",
+      "crop_ok":        "फसल: *{crop}*\n\n*मात्रा* क्विंटल में दर्ज करें (छोड़ने के लिए *0* भेजें):",
+      "ask_mandi":      "अपनी *नजदीकी मंडी* चुनें:\n\n{mandi_list}\n\nनंबर से जवाब दें:",
+      "slots_header":   "*{mandi}* में उपलब्ध स्लॉट:\n\n{slot_list}\n\n*स्लॉट नंबर* से जवाब दें:",
+      "no_slots":       "खेद है, *आज* के सभी स्लॉट भर गए हैं। कृपया कल पुनः प्रयास करें!",
+      "confirmed":      "*बुकिंग की पुष्टि हो गई!*\n\nटोकन: *{token}*\nनाम: {name}\nफसल: {crop} ({qty} क्विंटल)\nमंडी: {mandi}\nस्थान: {loc}\nस्लॉट: {slot}\nतारीख: {date}\n\nकृपया अपनी उपज के साथ *समय पर* पहुँचें। धन्यवाद!\n\n_नई बुकिंग के लिए कोई भी संदेश भेजें।_",
+      "bad_mandi":      "कृपया *1* और *{n}* के बीच संख्या दर्ज करें।",
+      "bad_mandi_type": "मंडी चुनने के लिए कृपया एक *नंबर* दर्ज करें।",
+      "bad_slot":       "कृपया *1* और *{n}* के बीच संख्या दर्ज करें।",
+      "bad_slot_type":  "स्लॉट चुनने के लिए कृपया एक *नंबर* दर्ज करें।",
+      "lang_invalid":   "कृपया भाषा चुनने के लिए 1, 2, 3, 4 या 5 से जवाब दें।"
+    }
+  },
+  {
+    "lang": "pa",
+    "strings": {
+      "lang_ok":        "ਤੁਸੀਂ ਚੁਣਿਆ: *ਪੰਜਾਬੀ*\n\nਆਓ ਬੁਕਿੰਗ ਸ਼ੁਰੂ ਕਰੀਏ।",
+      "welcome":        "*{bname} ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ!*\n\nਮੈਂ ਤੁਹਾਨੂੰ ਮੰਡੀ ਸਲਾਟ ਬੁੱਕ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰਾਂਗਾ।\n\nਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ *ਪੂਰਾ ਨਾਮ* ਦਰਜ ਕਰੋ:",
+      "ask_village":    "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ *{name}*!\n\nਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ *ਪਿੰਡ ਦਾ ਨਾਮ* ਦਰਜ ਕਰੋ:",
+      "ask_crop":       "ਆਪਣੀ *ਫ਼ਸਲ ਦੀ ਕਿਸਮ* ਚੁਣੋ:\n\n1. ਝੋਨਾ\n2. ਕਣਕ\n3. ਮੱਕੀ\n4. ਸੋਇਆਬੀਨ\n5. ਕਪਾਹ\n6. ਹੋਰ\n\n*ਨੰਬਰ* ਜਾਂ ਫ਼ਸਲ ਦਾ ਨਾਮ ਭੇਜੋ:",
+      "crop_ok":        "ਫ਼ਸਲ: *{crop}*\n\n*ਮਾਤਰਾ* ਕੁਇੰਟਲ ਵਿੱਚ ਦਰਜ ਕਰੋ (ਛੱਡਣ ਲਈ *0* ਭੇਜੋ):",
+      "ask_mandi":      "ਆਪਣੀ *ਨੇੜੇ ਦੀ ਮੰਡੀ* ਚੁਣੋ:\n\n{mandi_list}\n\nਨੰਬਰ ਨਾਲ ਜਵਾਬ ਦਿਓ:",
+      "slots_header":   "*{mandi}* ਵਿੱਚ ਉਪਲਬਧ ਸਲਾਟ:\n\n{slot_list}\n\n*ਸਲਾਟ ਨੰਬਰ* ਨਾਲ ਜਵਾਬ ਦਿਓ:",
+      "no_slots":       "ਮਾਫ਼ ਕਰਨਾ, *ਅੱਜ* ਦੇ ਸਾਰੇ ਸਲਾਟ ਭਰੇ ਹੋਏ ਹਨ। ਕੱਲ੍ਹ ਫਿਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ!",
+      "confirmed":      "*ਬੁਕਿੰਗ ਪੱਕੀ ਹੋ ਗਈ!*\n\nਟੋਕਨ: *{token}*\nਨਾਮ: {name}\nਫ਼ਸਲ: {crop} ({qty} ਕੁਇੰਟਲ)\nਮੰਡੀ: {mandi}\nਟਿਕਾਣਾ: {loc}\nਸਲਾਟ: {slot}\nਮਿਤੀ: {date}\n\nਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀ ਉਪਜ ਨਾਲ *ਸਮੇਂ ਸਿਰ* ਆਓ। ਧੰਨਵਾਦ!\n\n_ਨਵੀਂ ਬੁਕਿੰਗ ਲਈ ਕੋਈ ਵੀ ਸੁਨੇਹਾ ਭੇਜੋ।_",
+      "bad_mandi":      "ਕਿਰਪਾ ਕਰਕੇ *1* ਅਤੇ *{n}* ਦੇ ਵਿਚਕਾਰ ਨੰਬਰ ਦਰਜ ਕਰੋ।",
+      "bad_mandi_type": "ਮੰਡੀ ਚੁਣਨ ਲਈ ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ *ਨੰਬਰ* ਦਰਜ ਕਰੋ।",
+      "bad_slot":       "ਕਿਰਪਾ ਕਰਕੇ *1* ਅਤੇ *{n}* ਦੇ ਵਿਚਕਾਰ ਨੰਬਰ ਦਰਜ ਕਰੋ।",
+      "bad_slot_type":  "ਸਲਾਟ ਚੁਣਨ ਲਈ ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ *ਨੰਬਰ* ਦਰਜ ਕਰੋ।",
+      "lang_invalid":   "ਕਿਰਪਾ ਕਰਕੇ ਭਾਸ਼ਾ ਚੁਣਨ ਲਈ 1, 2, 3, 4 ਜਾਂ 5 ਨਾਲ ਜਵਾਬ ਦਿਓ।"
+    }
+  },
+  {
+    "lang": "gu",
+    "strings": {
+      "lang_ok":        "તમે પસંદ કર્યું: *ગુજરાતી*\n\nચાલો બુકિંગ શરૂ કરીએ.",
+      "welcome":        "*{bname} માં આપનું સ્વાગત છે!*\n\nહું મંડી સ્લોટ બુક કરવામાં મદદ કરીશ.\n\nકૃપા કરી તમારું *પૂરું નામ* દાખલ કરો:",
+      "ask_village":    "નમસ્તે *{name}*!\n\nકૃપા કરી તમારા *ગામનું નામ* દાખલ કરો:",
+      "ask_crop":       "તમારી *પાકનો પ્રકાર* પસંદ કરો:\n\n1. ડાંગર\n2. ઘઉં\n3. મકાઈ\n4. સોયાબીન\n5. કપાસ\n6. અન્ય\n\n*નંબર* અથવા પાકનું નામ મોકલો:",
+      "crop_ok":        "પાક: *{crop}*\n\n*જથ્થો* ક્વિન્ટલમાં દાખલ કરો (છોડવા *0* મોકલો):",
+      "ask_mandi":      "તમારી *નજીકની મંડી* પસંદ કરો:\n\n{mandi_list}\n\nનંબર સાથે જવાબ આપો:",
+      "slots_header":   "*{mandi}* માં ઉપલબ્ધ સ્લોટ:\n\n{slot_list}\n\n*સ્લોટ નંબર* સાથે જવાબ આપો:",
+      "no_slots":       "માફ કરશો, *આજ*ના તમામ સ્લોટ ભરાઇ ગયા છે. કૃપા કરી કાલે ફરી પ્રયાસ કરો!",
+      "confirmed":      "*બુકિંગ પ્રમાણિત!*\n\nટોકન: *{token}*\nનામ: {name}\nપાક: {crop} ({qty} ક્વિ.)\nમંડી: {mandi}\nસ્થળ: {loc}\nસ્લોટ: {slot}\nતારીખ: {date}\n\nકૃપા કરી *સમયસર* ઉત્પાદન સાથે આવો. આભાર!\n\n_નવી બુકિંગ માટે કોઇ પણ સંદેશ મોકલો._",
+      "bad_mandi":      "કૃપા કરી *1* અને *{n}* ની વચ્ચે નંબર દાખલ કરો.",
+      "bad_mandi_type": "મંડી પસંદ કરવા *નંબર* દાખલ કરો.",
+      "bad_slot":       "કૃપા કરી *1* અને *{n}* ની વચ્ચે નંબર દાખલ કરો.",
+      "bad_slot_type":  "સ્લોટ પસંદ કરવા *નંબર* દાખલ કરો.",
+      "lang_invalid":   "ભાષા પસંદ કરવા 1, 2, 3, 4 અથવા 5 સાથે જવાબ આપો."
+    }
+  },
+  {
+    "lang": "mr",
+    "strings": {
+      "lang_ok":        "तुम्ही निवडले: *मराठी*\n\nचला बुकिंग सुरू करूया.",
+      "welcome":        "*{bname} मध्ये आपले स्वागत आहे!*\n\nमी मंडी स्लॉट बुक करण्यात मदद करेन.\n\nकृपया आपले *पूर्ण नाव* प्रविष्ट करा:",
+      "ask_village":    "नमस्कार *{name}*!\n\nकृपया आपल्या *गावाचे नाव* प्रविष्ट करा:",
+      "ask_crop":       "आपला *पिकाचा प्रकार* निवडा:\n\n1. भात\n2. गहू\n3. मका\n4. सोयाबीन\n5. कापूस\n6. इतर\n\n*क्रमांक* किंवा पिकाचे नाव पाठवा:",
+      "crop_ok":        "पीक: *{crop}*\n\n*प्रमाण* क्विंटलमध्ये प्रविष्ट करा (वगळण्यासाठी *0* पाठवा):",
+      "ask_mandi":      "आपली *जवळची मंडी* निवडा:\n\n{mandi_list}\n\nक्रमांकाने उत्तर द्या:",
+      "slots_header":   "*{mandi}* मध्ये उपलब्ध स्लॉट:\n\n{slot_list}\n\n*स्लॉट क्रमांक* पाठवा:",
+      "no_slots":       "दिलगिरी, *आज*चे सर्व स्लॉट भरले आहेत. उद्या पुन्हा प्रयत्न करा!",
+      "confirmed":      "*बुकिंग निश्चित झाली!*\n\nटोकन: *{token}*\nनाव: {name}\nपीक: {crop} ({qty} क्विं.)\nमंडी: {mandi}\nपत्ता: {loc}\nस्लॉट: {slot}\nतारीख: {date}\n\nकृपया आपल्या उत्पादनासह *वेळेवर* या. धन्यवाद!\n\n_नवीन बुकिंगसाठी कोणताही संदेश पाठवा._",
+      "bad_mandi":      "कृपया *1* आणि *{n}* दरम्यान क्रमांक प्रविष्ट करा.",
+      "bad_mandi_type": "मंडी निवडण्यासाठी *क्रमांक* प्रविष्ट करा.",
+      "bad_slot":       "कृपया *1* आणि *{n}* दरम्यान क्रमांक प्रविष्ट करा.",
+      "bad_slot_type":  "स्लॉट निवडण्यासाठी *क्रमांक* प्रविष्ट करा.",
+      "lang_invalid":   "भाषा निवडण्यासाठी 1, 2, 3, 4 किंवा 5 ने उत्तर द्या."
+    }
+  }
+]

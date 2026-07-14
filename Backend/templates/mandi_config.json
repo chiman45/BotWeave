@@ -1,0 +1,50 @@
+{
+  "lang_select_msg": "🌾 *Welcome to the Farmer Helpline!*\n\nPlease choose your language / कृपया अपनी भाषा चुनें:\n\n1️⃣ English\n2️⃣ हिंदी (Hindi)\n3️⃣ ਪੰਜਾਬੀ (Punjabi)\n4️⃣ ગુજરાતી (Gujarati)\n5️⃣ मराठी (Marathi)",
+
+  "supported_langs": ["1", "2", "3", "4", "5"],
+
+  "reset_greetings": [
+    "hi", "hello", "start", "restart", "reset", "menu", "home",
+    "नमस्ते", "शुरू", "मेनू",
+    "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ", "ਸ਼ੁਰੂ",
+    "નમસ્તે", "શરૂ",
+    "नमस्कार", "सुरू"
+  ],
+
+  "default_slots": [
+    "06:00 AM - 08:00 AM",
+    "08:00 AM - 10:00 AM",
+    "10:00 AM - 12:00 PM",
+    "12:00 PM - 02:00 PM",
+    "02:00 PM - 04:00 PM",
+    "04:00 PM - 06:00 PM"
+  ],
+
+  "default_mandis": [
+    {
+      "name": "Raipur Main Mandi",
+      "location": "Raipur, Chhattisgarh",
+      "capacity": 6
+    },
+    {
+      "name": "Durg Grain Market",
+      "location": "Durg, Chhattisgarh",
+      "capacity": 6
+    },
+    {
+      "name": "Bilaspur Krishi Mandi",
+      "location": "Bilaspur, Chhattisgarh",
+      "capacity": 6
+    },
+    {
+      "name": "Rajnandgaon Mandi",
+      "location": "Rajnandgaon, Chhattisgarh",
+      "capacity": 6
+    },
+    {
+      "name": "Korba Agri Market",
+      "location": "Korba, Chhattisgarh",
+      "capacity": 6
+    }
+  ]
+}

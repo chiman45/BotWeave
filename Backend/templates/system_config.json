@@ -1,0 +1,23 @@
+{
+  "initial_credits": 100,
+  "plan_prices": {
+    "basic": {
+      "price": 499,
+      "credits": 500,
+      "description": "Basic Plan — 500 credits",
+      "currency": "INR"
+    },
+    "standard": {
+      "price": 999,
+      "credits": 1200,
+      "description": "Standard Plan — 1200 credits",
+      "currency": "INR"
+    },
+    "premium": {
+      "price": 1999,
+      "credits": 3000,
+      "description": "Premium Plan — 3000 credits",
+      "currency": "INR"
+    }
+  }
+}
