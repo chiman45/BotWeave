@@ -7854,3 +7854,348 @@ PermissionError: [WinError 32] The process cannot access the file because it is 
 2026-07-15 11:54:23,349 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 11:54:23] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
 2026-07-15 11:54:23,377 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 11:54:23] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
 2026-07-15 11:54:23,528 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 11:54:23] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 11:54:33,521 [INFO] database: Database indexes verified.
+2026-07-15 11:54:33,531 [INFO] __main__: BotSetu backend ready — 8 blueprints registered
+2026-07-15 11:54:33,532 [INFO] __main__: Starting BotSetu backend on port 5000
+2026-07-15 11:54:33,546 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.29.59:5000
+2026-07-15 11:54:33,546 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2026-07-15 11:54:38,313 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: 'Hello'
+2026-07-15 11:54:38,318 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 11:54:38] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 11:54:38,429 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 11:54:38,429 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 11:54:38,429 [INFO] twilio.http_client: Headers:
+2026-07-15 11:54:38,430 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 11:54:38,430 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 11:54:38,430 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 11:54:38,430 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 11:54:38,430 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 11:54:38,430 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 11:54:39,098 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 11:54:39,098 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '971', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:24:38 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ47e71703b9388684318c913d02d51769', 'Twilio-Request-Duration': '0.147', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 470da146cea57daec736ce1623056a0a.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'e77Qd_traTrm75B6CtgeHkqu3RhpeHRuvrYF0gCvj2MkzmyoCLhJKA==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 11:54:39,100 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM47e71703b9388684318c913d02d51769
+2026-07-15 11:54:40,975 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 11:54:40] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 11:54:41,941 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 11:54:41] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 11:54:42,128 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 11:54:42] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 11:54:58,546 [INFO] routes.bots: [DEACTIVATE] Bot business_1784095002671_0tkieijpx deactivated
+2026-07-15 11:54:58,546 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 11:54:58] "POST /api/bot/deactivate HTTP/1.1" 200 -
+2026-07-15 11:55:33,429 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 11:55:33] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-07-15 11:55:33,679 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 11:55:33] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-07-15 12:02:19,539 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:02:19] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-07-15 12:02:19,805 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:02:19] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-07-15 12:03:23,736 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:03:23] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-07-15 12:03:23,987 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:03:23] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-07-15 12:04:56,221 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:04:56] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-07-15 12:04:56,473 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:04:56] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-07-15 12:06:19,875 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:06:19] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-07-15 12:06:20,127 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:06:20] "GET /api/bot/sandbox-info HTTP/1.1" 200 -
+2026-07-15 12:06:22,367 [INFO] routes.bots: [ACTIVATE] Bot business_1784097377642_4ugdvpurt activated -> +14155238886
+2026-07-15 12:06:22,367 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:06:22] "POST /api/bot/activate HTTP/1.1" 200 -
+2026-07-15 12:09:20,900 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: 'Hello'
+2026-07-15 12:09:20,907 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:09:20] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:09:20,918 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:09:20,918 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:09:20,919 [INFO] twilio.http_client: Headers:
+2026-07-15 12:09:20,919 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:09:20,919 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:09:20,919 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:09:20,920 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:09:20,921 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:09:20,921 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:09:21,847 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:09:21,847 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '971', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:39:21 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ2bbb3b62f787f6f6ee8bcc9b2d8c30be', 'Twilio-Request-Duration': '0.145', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'oTpNUALTgNGVrU8SdnrEODHak2EZZXCk8qwWY_79LvcIm-rnTlp9Wg==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:09:21,850 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM2bbb3b62f787f6f6ee8bcc9b2d8c30be
+2026-07-15 12:09:23,658 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:09:23] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:09:24,507 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:09:24] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:09:24,535 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:09:24] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:09:37,436 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: '2'
+2026-07-15 12:09:37,443 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:09:37] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:09:37,444 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:09:37,446 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:09:37,446 [INFO] twilio.http_client: Headers:
+2026-07-15 12:09:37,447 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:09:37,447 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:09:37,447 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:09:37,448 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:09:37,448 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:09:37,449 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:09:37,821 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:09:37,821 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1499', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:39:37 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQa75e1882e6cb4f11fd63d09d4c5baece', 'Twilio-Request-Duration': '0.135', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'KqCjJFDzkpCsSUiV-qxoShDOzVe4KexeRphUWM7R0QMBwjWJ0oqMBA==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:09:37,824 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SMa75e1882e6cb4f11fd63d09d4c5baece
+2026-07-15 12:09:40,761 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:09:40] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:09:40,791 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:09:40] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:09:40,793 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:09:40] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:09:50,378 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: 'Chiman esda'
+2026-07-15 12:09:50,384 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:09:50] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:09:50,385 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:09:50,386 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:09:50,387 [INFO] twilio.http_client: Headers:
+2026-07-15 12:09:50,388 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:09:50,388 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:09:50,389 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:09:50,389 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:09:50,390 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:09:50,390 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:09:50,745 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:09:50,745 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1002', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:39:50 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ2f5ad7ecc1714b09baacb451089d420a', 'Twilio-Request-Duration': '0.140', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'kZo-g0z7odccBLeJrRaSfsCDl9obFFZBsqH2JpRU_Agd6F_GKNKjtQ==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:09:50,749 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM2f5ad7ecc1714b09baacb451089d420a
+2026-07-15 12:09:55,707 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:09:55] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:09:55,731 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:09:55] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:09:55,732 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:09:55] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:01,447 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: 'Raipur'
+2026-07-15 12:10:01,453 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:01] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:01,455 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:10:01,455 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:10:01,455 [INFO] twilio.http_client: Headers:
+2026-07-15 12:10:01,456 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:10:01,456 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:10:01,456 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:10:01,457 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:10:01,457 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:10:01,457 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:10:01,816 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:10:01,816 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1235', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:40:01 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ47fdb6141d99b7974af78dda73214f4e', 'Twilio-Request-Duration': '0.119', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'ef-nIxRTtldGDqK1B_F947o9QoxzlHgrTDwrWds51NhavXo7qdrTvQ==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:10:01,820 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM47fdb6141d99b7974af78dda73214f4e
+2026-07-15 12:10:04,715 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:04] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:04,744 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:04] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:04,746 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:04] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:08,200 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: '1'
+2026-07-15 12:10:08,207 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:08] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:08,208 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:10:08,210 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:10:08,210 [INFO] twilio.http_client: Headers:
+2026-07-15 12:10:08,211 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:10:08,211 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:10:08,211 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:10:08,212 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:10:08,212 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:10:08,212 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:10:08,890 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:10:08,890 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1083', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:40:08 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ142b1979b8e6488f5d2aa47c4a7f93d9', 'Twilio-Request-Duration': '0.137', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': '0Lq64GCqujEnHXn16YvnSXfMhwyK287uZKbbwMSaEubyFiXNoM341g==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:10:08,894 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM142b1979b8e6488f5d2aa47c4a7f93d9
+2026-07-15 12:10:10,084 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:10] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:17,393 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:17] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:17,395 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:17] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:17,410 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: '10'
+2026-07-15 12:10:17,417 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:17] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:17,418 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:10:17,418 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:10:17,418 [INFO] twilio.http_client: Headers:
+2026-07-15 12:10:17,419 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:10:17,419 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:10:17,419 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:10:17,419 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:10:17,420 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:10:17,420 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:10:17,759 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:10:17,759 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1068', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:40:17 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQec210612bbcedf9ca3206cce992a5329', 'Twilio-Request-Duration': '0.106', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'D-X3NtiSYkrm4VH4I_YP9CQorLLqBfavQJF5nGT53U4kVHiESEkM1A==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:10:17,762 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SMec210612bbcedf9ca3206cce992a5329
+2026-07-15 12:10:20,389 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:20] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:20,415 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:20] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:20,417 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:20] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:23,506 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: '1'
+2026-07-15 12:10:23,512 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:23] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:23,519 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:10:23,519 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:10:23,520 [INFO] twilio.http_client: Headers:
+2026-07-15 12:10:23,520 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:10:23,520 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:10:23,521 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:10:23,521 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:10:23,521 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:10:23,521 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:10:25,381 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:10:25,381 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1116', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:40:23 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQd41c80e33d82f0cb33e08985cd67504b', 'Twilio-Request-Duration': '0.121', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'htQdF4ePGbPeYp_t_40POdH1gZmQta_CjQl-6Oep6aKZbW6Rhf6Gtg==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:10:25,385 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SMd41c80e33d82f0cb33e08985cd67504b
+2026-07-15 12:10:27,431 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:27] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:27,432 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:27] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:27,466 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:27] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:35,262 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: '1'
+2026-07-15 12:10:35,268 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:35] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:35,272 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:10:35,273 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:10:35,273 [INFO] twilio.http_client: Headers:
+2026-07-15 12:10:35,273 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:10:35,274 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:10:35,274 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:10:35,274 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:10:35,274 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:10:35,274 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:10:35,645 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:10:35,646 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1676', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:40:35 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ8f6d57620940ac2a3718949c5cc9a63c', 'Twilio-Request-Duration': '0.121', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': '0grU8nOJjuBL9R9r5Vykl0PsazoJnEWGArLiQ-6NRYr5Zyky0dzNQw==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:10:35,649 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM8f6d57620940ac2a3718949c5cc9a63c
+2026-07-15 12:10:39,890 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:39] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:39,923 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:39] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:10:39,924 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:10:39] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:13:34,301 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: 'Hello'
+2026-07-15 12:13:34,306 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:13:34] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:13:34,307 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:13:34,307 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:13:34,307 [INFO] twilio.http_client: Headers:
+2026-07-15 12:13:34,307 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:13:34,308 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:13:34,308 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:13:34,308 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:13:34,308 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:13:34,308 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:13:34,644 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:13:34,645 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '971', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:43:34 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ8f354883cbdd53a38399e5226ba19310', 'Twilio-Request-Duration': '0.118', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'z-CsY_gS3CCWI0H35qtYeflxMj0jm9vBQ_rn3tMYszqf6aETygsVBg==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:13:34,647 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM8f354883cbdd53a38399e5226ba19310
+2026-07-15 12:13:37,433 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:13:37] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:13:37,592 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:13:37] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:13:37,594 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:13:37] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:13:44,928 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: 'Hello'
+2026-07-15 12:13:44,932 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:13:44] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:13:44,933 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:13:44,933 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:13:44,933 [INFO] twilio.http_client: Headers:
+2026-07-15 12:13:44,934 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:13:44,934 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:13:44,934 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:13:44,934 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:13:44,934 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:13:44,935 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:13:45,275 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:13:45,276 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '971', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:43:45 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ3a71d122dab998a41ab6168f3c47b1e6', 'Twilio-Request-Duration': '0.124', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'W_R80a7FpqraWceMH9TLo0EfCDrCtmHU6YEnTcc9i219p44GlLoCGQ==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:13:45,278 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM3a71d122dab998a41ab6168f3c47b1e6
+2026-07-15 12:13:47,651 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:13:47] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:13:48,034 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:13:48] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:13:48,097 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:13:48] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:22,305 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: 'Hello'
+2026-07-15 12:14:22,310 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:22] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:22,313 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:14:22,313 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:14:22,313 [INFO] twilio.http_client: Headers:
+2026-07-15 12:14:22,313 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:14:22,313 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:14:22,314 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:14:22,314 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:14:22,314 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:14:22,315 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:14:22,674 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:14:22,674 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '971', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:44:22 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ3802a94179f3b398b0afe57e2519b289', 'Twilio-Request-Duration': '0.144', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'dfyAotCdT99hPY-JKAYxpYOgGJ3OK6dZUXDL7BH63bMuM0BavfMZ1A==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:14:22,676 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM3802a94179f3b398b0afe57e2519b289
+2026-07-15 12:14:27,435 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:27] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:27,468 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:27] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:27,470 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:27] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:31,341 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: '2'
+2026-07-15 12:14:31,345 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:31] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:31,347 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:14:31,347 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:14:31,347 [INFO] twilio.http_client: Headers:
+2026-07-15 12:14:31,347 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:14:31,347 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:14:31,348 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:14:31,348 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:14:31,349 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:14:31,349 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:14:31,856 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:14:31,856 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1499', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:44:31 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQa8f8eeec4bff6faf23cdd70df69ab315', 'Twilio-Request-Duration': '0.155', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'OgqMgxPqlg3P7ykdRyI2SEezWqKg_HaiUkBNcVxZaAThVfjmJIsyWQ==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:14:31,858 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SMa8f8eeec4bff6faf23cdd70df69ab315
+2026-07-15 12:14:33,568 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:33] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:34,480 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:34] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:34,512 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:34] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:41,386 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: 'Chiman esda'
+2026-07-15 12:14:41,390 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:41] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:41,392 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:14:41,393 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:14:41,393 [INFO] twilio.http_client: Headers:
+2026-07-15 12:14:41,393 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:14:41,394 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:14:41,394 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:14:41,394 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:14:41,395 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:14:41,395 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:14:41,744 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:14:41,744 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1002', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:44:41 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ1c468e09fa50cb4b7e081c4498af47e9', 'Twilio-Request-Duration': '0.134', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'UOPmPFIoosFZ42l0phH6ZwuKmJMFAqVOXX_Yq__NgePxQgvd9gqk6A==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:14:41,746 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM1c468e09fa50cb4b7e081c4498af47e9
+2026-07-15 12:14:44,889 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:44] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:44,918 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:44] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:44,920 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:44] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:51,541 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: 'Bhilai'
+2026-07-15 12:14:51,546 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:51] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:51,547 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:14:51,547 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:14:51,547 [INFO] twilio.http_client: Headers:
+2026-07-15 12:14:51,547 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:14:51,548 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:14:51,548 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:14:51,548 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:14:51,548 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:14:51,548 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:14:51,914 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:14:51,914 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1235', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:44:51 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ48a380e300e8828b2a1aa2f0af251f0c', 'Twilio-Request-Duration': '0.136', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'Ft5OOu2XbhBYIZdN9ZAw03lzgRYZgQNe4YPdXUHEkRNb8JDgo7N0AQ==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:14:51,917 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM48a380e300e8828b2a1aa2f0af251f0c
+2026-07-15 12:14:56,102 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:56] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:56,130 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:56] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:14:56,132 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:14:56] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:01,373 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: '1'
+2026-07-15 12:15:01,378 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:01] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:01,378 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:15:01,379 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:15:01,379 [INFO] twilio.http_client: Headers:
+2026-07-15 12:15:01,379 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:15:01,379 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:15:01,379 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:15:01,379 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:15:01,380 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:15:01,380 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:15:01,758 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:15:01,758 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1083', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:45:01 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ0b2f9b87e203dcdf719de216d8398140', 'Twilio-Request-Duration': '0.162', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'NiUr41lGZNxUg6_RxG99ZSNqxva7Xcg-A9wSo5ZrIpHyQ83rliRJLw==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:15:01,760 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM0b2f9b87e203dcdf719de216d8398140
+2026-07-15 12:15:05,413 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:05] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:05,414 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:05] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:05,416 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:05] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:10,676 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: '13'
+2026-07-15 12:15:10,681 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:10] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:10,682 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:15:10,683 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:15:10,683 [INFO] twilio.http_client: Headers:
+2026-07-15 12:15:10,683 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:15:10,683 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:15:10,683 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:15:10,684 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:15:10,684 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:15:10,684 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:15:11,134 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:15:11,136 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1068', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:45:10 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQff0b45c7d007bbc93bb8259fddcdd6f5', 'Twilio-Request-Duration': '0.142', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'lW-PZ7U-s6g3cIhyidY1PAFCDuvI8ytvcsOQImkh9vVsHAvTqsrcmA==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:15:11,139 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SMff0b45c7d007bbc93bb8259fddcdd6f5
+2026-07-15 12:15:17,453 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:17] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:17,471 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:17] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:17,472 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:17] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:17,739 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: '1'
+2026-07-15 12:15:17,742 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:17] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:17,754 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:15:17,755 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:15:17,755 [INFO] twilio.http_client: Headers:
+2026-07-15 12:15:17,755 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:15:17,755 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:15:17,755 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:15:17,756 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:15:17,756 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:15:17,756 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:15:19,292 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:15:19,292 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1116', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:45:17 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQd27274066ee6e7c6665af23df4e04b85', 'Twilio-Request-Duration': '0.119', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'ZlpstrS5T57maQIIFlhfPGboNfqOAOlT7zavwcCZ9Dzm4c4GILqNJQ==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:15:19,294 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SMd27274066ee6e7c6665af23df4e04b85
+2026-07-15 12:15:19,540 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:19] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:23,360 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:23] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:23,361 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:23] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:27,376 [INFO] routes.webhook: [WEBHOOK] Inbound from +918770441755: '1'
+2026-07-15 12:15:27,380 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:27] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:27,383 [INFO] twilio.http_client: -- BEGIN Twilio API Request --
+2026-07-15 12:15:27,383 [INFO] twilio.http_client: POST Request: https://api.twilio.com/2010-04-01/Accounts/AC09fbbab319a74adf2d5c058fe4938b61/Messages.json
+2026-07-15 12:15:27,383 [INFO] twilio.http_client: Headers:
+2026-07-15 12:15:27,383 [INFO] twilio.http_client: Content-Type : application/x-www-form-urlencoded
+2026-07-15 12:15:27,383 [INFO] twilio.http_client: Accept : application/json
+2026-07-15 12:15:27,384 [INFO] twilio.http_client: User-Agent : twilio-python/9.10.2 (Windows AMD64) Python/3.13.5
+2026-07-15 12:15:27,384 [INFO] twilio.http_client: X-Twilio-Client : python-9.10.2
+2026-07-15 12:15:27,384 [INFO] twilio.http_client: Accept-Charset : utf-8
+2026-07-15 12:15:27,384 [INFO] twilio.http_client: -- END Twilio API Request --
+2026-07-15 12:15:27,696 [INFO] twilio.http_client: Response Status Code: 201
+2026-07-15 12:15:27,696 [INFO] twilio.http_client: Response Headers: {'Content-Type': 'application/json;charset=utf-8', 'Content-Length': '1676', 'Connection': 'keep-alive', 'Date': 'Wed, 15 Jul 2026 06:45:27 GMT', 'Twilio-Concurrent-Requests': '1', 'Twilio-Request-Id': 'RQ778564fe31d2527461d201028dc23961', 'Twilio-Request-Duration': '0.091', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 fb6514ed0fa65e8962789d347bfecb50.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P4', 'X-Amz-Cf-Id': 'jsKD1Kms4GIjmmLd4zi_lMT-EF0HVoF2VXUoeIrMxH3g1Zhx_CfMKg==', 'X-Powered-By': 'AT-5000', 'X-Shenanigans': 'none', 'Vary': 'Origin'}
+2026-07-15 12:15:27,698 [INFO] routes.webhook: [WEBHOOK] Reply sent to +918770441755  SID=SM778564fe31d2527461d201028dc23961
+2026-07-15 12:15:30,385 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:30] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:30,413 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:30] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
+2026-07-15 12:15:30,413 [INFO] werkzeug: 127.0.0.1 - - [15/Jul/2026 12:15:30] "[35m[1mPOST /webhook/whatsapp HTTP/1.1[0m" 204 -
