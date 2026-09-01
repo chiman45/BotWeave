@@ -65,7 +65,7 @@ def create_app() -> Flask:
     config.validate()
 
     app = Flask(__name__)
-    CORS(app)
+    CORS(app, origins=config.ALLOWED_ORIGINS)
 
     ensure_indexes()
 

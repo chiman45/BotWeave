@@ -98,7 +98,7 @@ def seed_system_config():
 
 def seed_templates():
     docs = load('bot_templates.json')
-    upsert('templates', 'templateId', docs)
+    upsert('templates', 'id', docs)
 
 
 def main():

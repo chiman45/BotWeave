@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { MessageCircle, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import { ThemeToggleButton } from '@/components/theme-toggle'
 
@@ -57,12 +58,14 @@ export default function LandingPage() {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3">
-              <div className={`p-2 rounded-lg transition-colors ${
-                isDarkMode ? 'bg-white/10 hover:bg-white/20' : 'bg-black/10 hover:bg-black/20'
-              }`}>
-                <MessageCircle className={`w-5 h-5 ${isDarkMode ? 'text-white' : 'text-black'}`} />
-              </div>
-              <span className="font-light text-lg tracking-wide">BOTSETU</span>
+              <Image
+                src="/botweave-logo.png"
+                alt="BotWeave"
+                width={32}
+                height={32}
+                className="rounded-lg"
+              />
+              <span className="font-light text-lg tracking-wide">BOTWEAVE</span>
             </Link>
 
             {/* Navigation Links */}

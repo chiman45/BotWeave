@@ -45,6 +45,15 @@ MONGODB_URI: str = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
 DB_NAME: str     = 'BotSetu'
 
 # ---------------------------------------------------------------------------
+# CORS — comma-separated list of allowed origins (defaults cover local dev)
+# ---------------------------------------------------------------------------
+ALLOWED_ORIGINS: list[str] = [
+    origin.strip()
+    for origin in os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+    if origin.strip()
+]
+
+# ---------------------------------------------------------------------------
 # Ollama (local LLM)
 # ---------------------------------------------------------------------------
 OLLAMA_BASE_URL: str    = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434')

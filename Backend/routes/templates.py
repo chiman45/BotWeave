@@ -28,7 +28,7 @@ def list_templates():
 @templates_bp.route('/api/templates/<template_id>', methods=['GET'])
 def get_template(template_id: str):
     """Return a single template by its `id` field."""
-    tpl = templates_col.find_one({'templateId': template_id}, {'_id': 0})
+    tpl = templates_col.find_one({'id': template_id}, {'_id': 0})
     if not tpl:
         return jsonify({'error': 'Template not found'}), 404
     return jsonify(tpl)
